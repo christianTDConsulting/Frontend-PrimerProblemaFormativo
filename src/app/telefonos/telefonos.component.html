@@ -1,27 +1,48 @@
-<h1> Telefonos de Cliente  ({{cliente.nombre}}) </h1>
+<h1> Telefonos de Cliente  {{cliente.nombre}} </h1>
 
 <div *ngIf="telefonos.length === 0; else telefonosList">
     <p>No hay teléfonos todavía.</p>
   </div>
 <ng-template #telefonosList>
-<p-table [value]="telefonos" [tableStyle]="{ 'min-width': '50rem' }">
-    <ng-template pTemplate="header">
-        <tr>
-            <th>Número</th>
-            <th>Opciones</th>
-            
-            
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-telefonos>
-        <tr>
-            <td>{{telefonos.numero}} </td>
-          <td> <p-button label="Borrar" (onClick)="borrarTelefono(telefonos.numero)" ></p-button></td>
 
-        </tr>
-    </ng-template>
+<div class ="card">
+    <p-table 
+    [value]="telefonos"
+    #dt2
+    dataKey="id"
+    [rows]="7"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[7, 14, 21]"
+    [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [globalFilterFields]="['numero']"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    >
+        <ng-template pTemplate="header">
+            <tr >
+                <th pSortableColumn="numero" style="width:60%">Número <p-sortIcon field="numero"></p-sortIcon></th>
+                <th style="width:40%">Opciones</th>
+                
+    
+            </tr>
+            <tr>
+                <th>
+                    <p-columnFilter type="text" field="numero"></p-columnFilter>
+                </th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-telefonos>
+            <tr>
+                <td>{{telefonos.numero}} </td>
+              <td> <p-button label="Borrar" (onClick)="borrarTelefono(telefonos.numero)" ></p-button></td>
+    
+            </tr>
+        </ng-template>
+    
+    </p-table>
+</div>
 
-</p-table>
 </ng-template>
 <br>
 <p-button label="Ver clientes" [routerLink]= "'/clientes'" routerLinkActive="router-link-active"></p-button>
