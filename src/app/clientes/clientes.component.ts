@@ -15,7 +15,7 @@ export class ClientesComponent {
   clientes: Cliente[] = [];
   constructor(private router: Router, private clienteService: ClienteService){}
   nuevoNombre = '';
-  nombreEdit = '';
+  filtro ='';
   ngOnInit(): void {
     this.getClientesList();
   }
@@ -62,6 +62,12 @@ export class ClientesComponent {
         }
       )
      }
+  }
+  buscarPorId(){
+
+  }
+  obtenerPorNombre(){
+
   }
  
 }
