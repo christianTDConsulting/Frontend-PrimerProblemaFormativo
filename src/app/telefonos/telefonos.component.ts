@@ -26,12 +26,15 @@ export class TelefonosComponent {
 
   ngOnInit(): void {
     
-    const clienteId = this.activatedRoute.snapshot.paramMap.get('clienteId');
+    const clienteId = this.getParam();
     if (clienteId !== null) {
       this.getCliente(clienteId);
       this.getTelefonosList(clienteId);
     }
     
+  }
+  private getParam(){
+    return this.activatedRoute.snapshot.paramMap.get('clienteId');
   }
 
   getTelefonosList(id: string) {
@@ -64,9 +67,17 @@ export class TelefonosComponent {
     this.telefonoService.deleteTelefono(numero).subscribe(
       response => {
         console.log(response);
+          //refresh
+        const ClienteId = this.activatedRoute.snapshot.paramMap.get('clienteId');
+        if  (ClienteId !== null){
+          this.getTelefonosList(ClienteId);
+        }
+       
       }
+     
+       
     )
-    //refresh
+   
   }
   crearTelefono( ){
     if (this.nuevoTelefono != ''){
@@ -74,6 +85,11 @@ export class TelefonosComponent {
       this.telefonoService.addTelefono(this.nuevoTelefono,this.cliente.id).subscribe(
         response =>{
           console.log(response);
+            //refresh
+        const ClienteId = this.activatedRoute.snapshot.paramMap.get('clienteId');
+        if  (ClienteId !== null){
+          this.getTelefonosList(ClienteId);
+        }
         }
       )
     }

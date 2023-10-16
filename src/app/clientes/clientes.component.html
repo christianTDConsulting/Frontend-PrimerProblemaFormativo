@@ -26,6 +26,6 @@
 <h2>Añadir nuevo usuario</h2>
 
 
-<input type="text" [placeholder]="'John Doe'" pInputText  [(ngModel)]="nuevoNombre" id = "nuevoNombre" />
+<input type="text" [placeholder]="'John Doe'" pInputText  [(ngModel)]="nuevoNombre" id = "nuevoNombre" (keyup.enter)="crearUsuario()"/>
 <span style="margin: 0 8px;"></span> 
 <p-button label="Nuevo" (click)="crearUsuario()"></p-button>

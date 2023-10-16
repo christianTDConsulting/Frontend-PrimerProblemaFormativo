@@ -32,9 +32,11 @@ export class ClientesComponent {
     this.clienteService.deleteCliente(id).subscribe(
       response => {
         console.log(response);
+        //refresh
+        this.getClientesList()
       }
     )
-    //refresh
+    
   }
  crearUsuario(){
   if (this.nuevoNombre != ''){
@@ -42,6 +44,8 @@ export class ClientesComponent {
     this.clienteService.addCliente(this.nuevoNombre).subscribe(
       response =>{
         console.log(response);
+        //refresh
+        this.getClientesList()
       }
     )
    }
