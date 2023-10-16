@@ -14,7 +14,7 @@ export class ClientesComponent {
 
   clientes: Cliente[] = [];
   constructor(private router: Router, private clienteService: ClienteService){}
-  nuevoNombre = 'John doe';
+  nuevoNombre = '';
   ngOnInit(): void {
     this.getClientesList();
   }
@@ -36,12 +36,15 @@ export class ClientesComponent {
     )
     //refresh
   }
- crearUsuario(nombre:string){
-  console.log(nombre)
-  this.clienteService.addCliente(nombre).subscribe(
-    response =>{
-      console.log(response);
-    }
-  )
- }
+ crearUsuario(){
+  if (this.nuevoNombre != ''){
+    console.log(this.nuevoNombre)
+    this.clienteService.addCliente(this.nuevoNombre).subscribe(
+      response =>{
+        console.log(response);
+      }
+    )
+   }
+  }
+ 
 }

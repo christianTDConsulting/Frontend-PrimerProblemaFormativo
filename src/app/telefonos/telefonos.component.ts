@@ -16,7 +16,7 @@ export class TelefonosComponent {
     id: 0, // Valor inicial para 'id'
     nombre: '', // Valor inicial para 'nombre'
   };
-  nuevoTelefono="9999999999";
+  nuevoTelefono="";
 
   constructor(
     private router: Router,
@@ -68,12 +68,15 @@ export class TelefonosComponent {
     )
     //refresh
   }
-  crearTelefono(numero:string, id:number ){
-    console.log(numero)
-    this.telefonoService.addTelefono(numero,id).subscribe(
-      response =>{
-        console.log(response);
-      }
-    )
+  crearTelefono( ){
+    if (this.nuevoTelefono != ''){
+      console.log(this.nuevoTelefono)
+      this.telefonoService.addTelefono(this.nuevoTelefono,this.cliente.id).subscribe(
+        response =>{
+          console.log(response);
+        }
+      )
+    }
+   
    }
 }

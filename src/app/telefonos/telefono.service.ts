@@ -45,7 +45,7 @@ export class TelefonoService {
   addTelefono(numero:string, id: number){
     const body = {
       numero: numero,
-      id_cliente: id
+      cliente: id
     };
 
     // Define las cabeceras de la solicitud, si es necesario

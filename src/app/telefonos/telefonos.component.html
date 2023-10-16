@@ -19,8 +19,9 @@
 
 </p-table>
 <p-button label="Ver clientes" [routerLink]= "'/clientes'" routerLinkActive="router-link-active"></p-button>
+
 <h2>Añadir teléfono</h2>
-<input type="text" pInputText [placeholder]="'999999999'"  /> <span style="margin: 0 8px;"></span> <p-button label="Nuevo"  (onClick)="crearTelefono( nuevoTelefono, cliente.id)" ></p-button>
-<br>
-<br>
+<input type="text" [placeholder]="'999999999'" pInputText  [(ngModel)]="nuevoTelefono" id = "nuevoTelefono" />
+<span style="margin: 0 8px;"></span> 
+<p-button label="Nuevo" (click)="crearTelefono()"></p-button>
  

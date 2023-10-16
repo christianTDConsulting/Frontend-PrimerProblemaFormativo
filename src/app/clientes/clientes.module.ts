@@ -5,6 +5,7 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
 
 import { ClientesComponent } from './clientes.component';
 
@@ -20,7 +21,8 @@ import { ClientesComponent } from './clientes.component';
     TableModule,
     ButtonModule,
     RouterModule,
-    InputTextModule
+    InputTextModule,
+    FormsModule
     ],
   exports: [
     ClientesComponent

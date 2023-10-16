@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { RouterModule } from '@angular/router';
     HttpClientModule,
     TableModule,
     ButtonModule,
-    RouterModule
+    RouterModule,
+    FormsModule
   ], 
   exports: [
     TelefonosComponent
