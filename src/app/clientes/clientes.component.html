@@ -20,9 +20,13 @@
     <ng-template pTemplate="body" let-clientes>
         <tr>
             <td>{{ clientes.id }}</td>
-            <td>{{ clientes.nombre }}</td>
+           
+            <td>
+                <input type="text" [value]="clientes.nombre" pInputText (keyup.enter)="editarClientes(clientes.id, clientes.nombre)" style="border: none;" [(ngModel)]="clientes.nombre" [id]="'editarCliente' + clientes.id">
+            </td>
+
             <td><p-button label="Ver Teléfonos" [routerLink]= "['/telefonos', clientes.id]" routerLinkActive="router-link-active"></p-button></td>
-            <td><p-button label="Editar" ></p-button> <span style="margin: 0 8px;"></span> <p-button label="Borrar" (onClick)="borrarUsuario(clientes.id)" ></p-button></td>
+            <td><!--<p-button label="Editar" ></p-button> <span style="margin: 0 8px;"></span> --> <p-button label="Borrar" (onClick)="borrarUsuario(clientes.id)" ></p-button></td>
             
 
         </tr>

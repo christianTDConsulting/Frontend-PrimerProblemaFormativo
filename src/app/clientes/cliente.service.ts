@@ -40,7 +40,20 @@ export class ClienteService {
     });
   
     const options = { headers: headers };
-  
+    //especificar tipo de datos
     return this.http.post<any>('http://localhost:3000/clientes/', body, options);
+  }
+
+  editCliente(id:string, nombre:string){
+    const body = { id: id, nombre: nombre };
+
+    // Define las cabeceras de la solicitud, si es necesario
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+  
+    const options = { headers: headers };
+      //especificar tipo de datos
+    return this.http.put<any>('http://localhost:3000/clientes/', body, options);
   }
 }

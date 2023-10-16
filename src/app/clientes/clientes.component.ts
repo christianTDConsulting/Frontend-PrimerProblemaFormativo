@@ -15,6 +15,7 @@ export class ClientesComponent {
   clientes: Cliente[] = [];
   constructor(private router: Router, private clienteService: ClienteService){}
   nuevoNombre = '';
+  nombreEdit = '';
   ngOnInit(): void {
     this.getClientesList();
   }
@@ -49,6 +50,18 @@ export class ClientesComponent {
       }
     )
    }
+  }
+  editarClientes(id:string, nombre:string){
+    if (nombre != ''){
+      console.log(nombre)
+      this.clienteService.editCliente(id, nombre).subscribe(
+        response =>{
+          console.log(response);
+          //refresh
+          this.getClientesList()
+        }
+      )
+     }
   }
  
 }

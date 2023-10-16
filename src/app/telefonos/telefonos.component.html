@@ -7,22 +7,23 @@
 <p-table [value]="telefonos" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
         <tr>
-            <th>numero</th>
-            <th>opciones</th>
+            <th>Número</th>
+            <th>Opciones</th>
             
             
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-telefonos>
         <tr>
-            <td>{{ telefonos.numero}}</td>
-            <td><p-button label="Editar" ></p-button> <span style="margin: 0 8px;"></span> <p-button label="Borrar" (onClick)="borrarTelefono(telefonos.numero)" ></p-button></td>
+            <td>{{telefonos.numero}} </td>
+          <td> <p-button label="Borrar" (onClick)="borrarTelefono(telefonos.numero)" ></p-button></td>
 
         </tr>
     </ng-template>
 
 </p-table>
 </ng-template>
+<br>
 <p-button label="Ver clientes" [routerLink]= "'/clientes'" routerLinkActive="router-link-active"></p-button>
 
 <h2>Añadir teléfono</h2>
