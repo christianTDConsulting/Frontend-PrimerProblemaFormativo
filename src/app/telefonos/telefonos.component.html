@@ -1,5 +1,9 @@
 <h1> Telefonos de Cliente  ({{cliente.nombre}}) </h1>
 
+<div *ngIf="telefonos.length === 0; else telefonosList">
+    <p>No hay teléfonos todavía.</p>
+  </div>
+<ng-template #telefonosList>
 <p-table [value]="telefonos" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
         <tr>
@@ -18,6 +22,7 @@
     </ng-template>
 
 </p-table>
+</ng-template>
 <p-button label="Ver clientes" [routerLink]= "'/clientes'" routerLinkActive="router-link-active"></p-button>
 
 <h2>Añadir teléfono</h2>

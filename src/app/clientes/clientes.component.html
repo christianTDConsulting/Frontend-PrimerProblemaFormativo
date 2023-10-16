@@ -1,5 +1,11 @@
 
 <h1> Clientes</h1>
+<div *ngIf="clientes.length === 0; else clienteList">
+    <p>No hay Clientes todavía.</p>
+  </div>
+
+
+<ng-template #clienteList>
 <p-table [value]="clientes" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
         <tr>
@@ -22,6 +28,7 @@
         </tr>
     </ng-template>
 </p-table>
+</ng-template>
 
 <h2>Añadir nuevo usuario</h2>
 
