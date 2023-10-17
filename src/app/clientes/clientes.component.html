@@ -42,8 +42,10 @@
                 Añadir nuevo usuario
                 <span style="margin: 0 8px;"></span> 
                  <input type="text" [placeholder]="'John Doe'" pInputText  [(ngModel)]="nuevoNombre" id = "nuevoNombre" (keyup.enter)="crearUsuario()"/>
+              
                  <span style="margin: 0 8px;"></span> 
-                 <p-button label="Nuevo" (click)="crearUsuario()"></p-button>
+                 <p-toast></p-toast>
+                 <p-button label="Nuevo"  pRipple (click)="crearUsuario()" ></p-button>
             </th>
             <th></th>
             <th></th>

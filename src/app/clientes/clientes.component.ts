@@ -47,7 +47,18 @@ export class ClientesComponent {
       response => {
         console.log(response);
         //refresh
-        this.getClientesList()
+        this.getClientesList();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Operación exitosa',
+          detail: 'El usuario ha sido borrado correctamente.'
+      });
+      }, (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Operación fallada',
+          detail: 'El usuario no ha sido borrado.'
+      });
       }
     )
     
@@ -59,9 +70,26 @@ export class ClientesComponent {
       response =>{
         console.log(response);
         //refresh
-        this.getClientesList()
+        this.getClientesList();
+        this.messageService.add({
+            severity: 'success',
+            summary: 'Operación exitosa',
+            detail: 'El usuario ha sido creado  correctamente.'
+        });
+      }, (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Operación fallada',
+          detail: 'El usuario no ha sido creado.'
+      });
       }
     )
+   } else{
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Atención',
+      detail: 'Escriba un nombre para añadir un usuario.'
+  });
    }
   }
   editarClientes(id:string, nombre:string){
@@ -71,12 +99,25 @@ export class ClientesComponent {
         response =>{
           console.log(response);
           //refresh
-          this.getClientesList()
+          this.getClientesList();
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Operación exitosa',
+            detail: 'El usuario ha sido editado  correctamente.'
+        });
+        }, (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Operación fallada',
+            detail: 'El usuario no ha sido editado.'
+        });
         }
       )
      }
   }
   
+
   show(id:string){
     this.clienteService.getCliente(id).subscribe(
       (cliente: Cliente) => {
@@ -90,8 +131,9 @@ export class ClientesComponent {
           maximizable: true
         });
         this.ref.onMaximize.subscribe((value) => {
-          this.messageService.add({ severity: 'info', summary: 'Maximized', detail: `maximized: ${value.maximized}` });
+          this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
       });
+      
       });
 
 
@@ -99,6 +141,7 @@ export class ClientesComponent {
   ngOnDestroy() {
     if (this.ref) {
         this.ref.close();
+
     }
 }
 

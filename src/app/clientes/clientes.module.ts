@@ -10,6 +10,7 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ClientesComponent } from './clientes.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TelefonosModule } from '../telefonos/telefonos.module';
+import { ToastModule } from 'primeng/toast';
 
 
 
@@ -27,7 +28,8 @@ import { TelefonosModule } from '../telefonos/telefonos.module';
     FormsModule,
     DynamicDialogModule,
     BrowserAnimationsModule,
-    TelefonosModule
+    TelefonosModule,
+    ToastModule
     ],
   exports: [
     ClientesComponent

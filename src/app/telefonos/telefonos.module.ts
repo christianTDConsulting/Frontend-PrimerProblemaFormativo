@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
     ButtonModule,
     RouterModule,
     FormsModule,
-    DynamicDialogModule
+    DynamicDialogModule,
+    ToastModule
   ], 
   exports: [
     TelefonosComponent
