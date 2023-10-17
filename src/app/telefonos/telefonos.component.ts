@@ -3,6 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { TelefonoService } from './telefono.service';
 import { Telefono } from './telefono';
 import { Cliente } from '../clientes/cliente';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-telefonos',
@@ -21,11 +23,12 @@ export class TelefonosComponent {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private telefonoService: TelefonoService
+    private telefonoService: TelefonoService,
+    public dialogConfig : DynamicDialogConfig,
+    public messageService : MessageService,
   ) {}
 
   ngOnInit(): void {
-    
     const clienteId = this.getParam();
     if (clienteId !== null) {
       this.getCliente(clienteId);
@@ -34,7 +37,8 @@ export class TelefonosComponent {
     
   }
   private getParam(){
-    return this.activatedRoute.snapshot.paramMap.get('clienteId');
+   // return this.activatedRoute.snapshot.paramMap.get('clienteId');
+   return this.dialogConfig.data.id;
   }
 
   getTelefonosList(id: string) {
@@ -67,12 +71,25 @@ export class TelefonosComponent {
     this.telefonoService.deleteTelefono(numero).subscribe(
       response => {
         console.log(response);
+
           //refresh
-        const ClienteId = this.activatedRoute.snapshot.paramMap.get('clienteId');
+        const ClienteId = this.getParam()
         if  (ClienteId !== null){
           this.getTelefonosList(ClienteId);
         }
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Operación exitosa',
+          detail: 'El telefono ha sido borrado correctamente.'
+      });
        
+      }, (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Operación fallada',
+          detail: 'El teléfono no ha sido borrado.' ,
+      });
       }
      
        
@@ -86,12 +103,29 @@ export class TelefonosComponent {
         response =>{
           console.log(response);
             //refresh
-        const ClienteId = this.activatedRoute.snapshot.paramMap.get('clienteId');
+        const ClienteId = this.getParam();
         if  (ClienteId !== null){
           this.getTelefonosList(ClienteId);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Operación exitosa',
+            detail: 'El número de telefono ha sido creado  correctamente.'
+        });
         }
+        }, (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Operación fallada',
+            detail: 'El teléfono no ha sido creado.' ,
+        });
         }
       )
+    }else{
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Atención',
+        detail: 'Escriba un número de telefono para añadirlo.'
+    });
     }
    
    }

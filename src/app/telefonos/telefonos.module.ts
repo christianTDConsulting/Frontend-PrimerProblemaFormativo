@@ -6,6 +6,8 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { FormsModule } from '@angular/forms';
     TableModule,
     ButtonModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    DynamicDialogModule,
+    ToastModule
   ], 
   exports: [
     TelefonosComponent

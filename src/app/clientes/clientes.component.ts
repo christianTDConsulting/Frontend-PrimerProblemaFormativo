@@ -1,21 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ClienteService } from './cliente.service';
 import { Router } from '@angular/router';
 import { Cliente } from './cliente';
-
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { MessageService } from 'primeng/api';
+import { TelefonosComponent } from '../telefonos/telefonos.component';
 
 
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
-  styleUrls: ['./clientes.component.scss']
+  styleUrls: ['./clientes.component.scss'],
+  providers: [DialogService, MessageService]
 })
 export class ClientesComponent {
 
   clientes: Cliente[] = [];
-  constructor(private router: Router, private clienteService: ClienteService){}
   nuevoNombre = '';
   filtro ='';
+  ref : DynamicDialogRef | undefined;
+  displayDialog: boolean = false;
+
+  constructor(
+    private router: Router,
+    private clienteService: ClienteService,
+    public dialogService: DialogService,  
+    public messageService : MessageService,
+  
+  ){}
+
   ngOnInit(): void {
     this.getClientesList();
   }
@@ -34,7 +47,18 @@ export class ClientesComponent {
       response => {
         console.log(response);
         //refresh
-        this.getClientesList()
+        this.getClientesList();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Operación exitosa',
+          detail: 'El usuario ha sido borrado correctamente.'
+      });
+      }, (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Operación fallada',
+          detail: 'El usuario no ha sido borrado.'
+      });
       }
     )
     
@@ -46,9 +70,26 @@ export class ClientesComponent {
       response =>{
         console.log(response);
         //refresh
-        this.getClientesList()
+        this.getClientesList();
+        this.messageService.add({
+            severity: 'success',
+            summary: 'Operación exitosa',
+            detail: 'El usuario ha sido creado  correctamente.'
+        });
+      }, (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Operación fallada',
+          detail: 'El usuario no ha sido creado.'
+      });
       }
     )
+   } else{
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Atención',
+      detail: 'Escriba un nombre para añadir un usuario.'
+  });
    }
   }
   editarClientes(id:string, nombre:string){
@@ -58,16 +99,50 @@ export class ClientesComponent {
         response =>{
           console.log(response);
           //refresh
-          this.getClientesList()
+          this.getClientesList();
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Operación exitosa',
+            detail: 'El usuario ha sido editado  correctamente.'
+        });
+        }, (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Operación fallada',
+            detail: 'El usuario no ha sido editado.'
+        });
         }
       )
      }
   }
-  buscarPorId(){
+  
+
+  show(id:string){
+    this.clienteService.getCliente(id).subscribe(
+      (cliente: Cliente) => {
+        this.ref = this.dialogService.open(TelefonosComponent, {
+          header: 'Teléfonos de ' + cliente.nombre,
+          data: {
+            id: id
+          },
+          contentStyle: { overflow: 'auto' },
+          baseZIndex: 10000,
+          maximizable: true
+        });
+        this.ref.onMaximize.subscribe((value) => {
+          this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
+      });
+      
+      });
+
 
   }
-  obtenerPorNombre(){
+  ngOnDestroy() {
+    if (this.ref) {
+        this.ref.close();
 
-  }
- 
+    }
+}
+
 }
