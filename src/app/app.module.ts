@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { ClientesModule } from './clientes/clientes.module';
-import { TelefonosModule } from './telefonos/telefonos.module';
+
 
 @NgModule({
   declarations: [
@@ -15,8 +15,7 @@ import { TelefonosModule } from './telefonos/telefonos.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ClientesModule,
-    TelefonosModule
+    ClientesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

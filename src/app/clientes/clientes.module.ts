@@ -6,8 +6,10 @@ import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
-
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ClientesComponent } from './clientes.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TelefonosModule } from '../telefonos/telefonos.module';
 
 
 
@@ -22,7 +24,10 @@ import { ClientesComponent } from './clientes.component';
     ButtonModule,
     RouterModule,
     InputTextModule,
-    FormsModule
+    FormsModule,
+    DynamicDialogModule,
+    BrowserAnimationsModule,
+    TelefonosModule
     ],
   exports: [
     ClientesComponent

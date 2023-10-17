@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { TelefonoService } from './telefono.service';
 import { Telefono } from './telefono';
 import { Cliente } from '../clientes/cliente';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-telefonos',
@@ -21,11 +22,11 @@ export class TelefonosComponent {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private telefonoService: TelefonoService
+    private telefonoService: TelefonoService,
+    public dialogConfig : DynamicDialogConfig
   ) {}
 
   ngOnInit(): void {
-    
     const clienteId = this.getParam();
     if (clienteId !== null) {
       this.getCliente(clienteId);
@@ -34,7 +35,8 @@ export class TelefonosComponent {
     
   }
   private getParam(){
-    return this.activatedRoute.snapshot.paramMap.get('clienteId');
+   // return this.activatedRoute.snapshot.paramMap.get('clienteId');
+   return this.dialogConfig.data.id;
   }
 
   getTelefonosList(id: string) {
@@ -89,6 +91,7 @@ export class TelefonosComponent {
         const ClienteId = this.activatedRoute.snapshot.paramMap.get('clienteId');
         if  (ClienteId !== null){
           this.getTelefonosList(ClienteId);
+          
         }
         }
       )

@@ -1,21 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ClienteService } from './cliente.service';
 import { Router } from '@angular/router';
 import { Cliente } from './cliente';
-
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { MessageService } from 'primeng/api';
+import { TelefonosComponent } from '../telefonos/telefonos.component';
 
 
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
-  styleUrls: ['./clientes.component.scss']
+  styleUrls: ['./clientes.component.scss'],
+  providers: [DialogService, MessageService]
 })
 export class ClientesComponent {
 
   clientes: Cliente[] = [];
-  constructor(private router: Router, private clienteService: ClienteService){}
   nuevoNombre = '';
   filtro ='';
+  ref : DynamicDialogRef | undefined;
+  displayDialog: boolean = false;
+
+  constructor(
+    private router: Router,
+    private clienteService: ClienteService,
+    public dialogService: DialogService,  
+    public messageService : MessageService,
+  
+  ){}
+
   ngOnInit(): void {
     this.getClientesList();
   }
@@ -63,11 +76,30 @@ export class ClientesComponent {
       )
      }
   }
-  buscarPorId(){
+  
+  show(id:string){
+    this.clienteService.getCliente(id).subscribe(
+      (cliente: Cliente) => {
+        this.ref = this.dialogService.open(TelefonosComponent, {
+          header: 'Teléfonos de ' + cliente.nombre,
+          data: {
+            id: id
+          },
+          contentStyle: { overflow: 'auto' },
+          baseZIndex: 10000,
+          maximizable: true
+        });
+        this.ref.onMaximize.subscribe((value) => {
+          this.messageService.add({ severity: 'info', summary: 'Maximized', detail: `maximized: ${value.maximized}` });
+      });
+      });
+
 
   }
-  obtenerPorNombre(){
+  ngOnDestroy() {
+    if (this.ref) {
+        this.ref.close();
+    }
+}
 
-  }
- 
 }

@@ -1,10 +1,3 @@
-<h1> Telefonos de Cliente  {{cliente.nombre}} </h1>
-
-<div *ngIf="telefonos.length === 0; else telefonosList">
-    <p>No hay teléfonos todavía.</p>
-  </div>
-<ng-template #telefonosList>
-
 <div class ="card">
     <p-table 
     [value]="telefonos"
@@ -18,7 +11,39 @@
     [globalFilterFields]="['numero']"
     [tableStyle]="{ 'min-width': '75rem' }"
     >
+    <ng-template pTemplate="emptymessage" let-columns>
+       
+           
+           <tr>
+           
+            <th style="width:99%"> <h3>No existen teléfonos</h3>  </th>
+            <th></th>
+           </tr>
+         
+            
+            
+      
+        <div class="flex align-content-center flex-wrap" >
+           
+           
+        </div>
+        
+
+    </ng-template>
+   
         <ng-template pTemplate="header">
+            <tr>
+                <th style="width:70%">
+                    Añadir nuevo número de teléfono
+                    <span style="margin: 0 8px;"></span> 
+                    <input type="text" [placeholder]="'+99 999 999 999'" pInputText  [(ngModel)]="nuevoTelefono" id = "nuevoTelefono" (keyup.enter)="crearTelefono()" />
+                    <span style="margin: 0 8px;"></span> 
+                    <p-button label="Nuevo" (click)="crearTelefono()"></p-button>
+     
+                </th>
+                <th></th>
+                
+            </tr>
             <tr >
                 <th pSortableColumn="numero" style="width:60%">Número <p-sortIcon field="numero"></p-sortIcon></th>
                 <th style="width:40%">Opciones</th>
@@ -43,12 +68,9 @@
     </p-table>
 </div>
 
-</ng-template>
-<br>
-<p-button label="Ver clientes" [routerLink]= "'/clientes'" routerLinkActive="router-link-active"></p-button>
 
-<h2>Añadir teléfono</h2>
-<input type="text" [placeholder]="'999999999'" pInputText  [(ngModel)]="nuevoTelefono" id = "nuevoTelefono" (keyup.enter)="crearTelefono()" />
-<span style="margin: 0 8px;"></span> 
-<p-button label="Nuevo" (click)="crearTelefono()"></p-button>
- 
+<br>
+<!-- <p-button label="Ver clientes" [routerLink]= "'/clientes'" routerLinkActive="router-link-active"></p-button> -->
+
+
+

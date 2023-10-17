@@ -56,4 +56,7 @@ export class ClienteService {
       //especificar tipo de datos
     return this.http.put<any>('http://localhost:3000/clientes/', body, options);
   }
+  getCliente(id:String): Observable<Cliente>{
+    return this.http.get<Cliente>('http://localhost:3000/clientes/' + id);
+  }
 }
