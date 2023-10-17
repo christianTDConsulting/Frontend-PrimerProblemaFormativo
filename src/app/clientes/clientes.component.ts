@@ -65,7 +65,7 @@ export class ClientesComponent {
   }
  crearUsuario(){
   if (this.nuevoNombre != ''){
-    console.log(this.nuevoNombre)
+  
     this.clienteService.addCliente(this.nuevoNombre).subscribe(
       response =>{
         console.log(response);

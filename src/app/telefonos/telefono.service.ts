@@ -10,11 +10,12 @@ import { Cliente } from '../clientes/cliente';
 })
 export class TelefonoService {
 
+  url: string = 'http://localhost:3000/telefonos/';
   constructor(private http: HttpClient) { }
 
   getAllTelefonos(): Observable<Telefono[]>{
 
-    return this.http.get<Telefono[]>('http://localhost:3000/telefonos');
+    return this.http.get<Telefono[]>(this.url);
 
   }
   getTelefonosCliente(idCliente:string): Observable<Telefono[]>{
@@ -40,7 +41,7 @@ export class TelefonoService {
     };
 
 
-    return this.http.delete<any>('http://localhost:3000/telefonos/',options);
+    return this.http.delete<any>(this.url,options);
   }
   addTelefono(numero:string, id: number){
     const body = {
@@ -53,9 +54,11 @@ export class TelefonoService {
       'Content-Type': 'application/json',
     });
   
-    const options = { headers: headers };
+    const options = { 
+      headers: headers,
+    };
   
-    return this.http.post<any>('http://localhost:3000/telefonos/', body, options);
+    return this.http.post<any>(this.url, body, options);
   }
 }
 
