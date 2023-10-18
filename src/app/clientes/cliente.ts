@@ -1,4 +1,8 @@
 export interface Cliente {
-    id: number;
+    id?: number;
     nombre: string;
+    email: string,
+    bio: string,
+    nacimiento: Date
+
 }

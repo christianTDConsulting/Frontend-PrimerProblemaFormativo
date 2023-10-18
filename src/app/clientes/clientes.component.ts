@@ -5,7 +5,7 @@ import { Cliente } from './cliente';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { TelefonosComponent } from '../telefonos/telefonos.component';
-
+import { DataClienteComponent } from '../data-cliente/data-cliente.component';
 
 @Component({
   selector: 'app-clientes',
@@ -16,7 +16,6 @@ import { TelefonosComponent } from '../telefonos/telefonos.component';
 export class ClientesComponent {
 
   clientes: Cliente[] = [];
-  nuevoNombre = '';
   filtro ='';
   ref : DynamicDialogRef | undefined;
   displayDialog: boolean = false;
@@ -63,39 +62,11 @@ export class ClientesComponent {
     )
     
   }
- crearUsuario(){
-  if (this.nuevoNombre != ''){
-  
-    this.clienteService.addCliente(this.nuevoNombre).subscribe(
-      response =>{
-        console.log(response);
-        //refresh
-        this.getClientesList();
-        this.messageService.add({
-            severity: 'success',
-            summary: 'Operación exitosa',
-            detail: 'El usuario ha sido creado  correctamente.'
-        });
-      }, (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Operación fallada',
-          detail: 'El usuario no ha sido creado.'
-      });
-      }
-    )
-   } else{
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Atención',
-      detail: 'Escriba un nombre para añadir un usuario.'
-  });
-   }
-  }
-  editarClientes(id:string, nombre:string){
-    if (nombre != ''){
-      console.log(nombre)
-      this.clienteService.editCliente(id, nombre).subscribe(
+ 
+  editarNombre(cliente:Cliente){
+    if (cliente.nombre != ''){
+      console.log(cliente.nombre)
+      this.clienteService.editCliente(cliente).subscribe(
         response =>{
           console.log(response);
           //refresh
@@ -104,18 +75,44 @@ export class ClientesComponent {
           this.messageService.add({
             severity: 'success',
             summary: 'Operación exitosa',
-            detail: 'El usuario ha sido editado  correctamente.'
+            detail: 'El nombde de cliente ha sido editado  correctamente.'
         });
         }, (error) => {
           this.messageService.add({
             severity: 'error',
             summary: 'Operación fallada',
-            detail: 'El usuario no ha sido editado.'
+            detail: 'El nombre de cliente no ha sido editado.'
         });
         }
       )
      }
   }
+  editarEmail(cliente:Cliente){
+    if (cliente.email != ''){
+      console.log(cliente.email)
+      this.clienteService.editCliente(cliente).subscribe(
+        response =>{
+          console.log(response);
+          //refresh
+          this.getClientesList();
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Operación exitosa',
+            detail: 'El email ha sido editado  correctamente.'
+        });
+        }, (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Operación fallada',
+            detail: 'El email no ha sido editado.'
+        });
+        }
+      )
+     }
+  }
+
+ 
   
 
   show(id:string){
@@ -145,4 +142,40 @@ export class ClientesComponent {
     }
 }
 
+showCreation(){
+
+  this.ref = this.dialogService.open(DataClienteComponent, {
+        header: 'Crear nuevo cliente',
+        data: {
+          
+        },
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true
+      });
+      this.ref.onMaximize.subscribe((value) => {
+        this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
+    });
+    
+   
+}
+showEdition(id:string){
+  this.clienteService.getCliente(id).subscribe(
+    (cliente: Cliente) => {
+      this.ref = this.dialogService.open(DataClienteComponent, {
+        header: 'Datos de  ' + cliente.nombre,
+        data: {
+          id: id
+        },
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true
+      });
+      this.ref.onMaximize.subscribe((value) => {
+        this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
+    });
+    
+    });
+
+}
 }

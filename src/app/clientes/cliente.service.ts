@@ -32,8 +32,16 @@ export class ClienteService {
 
     return this.http.delete<any>(this.url,options);
   }
-  addCliente(nombre:string){
-    const body = { nombre: nombre };
+  addCliente(cliente: Cliente){
+    /*
+    const body = { 
+      
+       nombre: cliente.nombre, 
+       email: cliente.email,
+       bio: cliente.bio, 
+       nacimiento: cliente.nacimiento
+      };
+    */
 
     // Define las cabeceras de la solicitud, si es necesario
     const headers = new HttpHeaders({
@@ -45,12 +53,20 @@ export class ClienteService {
     };
     //especificar tipo de datos
     console.log(this.url);
-    return this.http.post<any>(this.url, body, options);
+    return this.http.post<any>(this.url, cliente, options);
   }
 
-  editCliente(id:string, nombre:string){
-    const body = { id: id, nombre: nombre };
+  editCliente(cliente:Cliente){
+    /*
 
+    const body = { 
+       id: cliente.id,
+       nombre: cliente.nombre, 
+       email: cliente.email,
+       bio: cliente.bio, 
+       nacimiento: cliente.nacimiento
+      };
+      */
     // Define las cabeceras de la solicitud, si es necesario
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -58,9 +74,10 @@ export class ClienteService {
   
     const options = { headers: headers };
       //especificar tipo de datos
-    return this.http.put<any>(this.url, body, options);
+    return this.http.put<any>(this.url, cliente, options);
   }
   getCliente(id:String): Observable<Cliente>{
     return this.http.get<Cliente>(this.url + id);
   }
+  
 }
