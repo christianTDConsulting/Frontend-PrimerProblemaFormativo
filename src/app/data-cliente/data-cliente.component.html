@@ -1,51 +1,69 @@
 <div class="p-grid">
     <div class="p-col">
-      <div class="box">
-        Nombre
-        <input type="text" [value]="cliente.nombre" pInputText  [(ngModel)]="cliente.nombre" [id]="'editarClienteNombre' + cliente.id">
-      
+      <div class="box mu-5 my-5">
+       
+        <span class="p-float-label">
+          <input type="text" [value]="cliente.nombre" pInputText  [(ngModel)]="cliente.nombre" [id]="'editarClienteNombre' + cliente.id">
+          <label>Nombre *</label>
+        </span>
         
       </div>
     </div>
     <div class="p-col">
-      <div class="box">
-        Email
-        <input type="text" [value]="cliente.email" pInputText  [(ngModel)]="cliente.email" [id]="'editarClienteEmail' + cliente.id">
+      <div class="box mb-5">
+        <span class="p-float-label">
+          <input type="text" [value]="cliente.email" pInputText  [(ngModel)]="cliente.email" [id]="'editarClienteEmail' + cliente.id">
+          <label >Email *</label>
+        </span>
       </div>
     </div>
     <div class="p-col">
-      Sobre ti
-      <div class="box">
+      <div class="box mb-3">
 
-        <div *ngIf="cliente.bio; else bioVacio">
-          <textarea id="float-input" rows="5" cols="30" pInputTextarea [(ngModel)]="cliente.bio"></textarea>
-        </div>
+        <span class="p-float-label">
+          <textarea id="float-input" rows="5" cols="30" pInputTextarea [(ngModel)]="cliente.bio" placeholder="" ></textarea>
+          <label >Biografía</label>
+        </span>
 
-        <ng-template #bioVacio>
-          <span class="p-float-label">
-            <textarea id="float-input" rows="5" cols="30" pInputTextarea [(ngModel)]="cliente.bio" placeholder="" ></textarea>
-            <label for="float-input">Biografía</label>
-          </span>
-        </ng-template>
 
       </div>
 
     </div>
     <div class="p-col">
       Fecha de nacimiento 
-      <div class="box">
+      <div class="box mb-5">
         
         <p-calendar class="max-w-full" [(ngModel)]="cliente.nacimiento" [inline]="true" [showWeek]="true"></p-calendar>
      
       </div>
     </div>
 
+   
+
     <div *ngIf="crear; else editar">
-      <p-button label="Crear" (click)="crearUsuario()"></p-button>
+      
+      <div class="p-col">
+        <div class="box mb-5">
+          <span class="p-float-label">
+            <input type="text" [value]="nuevoTelefono" pInputText  [(ngModel)]="nuevoTelefono" [id]="'nuevoTelefono'"/> 
+            <label >Añade un teléfono</label>
+          </span>
+        
+        </div>
+      </div>
+
+      <div>
+        <p-button label="Crear " (click)="crearUsuario()"></p-button>
+      </div>
+      
     </div>
     <ng-template #editar>
+      
       <div>
+
         <p-button label="Editar" (click)="editarUsuario()"></p-button>
       </div>
     </ng-template>
+
+    
   </div>

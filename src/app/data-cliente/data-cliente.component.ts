@@ -17,6 +17,7 @@ export class DataClienteComponent {
     bio:"",
     nacimiento: new Date(),
   }
+  nuevoTelefono="";
  
   crear:boolean = true;
   
@@ -53,7 +54,9 @@ export class DataClienteComponent {
   crearUsuario(){
     if (this.validarDatos()){
      
-
+      if (this.nuevoTelefono != ""){
+       //Terminar
+      }
       this.clienteService.addCliente(this.cliente).subscribe(
         response =>{
           console.log(response);
@@ -63,8 +66,8 @@ export class DataClienteComponent {
               summary: 'Operación exitosa',
               detail: 'El usuario ha sido creado  correctamente.'
           });
-
-          //this.dialogConfig.close();
+          //refresh
+          //cerrar pop up
         }, (error) => {
           this.messageService.add({
             severity: 'error',
@@ -90,7 +93,8 @@ export class DataClienteComponent {
             console.log(response);
         
             
-            //this.dialogConfig.close();
+            //refresh
+            //cerrar pop up
   
             this.messageService.add({
               severity: 'success',
