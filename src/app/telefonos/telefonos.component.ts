@@ -83,7 +83,8 @@ export class TelefonosComponent {
         this.messageService.add({
           severity: 'success',
           summary: 'Operación exitosa',
-          detail: 'El telefono ha sido borrado correctamente.'
+          detail: 'El telefono ha sido borrado correctamente.',
+          key:'tlf',
       });
        
       }, (error) => {
@@ -91,6 +92,7 @@ export class TelefonosComponent {
           severity: 'error',
           summary: 'Operación fallada',
           detail: 'El teléfono no ha sido borrado.' ,
+          key:'tlf',
       });
       }
      
@@ -112,7 +114,8 @@ export class TelefonosComponent {
           this.messageService.add({
             severity: 'success',
             summary: 'Operación exitosa',
-            detail: 'El número de telefono ha sido creado  correctamente.'
+            detail: 'El número de telefono ha sido creado  correctamente.',
+            key:'tlf',
         });
         }
         }, (error) => {
@@ -120,6 +123,7 @@ export class TelefonosComponent {
             severity: 'error',
             summary: 'Operación fallada',
             detail: 'El teléfono no ha sido creado.' ,
+            key:'tlf',
         });
         }
       )
@@ -127,7 +131,8 @@ export class TelefonosComponent {
       this.messageService.add({
         severity: 'info',
         summary: 'Atención',
-        detail: 'Escriba un número de telefono para añadirlo.'
+        detail: 'Escriba un número de telefono para añadirlo.',
+        key:'tlf',
     });
     }
    

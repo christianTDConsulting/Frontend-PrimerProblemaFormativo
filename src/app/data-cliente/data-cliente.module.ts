@@ -8,11 +8,14 @@ import { ButtonModule } from 'primeng/button';
 
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+
+import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
-import { ReactiveFormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
+
 @NgModule({
   declarations: [
     DataClienteComponent

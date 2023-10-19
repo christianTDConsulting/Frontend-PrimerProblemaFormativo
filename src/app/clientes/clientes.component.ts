@@ -82,7 +82,8 @@ export class ClientesComponent {
             severity: 'error',
             summary: 'Operación fallada',
             detail: 'El nombre de cliente no ha sido editado.'
-        });
+        })
+          console.log(error);
         }
       )
      }
@@ -107,6 +108,7 @@ export class ClientesComponent {
             summary: 'Operación fallada',
             detail: 'El email no ha sido editado.'
         });
+          console.log(error);
         }
       )
      }
@@ -152,12 +154,16 @@ showCreation(){
         contentStyle: { overflow: 'auto' },
         baseZIndex: 10000,
         maximizable: true
-      });
-      this.ref.onMaximize.subscribe((value) => {
-        this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
-    });
-    
-   
+  });
+
+  this.ref.onMaximize.subscribe((value) => {
+      this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
+  });
+
+  //refresh
+  this.ref.onClose.subscribe(() => {
+    this.getClientesList();
+  });  
 }
 showEdition(id:string){
   this.clienteService.getCliente(id).subscribe(
@@ -171,11 +177,18 @@ showEdition(id:string){
         baseZIndex: 10000,
         maximizable: true
       });
-      this.ref.onMaximize.subscribe((value) => {
-        this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
+
+    this.ref.onMaximize.subscribe((value) => {
+      this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
     });
     
+    this.ref.onClose.subscribe(() => {
+      this.getClientesList();
     });
+  });
+
+
 
 }
+
 }
