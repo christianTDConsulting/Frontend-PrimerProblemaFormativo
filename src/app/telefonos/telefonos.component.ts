@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+
 import { TelefonoService } from './telefono.service';
 import { Telefono } from './telefono';
 import { Cliente } from '../clientes/cliente';
@@ -12,17 +12,19 @@ import { MessageService } from 'primeng/api';
   styleUrls: ['./telefonos.component.scss']
 })
 export class TelefonosComponent {
-  test = "testas";
+
   telefonos: Telefono[] = [];
   cliente: Cliente = {
     id: 0, // Valor inicial para 'id'
     nombre: '', // Valor inicial para 'nombre'
+    email: '',
+    bio: '',
+    nacimiento: new Date()
   };
   nuevoTelefono="";
 
   constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
+   
     private telefonoService: TelefonoService,
     public dialogConfig : DynamicDialogConfig,
     public messageService : MessageService,
@@ -81,7 +83,8 @@ export class TelefonosComponent {
         this.messageService.add({
           severity: 'success',
           summary: 'Operación exitosa',
-          detail: 'El telefono ha sido borrado correctamente.'
+          detail: 'El telefono ha sido borrado correctamente.',
+          key:'tlf',
       });
        
       }, (error) => {
@@ -89,6 +92,7 @@ export class TelefonosComponent {
           severity: 'error',
           summary: 'Operación fallada',
           detail: 'El teléfono no ha sido borrado.' ,
+          key:'tlf',
       });
       }
      
@@ -97,8 +101,9 @@ export class TelefonosComponent {
    
   }
   crearTelefono( ){
-    if (this.nuevoTelefono != ''){
-      console.log(this.nuevoTelefono)
+    if (this.nuevoTelefono !== '' && this.cliente.id !== undefined){
+      
+      console.log(this.nuevoTelefono);
       this.telefonoService.addTelefono(this.nuevoTelefono,this.cliente.id).subscribe(
         response =>{
           console.log(response);
@@ -109,7 +114,8 @@ export class TelefonosComponent {
           this.messageService.add({
             severity: 'success',
             summary: 'Operación exitosa',
-            detail: 'El número de telefono ha sido creado  correctamente.'
+            detail: 'El número de telefono ha sido creado  correctamente.',
+            key:'tlf',
         });
         }
         }, (error) => {
@@ -117,6 +123,7 @@ export class TelefonosComponent {
             severity: 'error',
             summary: 'Operación fallada',
             detail: 'El teléfono no ha sido creado.' ,
+            key:'tlf',
         });
         }
       )
@@ -124,7 +131,8 @@ export class TelefonosComponent {
       this.messageService.add({
         severity: 'info',
         summary: 'Atención',
-        detail: 'Escriba un número de telefono para añadirlo.'
+        detail: 'Escriba un número de telefono para añadirlo.',
+        key:'tlf',
     });
     }
    

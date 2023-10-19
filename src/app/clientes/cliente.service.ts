@@ -9,11 +9,12 @@ import { Cliente } from './cliente';
 
 export class ClienteService {
 
+  url: string = 'http://localhost:3000/clientes/';
   constructor(private http: HttpClient) { }
 
 
   getClientes(): Observable<Cliente[]>{
-    return this.http.get<Cliente[]>('http://localhost:3000/clientes');
+    return this.http.get<Cliente[]>(this.url);
   }
   deleteCliente(id:string){
     const body = { id: id };
@@ -29,24 +30,43 @@ export class ClienteService {
     };
 
 
-    return this.http.delete<any>('http://localhost:3000/clientes/',options);
+    return this.http.delete<any>(this.url,options);
   }
-  addCliente(nombre:string){
-    const body = { nombre: nombre };
+  addCliente(cliente: Cliente){
+    /*
+    const body = { 
+      
+       nombre: cliente.nombre, 
+       email: cliente.email,
+       bio: cliente.bio, 
+       nacimiento: cliente.nacimiento
+      };
+    */
 
     // Define las cabeceras de la solicitud, si es necesario
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
   
-    const options = { headers: headers };
+    const options = { 
+      headers: headers, 
+    };
     //especificar tipo de datos
-    return this.http.post<any>('http://localhost:3000/clientes/', body, options);
+    console.log(this.url);
+    return this.http.post<any>(this.url, cliente, options);
   }
 
-  editCliente(id:string, nombre:string){
-    const body = { id: id, nombre: nombre };
+  editCliente(cliente:Cliente){
+    /*
 
+    const body = { 
+       id: cliente.id,
+       nombre: cliente.nombre, 
+       email: cliente.email,
+       bio: cliente.bio, 
+       nacimiento: cliente.nacimiento
+      };
+      */
     // Define las cabeceras de la solicitud, si es necesario
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -54,9 +74,10 @@ export class ClienteService {
   
     const options = { headers: headers };
       //especificar tipo de datos
-    return this.http.put<any>('http://localhost:3000/clientes/', body, options);
+    return this.http.put<any>(this.url, cliente, options);
   }
   getCliente(id:String): Observable<Cliente>{
-    return this.http.get<Cliente>('http://localhost:3000/clientes/' + id);
+    return this.http.get<Cliente>(this.url + id);
   }
+  
 }

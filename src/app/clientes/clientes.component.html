@@ -2,7 +2,7 @@
 <h1> Clientes</h1>
 
 
-
+<p-toast></p-toast>
 <div class ="card">
     <p-table 
     [value]="clientes"
@@ -13,7 +13,7 @@
     [rowsPerPageOptions]="[7, 14, 21]"
     [paginator]="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    [globalFilterFields]="['id', 'nombre']"
+    [globalFilterFields]="['id', 'nombre', 'email']"
     [tableStyle]="{ 'min-width': '75rem' }"
     
     >
@@ -41,11 +41,7 @@
             <th  style="width:40%">
                 Añadir nuevo usuario
                 <span style="margin: 0 8px;"></span> 
-                 <input type="text" [placeholder]="'John Doe'" pInputText  [(ngModel)]="nuevoNombre" id = "nuevoNombre" (keyup.enter)="crearUsuario()"/>
-              
-                 <span style="margin: 0 8px;"></span> 
-                 <p-toast></p-toast>
-                 <p-button label="Nuevo"  pRipple (click)="crearUsuario()" ></p-button>
+                 <p-button label="Nuevo"  pRipple (click)="showCreation()" ></p-button>
             </th>
             <th></th>
             <th></th>
@@ -53,8 +49,9 @@
             <tr>
                 <th pSortableColumn="id" style="width:25%">Id <p-sortIcon field="id"></p-sortIcon></th>
                 <th pSortableColumn="nombre" style="width:25%">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
-                <th style="width:25%">Teléfonos</th>
-                <th style="width:25%">Opciones</th>
+                <th pSortableColumn="nombre" style="width:25%">Email <p-sortIcon field="email"></p-sortIcon></th>
+                <th>Teléfonos</th>
+                <th>Opciones</th>
                
                 
             </tr>
@@ -66,6 +63,7 @@
                 <th>
                     <p-columnFilter type="text" field="nombre"></p-columnFilter>
                 </th>
+                <th><p-columnFilter type="text" field="email"></p-columnFilter></th>
                 <th></th>
                 <th></th>
             </tr>
@@ -75,12 +73,24 @@
                 <td>{{ clientes.id }}</td>
                
                 <td>
-                    <input type="text" [value]="clientes.nombre" pInputText (keyup.enter)="editarClientes(clientes.id, clientes.nombre)" style="border: none;" [(ngModel)]="clientes.nombre" [id]="'editarCliente' + clientes.id">
+                    <input type="text" [value]="clientes.nombre" pInputText (keyup.enter)="editarNombre(clientes)" style="border: none;" [(ngModel)]="clientes.nombre" [id]="'editarClienteNombre' + clientes.id">
+                </td>
+                <td>
+                    <input type="text" [value]="clientes.email" pInputText (keyup.enter)="editarEmail(clientes)" style="border: none;" [(ngModel)]="clientes.email" [id]="'editarClienteEmail' + clientes.id">
                 </td>
     
-                <!-- <td><p-button label="Ver Teléfonos" [routerLink]= "['/telefonos', clientes.id]" routerLinkActive="router-link-active"></p-button></td> -->
                 <td><p-button label="Ver Teléfonos" (click)="show(clientes.id)"></p-button></td>
-                <td><!--<p-button label="Editar" ></p-button> <span style="margin: 0 8px;"></span> --> <p-button label="Borrar" (onClick)="borrarUsuario(clientes.id)" ></p-button></td>
+                <td>
+                    <div class = "card">
+                        <div class=" flex align-items-center justify-content-center  m-2"> 
+                            <p-button label="Editar" (click)="showEdition(clientes.id)" ></p-button> 
+                        </div>
+                        <div class=" flex align-items-center justify-content-center  m-2"> 
+                            <p-button label="Borrar" (click)="borrarUsuario(clientes.id)" ></p-button> 
+                        </div>
+                    </div>
+                    
+                </td>
                 
     
             </tr>
