@@ -5,7 +5,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
+
+import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
 
@@ -21,7 +24,8 @@ import { ToastModule } from 'primeng/toast';
     RouterModule,
     FormsModule,
     DynamicDialogModule,
-    ToastModule
+    ToastModule,
+    ReactiveFormsModule
   ], 
   exports: [
     TelefonosComponent

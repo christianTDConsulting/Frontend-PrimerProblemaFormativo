@@ -6,7 +6,7 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import {DynamicDialogRef} from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { FormControl, FormGroup } from '@angular/forms';
-import {AbstractControl, ValidatorFn, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 
 
 @Component({

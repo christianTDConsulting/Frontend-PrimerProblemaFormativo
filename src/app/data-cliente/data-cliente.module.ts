@@ -11,7 +11,6 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { FormGroup, FormControl } from '@angular/forms';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
 import { CalendarModule } from 'primeng/calendar';
