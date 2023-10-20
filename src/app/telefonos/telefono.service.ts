@@ -27,8 +27,8 @@ export class TelefonoService {
   getCliente(idCliente:string):Observable <Cliente>{
     return this.http.get<Cliente>('http://localhost:3000/clientes/' + idCliente );
   }
-  deleteTelefono(numero:string){
-    const body = { numero: numero };
+  deleteTelefono(id:string){
+    const body = { id: id };
 
     // Define las cabeceras de la solicitud, si es necesario
     const headers = new HttpHeaders({

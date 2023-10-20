@@ -57,16 +57,7 @@ export class ClienteService {
   }
 
   editCliente(cliente:Cliente){
-    /*
-
-    const body = { 
-       id: cliente.id,
-       nombre: cliente.nombre, 
-       email: cliente.email,
-       bio: cliente.bio, 
-       nacimiento: cliente.nacimiento
-      };
-      */
+ 
     // Define las cabeceras de la solicitud, si es necesario
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

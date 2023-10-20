@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { TelefonoService } from './telefono.service';
 import { Telefono } from './telefono';
@@ -24,8 +24,7 @@ export class TelefonosComponent {
     nacimiento: new Date()
   };
 
-  editTelefono = "";
-  edit = false; // toast
+ 
 
   formTlf = new FormGroup({
     telefono: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{9}$")] )
@@ -57,7 +56,7 @@ export class TelefonosComponent {
       (response: Telefono[]) => {
         console.log(response);
         this.telefonos = response;
-        this.edit = false;
+       
       },
       (error) => {
         // Manejo de errores
@@ -80,8 +79,8 @@ export class TelefonosComponent {
     );
   }
 
-  borrarTelefono(numero: string){
-    this.telefonoService.deleteTelefono(numero).subscribe(
+  borrarTelefono(id: string){
+    this.telefonoService.deleteTelefono(id).subscribe(
       response => {
         console.log(response);
 
@@ -91,17 +90,15 @@ export class TelefonosComponent {
           this.getTelefonosList(ClienteId);
         }
 
-        if (!this.edit){
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Operación exitosa',
-            detail: 'El telefono ha sido borrado correctamente.',
-            key:'tlf',
-        });
-        }
-         
-        
-        
+      
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Operación exitosa',
+          detail: 'El telefono ha sido borrado correctamente.',
+          key:'tlf',
+      });
+      
+      
        
       }, (error) => {
         this.messageService.add({
@@ -127,7 +124,7 @@ export class TelefonosComponent {
           console.log(response);
             //refresh
         const ClienteId = this.getParam();
-        if  (ClienteId !== null && !this.edit ){
+        if  (ClienteId !== null  ){
           this.getTelefonosList(ClienteId);
           this.messageService.add({
             severity: 'success',
@@ -143,6 +140,7 @@ export class TelefonosComponent {
             detail: 'El teléfono no ha sido creado.' ,
             key:'tlf',
         });
+        console.log(error);
         }
       )
     }else{
@@ -155,41 +153,41 @@ export class TelefonosComponent {
     }
    
    }
+
    private isValidTelephone(numero: string): boolean {
     return /^[0-9]{9}$/.test(numero);
    }
-   updateEditTelefono(numero:string){
-    this.editTelefono = numero;
-    console.log(this.editTelefono);
-   }
 
-   //El telefono es mi id de la tabla, por lo tanto no se puede editar, se puede borrar y crear uno nuevo con el mismo id asociado
+ 
    editarTelefono(telefono: Telefono){
+    
     if (this.isValidTelephone(telefono.numero)){
-
-      this.edit = true;
             
-      this.borrarTelefono(this.editTelefono); 
-      
-      this.formTlf.patchValue({
-        telefono: telefono.numero,
-      })
-      this.crearTelefono();
-      
-   
-      
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Operación exitosa',
-        detail: 'teléfono  modificiado',
-        key:'tlf',
-    });
+      this.telefonoService.editTelefono(telefono).subscribe(
+        response =>{
+              console.log(response);
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Operación exitosa',
+                detail: 'Teléfono  editado  correctamente.',
+                key:'tlf',
+              });
+              
+        }, (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Operación fallada',
+            detail: 'El teléfono no ha sido editado.' ,
+            key:'tlf',
+        });
+        console.log(error);
+      });  
 
      }else{
        this.messageService.add({
          severity: 'info',
          summary: 'Atención',
-         detail: 'teléfono no modificiado: Asegurese de que el telefono es válido.',
+         detail: 'Teléfono no editado: Asegurese de que el telefono es válido.',
          key:'tlf',
      });
   }

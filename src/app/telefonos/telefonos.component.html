@@ -64,9 +64,9 @@
         <ng-template pTemplate="body" let-telefonos>
             <tr>
                 <td>
-                    <input type="text" pKeyFilter="int" [value]="telefonos.numero" pInputText (keyup.enter)="editarTelefono(telefonos)"  (click)="updateEditTelefono(telefonos.numero)" style="border: none;" [(ngModel)]="telefonos.numero" [id]="'editar' + telefonos.numero">
+                    <input type="text" pKeyFilter="int" [value]="telefonos.numero" pInputText (keyup.enter)="editarTelefono(telefonos)"   style="border: none;" [(ngModel)]="telefonos.numero" [id]="'editar' + telefonos.numero">
                 </td>
-              <td> <p-button label="Borrar" (onClick)="borrarTelefono(telefonos.numero)" severity="danger" ></p-button></td>
+              <td> <p-button label="Borrar" (onClick)="borrarTelefono(telefonos.id)" severity="danger" ></p-button></td>
     
             </tr>
         </ng-template>
