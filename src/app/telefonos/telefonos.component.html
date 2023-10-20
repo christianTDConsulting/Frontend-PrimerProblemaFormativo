@@ -39,7 +39,7 @@
                     <span style="margin: 0 8px;"></span> 
 
                     <form [formGroup]="formTlf">
-                        <input type="text" [placeholder]="'999 999 999'" pInputText  formControlName="telefono" id = "nuevoTelefono" (keyup.enter)="crearTelefono()" />
+                        <input type="text"  pKeyFilter="int " [placeholder]="'999 999 999'" pInputText  formControlName="telefono" id = "nuevoTelefono" (keyup.enter)="crearTelefono()" />
                         <span style="margin: 0 8px;"></span> 
                         <p-button label="Nuevo" (click)="crearTelefono()" severity="success"></p-button>    
                     </form>
@@ -63,7 +63,9 @@
         </ng-template>
         <ng-template pTemplate="body" let-telefonos>
             <tr>
-                <td>{{telefonos.numero}} </td>
+                <td>
+                    <input type="text" pKeyFilter="int" [value]="telefonos.numero" pInputText (keyup.enter)="editarTelefono(telefonos)"  (click)="updateEditTelefono(telefonos.numero)" style="border: none;" [(ngModel)]="telefonos.numero" [id]="'editar' + telefonos.numero">
+                </td>
               <td> <p-button label="Borrar" (onClick)="borrarTelefono(telefonos.numero)" severity="danger" ></p-button></td>
     
             </tr>

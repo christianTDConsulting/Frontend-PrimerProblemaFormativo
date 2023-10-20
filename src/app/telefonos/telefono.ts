@@ -1,4 +1,4 @@
 export interface Telefono {
-    numero: String;
+    numero: string;
     id_cliente: number;
 }
