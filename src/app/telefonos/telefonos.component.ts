@@ -24,6 +24,9 @@ export class TelefonosComponent {
     nacimiento: new Date()
   };
 
+  editTelefono = "";
+  edit = false; // toast
+
   formTlf = new FormGroup({
     telefono: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{9}$")] )
   })
@@ -54,11 +57,13 @@ export class TelefonosComponent {
       (response: Telefono[]) => {
         console.log(response);
         this.telefonos = response;
+        this.edit = false;
       },
       (error) => {
         // Manejo de errores
         console.error('Error al obtener la lista de teléfonos:', error);
       }
+      
     );
   }
 
@@ -86,12 +91,17 @@ export class TelefonosComponent {
           this.getTelefonosList(ClienteId);
         }
 
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Operación exitosa',
-          detail: 'El telefono ha sido borrado correctamente.',
-          key:'tlf',
-      });
+        if (!this.edit){
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Operación exitosa',
+            detail: 'El telefono ha sido borrado correctamente.',
+            key:'tlf',
+        });
+        }
+         
+        
+        
        
       }, (error) => {
         this.messageService.add({
@@ -100,6 +110,7 @@ export class TelefonosComponent {
           detail: 'El teléfono no ha sido borrado.' ,
           key:'tlf',
       });
+      console.log(error);
       }
      
        
@@ -110,12 +121,13 @@ export class TelefonosComponent {
     if (this.formTlf.valid && this.cliente.id !== undefined){
       const nuevoTelefono = this.formTlf.value.telefono as string
       console.log(nuevoTelefono);
+
       this.telefonoService.addTelefono(nuevoTelefono,this.cliente.id).subscribe(
         response =>{
           console.log(response);
             //refresh
         const ClienteId = this.getParam();
-        if  (ClienteId !== null){
+        if  (ClienteId !== null && !this.edit ){
           this.getTelefonosList(ClienteId);
           this.messageService.add({
             severity: 'success',
@@ -143,5 +155,45 @@ export class TelefonosComponent {
     }
    
    }
+   private isValidTelephone(numero: string): boolean {
+    return /^[0-9]{9}$/.test(numero);
+   }
+   updateEditTelefono(numero:string){
+    this.editTelefono = numero;
+    console.log(this.editTelefono);
+   }
+
+   //El telefono es mi id de la tabla, por lo tanto no se puede editar, se puede borrar y crear uno nuevo con el mismo id asociado
+   editarTelefono(telefono: Telefono){
+    if (this.isValidTelephone(telefono.numero)){
+
+      this.edit = true;
+            
+      this.borrarTelefono(this.editTelefono); 
+      
+      this.formTlf.patchValue({
+        telefono: telefono.numero,
+      })
+      this.crearTelefono();
+      
+   
+      
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Operación exitosa',
+        detail: 'teléfono  modificiado',
+        key:'tlf',
+    });
+
+     }else{
+       this.messageService.add({
+         severity: 'info',
+         summary: 'Atención',
+         detail: 'teléfono no modificiado: Asegurese de que el telefono es válido.',
+         key:'tlf',
+     });
+  }
+   }
+
   
 }

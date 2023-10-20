@@ -12,7 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TelefonosModule } from '../telefonos/telefonos.module';
 import { DataClienteModule } from '../data-cliente/data-cliente.module';
 import { ToastModule } from 'primeng/toast';
-import { ReactiveFormsModule } from '@angular/forms';
+
 
 
 @NgModule({
@@ -32,7 +32,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     TelefonosModule,
     ToastModule,
     DataClienteModule,
-    ReactiveFormsModule
+ 
     ],
   exports: [
     ClientesComponent

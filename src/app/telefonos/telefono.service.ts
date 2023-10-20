@@ -60,5 +60,16 @@ export class TelefonoService {
   
     return this.http.post<any>(this.url, body, options);
   }
+  editTelefono(telefono:Telefono){
+      
+    // Define las cabeceras de la solicitud, si es necesario
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+  
+    const options = { headers: headers };
+      //especificar tipo de datos
+    return this.http.put<any>(this.url, telefono, options);
+  }
 }
 

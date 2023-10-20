@@ -30,6 +30,7 @@ export class DataClienteComponent {
   profileForm: FormGroup = new FormGroup({
     nombre: new FormControl('', [Validators.required, Validators.maxLength(50)]),
     email: new FormControl('', [Validators.required, Validators.email]),
+    //email : new FormControl('', [Validators.required, Validators.pattern("^[^\s@]+@[^\s@]+\.[^\s@]+$")]),
     bio: new FormControl('',[ Validators.maxLength(200)] ),
     nacimiento: new FormControl(new Date("2000-01-01T00:00:00Z"), Validators.required),
     telefono: new FormControl('',[ Validators.pattern("^[0-9]{9}$")] )
@@ -178,7 +179,7 @@ export class DataClienteComponent {
             this.messageService.add({
               severity: 'success',
               summary: 'Operación exitosa',
-              detail: 'El nombde de cliente ha sido editado  correctamente.',
+              detail: 'El cliente ha sido editado  correctamente.',
            
           });
           this.ref.close(); //close pop up
@@ -186,7 +187,7 @@ export class DataClienteComponent {
             this.messageService.add({
               severity: 'error',
               summary: 'Operación fallada',
-              detail: 'El nombre de cliente no ha sido editado.',
+              detail: 'El cliente no ha sido editado.',
               key: 'data',
           });
           }
