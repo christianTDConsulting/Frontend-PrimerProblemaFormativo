@@ -6,7 +6,8 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { TelefonosComponent } from '../telefonos/telefonos.component';
 import { DataClienteComponent } from '../data-cliente/data-cliente.component';
-
+import { FormControl, FormGroup } from '@angular/forms';
+import { Validators } from '@angular/forms';
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
@@ -16,12 +17,12 @@ import { DataClienteComponent } from '../data-cliente/data-cliente.component';
 export class ClientesComponent {
 
   clientes: Cliente[] = [];
-  filtro ='';
   ref : DynamicDialogRef | undefined;
   displayDialog: boolean = false;
 
+  
+
   constructor(
-    private router: Router,
     private clienteService: ClienteService,
     public dialogService: DialogService,  
     public messageService : MessageService,
@@ -53,6 +54,7 @@ export class ClientesComponent {
           detail: 'El usuario ha sido borrado correctamente.'
       });
       }, (error) => {
+        console.log(error);
         this.messageService.add({
           severity: 'error',
           summary: 'Operación fallada',
@@ -88,8 +90,12 @@ export class ClientesComponent {
       )
      }
   }
+
+  private isValidEmail(email: string): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
   editarEmail(cliente:Cliente){
-    if (cliente.email != ''){
+    if (this.isValidEmail(cliente.email)){
       console.log(cliente.email)
       this.clienteService.editCliente(cliente).subscribe(
         response =>{
@@ -111,8 +117,15 @@ export class ClientesComponent {
           console.log(error);
         }
       )
-     }
+     }else{
+       this.messageService.add({
+         severity: 'info',
+         summary: 'Atención',
+         detail: 'Asegurese de que el correo es válido.',
+         
+     });
   }
+}
 
  
   
@@ -190,5 +203,6 @@ showEdition(id:string){
 
 
 }
+
 
 }

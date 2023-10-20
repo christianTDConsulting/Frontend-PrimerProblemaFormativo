@@ -5,6 +5,8 @@ import { Telefono } from './telefono';
 import { Cliente } from '../clientes/cliente';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-telefonos',
@@ -21,7 +23,11 @@ export class TelefonosComponent {
     bio: '',
     nacimiento: new Date()
   };
-  nuevoTelefono="";
+
+  formTlf = new FormGroup({
+    telefono: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{9}$")] )
+  })
+
 
   constructor(
    
@@ -101,10 +107,10 @@ export class TelefonosComponent {
    
   }
   crearTelefono( ){
-    if (this.nuevoTelefono !== '' && this.cliente.id !== undefined){
-      
-      console.log(this.nuevoTelefono);
-      this.telefonoService.addTelefono(this.nuevoTelefono,this.cliente.id).subscribe(
+    if (this.formTlf.valid && this.cliente.id !== undefined){
+      const nuevoTelefono = this.formTlf.value.telefono as string
+      console.log(nuevoTelefono);
+      this.telefonoService.addTelefono(nuevoTelefono,this.cliente.id).subscribe(
         response =>{
           console.log(response);
             //refresh
@@ -131,7 +137,7 @@ export class TelefonosComponent {
       this.messageService.add({
         severity: 'info',
         summary: 'Atención',
-        detail: 'Escriba un número de telefono para añadirlo.',
+        detail: 'Escriba un número de teléfono válido: 9 dígitos sin espacios.', 
         key:'tlf',
     });
     }
