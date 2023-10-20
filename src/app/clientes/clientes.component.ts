@@ -6,8 +6,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { TelefonosComponent } from '../telefonos/telefonos.component';
 import { DataClienteComponent } from '../data-cliente/data-cliente.component';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Validators } from '@angular/forms';
+
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
@@ -77,7 +76,7 @@ export class ClientesComponent {
           this.messageService.add({
             severity: 'success',
             summary: 'Operación exitosa',
-            detail: 'El nombde de cliente ha sido editado  correctamente.'
+            detail: 'El nombre de cliente ha sido editado  correctamente.'
         });
         }, (error) => {
           this.messageService.add({
@@ -121,7 +120,7 @@ export class ClientesComponent {
        this.messageService.add({
          severity: 'info',
          summary: 'Atención',
-         detail: 'Asegurese de que el correo es válido.',
+         detail: 'Email no modificiado: Asegurese de que el correo es válido.',
          
      });
   }

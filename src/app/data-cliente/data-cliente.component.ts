@@ -178,7 +178,7 @@ export class DataClienteComponent {
             this.messageService.add({
               severity: 'success',
               summary: 'Operación exitosa',
-              detail: 'El nombde de cliente ha sido editado  correctamente.',
+              detail: 'El cliente ha sido editado  correctamente.',
            
           });
           this.ref.close(); //close pop up
@@ -186,7 +186,7 @@ export class DataClienteComponent {
             this.messageService.add({
               severity: 'error',
               summary: 'Operación fallada',
-              detail: 'El nombre de cliente no ha sido editado.',
+              detail: 'El cliente no ha sido editado.',
               key: 'data',
           });
           }
