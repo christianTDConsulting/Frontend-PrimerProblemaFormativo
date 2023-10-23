@@ -19,6 +19,7 @@
            
             <th style="width:99%"> <h3>No existen teléfonos</h3>  </th>
             <th></th>
+            <th></th>
            </tr>
          
             
@@ -34,7 +35,7 @@
    
         <ng-template pTemplate="header">
             <tr>
-                <th style="width:70%">
+                <th style="width:100%">
                     Añadir nuevo número de teléfono
                     <span style="margin: 0 8px;"></span> 
 
@@ -46,29 +47,58 @@
                    
                 </th>
                 <th></th>
+                <th></th>
+            
+       
                 
             </tr>
             <tr >
-                <th pSortableColumn="numero" style="width:60%">Número <p-sortIcon field="numero"></p-sortIcon></th>
-                <th style="width:40%">Opciones</th>
+                <th pSortableColumn="numero" >Número <p-sortIcon field="numero"></p-sortIcon></th>                
+                <th >Opciones</th>
                 
     
             </tr>
             <tr>
+               
                 <th>
                     <p-columnFilter type="text" field="numero"></p-columnFilter>
                 </th>
+                
                 <th></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-telefonos>
             <tr>
-                <td>
-                    <input type="text" pKeyFilter="int" [value]="telefonos.numero" pInputText (keyup.enter)="editarTelefono(telefonos)"   style="border: none;" [(ngModel)]="telefonos.numero" [id]="'editar' + telefonos.numero">
-                </td>
-              <td> <p-button label="Borrar" (onClick)="borrarTelefono(telefonos.id)" severity="danger" ></p-button></td>
     
+                  
+              
+                <td>
+                    <p-accordion >
+                        <p-accordionTab header="{{telefonos.numero}}" >
+                           
+                           
+                            <p>
+                                
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </p>
+                        </p-accordionTab>
+                    </p-accordion>
+                </td>
+               <!-- <td> </td>
+                
+               -->
+              <td> <p-button label="Borrar" (click)="borrarTelefono(telefonos.id)" severity="danger" ></p-button>
+                    <br>
+                    <br>
+                    <p-overlayPanel #op>
+                        <input type="text" pKeyFilter="int" [value]="telefonos.numero" pInputText (keyup.enter)="editarTelefono(telefonos)"   style="border: none;" [(ngModel)]="telefonos.numero" [id]="'editar' + telefonos.numero">
+                    </p-overlayPanel>
+                    <p-button label="Editar" (click)="op.toggle($event)" severity="success" ></p-button>
+            </td>
+               
             </tr>
+           
         </ng-template>
     
     </p-table>

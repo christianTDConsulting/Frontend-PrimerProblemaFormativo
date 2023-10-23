@@ -8,9 +8,11 @@ import { RouterModule } from '@angular/router';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-
+import { AccordionModule } from 'primeng/accordion';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
+import { ChartModule } from 'primeng/chart';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,10 @@ import { ToastModule } from 'primeng/toast';
     FormsModule,
     DynamicDialogModule,
     ToastModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AccordionModule,
+    ChartModule,
+    OverlayPanelModule
   ], 
   exports: [
     TelefonosComponent
