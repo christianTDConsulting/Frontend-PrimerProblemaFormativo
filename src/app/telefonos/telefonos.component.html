@@ -2,17 +2,18 @@
 <div class ="card">
     <p-table 
     [value]="telefonos"
+    
     #dt2
     dataKey="id"
     [rows]="7"
     [showCurrentPageReport]="true"
     [rowsPerPageOptions]="[7, 14, 21]"
-    [paginator]="true"
+    
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
     [globalFilterFields]="['numero']"
     [tableStyle]="{ 'min-width': '75rem' }"
     >
-    <ng-template pTemplate="emptymessage" let-columns>
+    <ng-template pTemplate="emptymessage" let-columns >
        
            
            <tr>
@@ -67,27 +68,34 @@
                 <th></th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-telefonos>
-            <tr>
-    
-                  
-              
+        <ng-template pTemplate="body" let-telefonos let-i="rowIndex">
+            <tr> 
                 <td>
-                    <p-accordion >
+                   
+                    <p-accordion (onOpen)="getData(telefonos, i)" >
+                       
                         <p-accordionTab header="{{telefonos.numero}}" >
+                            <p-toggleButton [(ngModel)]="checkedConsumo[i]" onLabel="Tabla" offLabel="Gráfica"></p-toggleButton>
+                            <div *ngIf="emptychart[i]; else mostrarConsumos">
+                                <h3>No hay consumos apuntados</h3>
+                            </div>
+                        
+                        <ng-template #mostrarConsumos>
+
+                            <p-progressSpinner *ngIf="loading" [style]="{ width: '50px', height: '50px' }"></p-progressSpinner>
                            
-                           
-                            <p>
-                                
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                            </p>
+
+                            <div style="display: block">
+                                <p-chart type="line" [data]="chartData[i]" [options]="chartOptions" ></p-chart>
+                                <p-chart type="bar" [data]="chartDataPromedioMaxMin[i]" [options]="chartOptionsPromedioMaxMin"></p-chart>
+                            </div>
+                        </ng-template>       
+                        
+                            
                         </p-accordionTab>
                     </p-accordion>
                 </td>
-               <!-- <td> </td>
-                
-               -->
+              
               <td> <p-button label="Borrar" (click)="borrarTelefono(telefonos.id)" severity="danger" ></p-button>
                     <br>
                     <br>
@@ -97,7 +105,7 @@
                     <p-button label="Editar" (click)="op.toggle($event)" severity="success" ></p-button>
             </td>
                
-            </tr>
+        </tr>
            
         </ng-template>
     

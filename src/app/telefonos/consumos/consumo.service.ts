@@ -15,9 +15,9 @@ export class ConsumoService {
     return this.http.get<Consumo[]>(this.url);
   }
   getConsumosTelefono(id_telefono:string): Observable<Consumo[]>{
-    return this.http.get<Consumo[]>(this.url +'telefonos'+ id_telefono);
+    return this.http.get<Consumo[]>(this.url +'telefonos/'+ id_telefono);
   }
   getConsumosCliente(id_cliente:string): Observable<Consumo[]>{
-    return this.http.get<Consumo[]>(this.url +'clientes'+ id_cliente);
+    return this.http.get<Consumo[]>(this.url +'clientes/'+ id_cliente);
   }
 }

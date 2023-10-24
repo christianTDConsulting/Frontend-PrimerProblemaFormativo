@@ -8,9 +8,15 @@ import { RouterModule } from '@angular/router';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { AccordionModule } from 'primeng/accordion';
+
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
+
+
+
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { AccordionModule } from 'primeng/accordion';
 import { ChartModule } from 'primeng/chart';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 
@@ -28,9 +34,12 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     DynamicDialogModule,
     ToastModule,
     ReactiveFormsModule,
+    ProgressSpinnerModule,
+    ToggleButtonModule,
     AccordionModule,
     ChartModule,
     OverlayPanelModule
+    
   ], 
   exports: [
     TelefonosComponent

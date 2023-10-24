@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+
 import { TelefonoService } from './telefono.service';
 import { Telefono } from './telefono';
 import { Cliente } from '../clientes/cliente';
@@ -7,15 +8,87 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
-
+import {Consumo} from './consumos/consumo';
+import { ConsumoService } from './consumos/consumo.service';
+import { format
+ } from 'date-fns';
 @Component({
   selector: 'app-telefonos',
   templateUrl: './telefonos.component.html',
   styleUrls: ['./telefonos.component.scss']
 })
+
 export class TelefonosComponent {
+  
+
+
 
   telefonos: Telefono[] = [];
+
+  //Consumos y chart
+  loading = false;
+  checkedConsumo: boolean[] = [];
+  emptychart: boolean[] = [];
+  consumosPorTelefono: Consumo[] = [];
+  chartData = [{}];
+  chartDataPromedioMaxMin = [{}];
+
+  chartOptions = {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Histórico',
+        align: 'center',
+        
+        font: {
+          size: 24,
+          weight: 'bold'
+        },
+        padding: {
+          top: 10,
+          bottom: 10
+      }
+
+     }
+    }
+};
+  chartOptionsPromedioMaxMin = {
+    plugins: {
+      title: {
+        
+        display: true,
+        text: 'Promedio',
+        align: 'center',
+        
+        font: {
+          size: 24,
+          weight: 'bold'
+        },
+        padding: {
+          top: 10,
+          bottom: 10
+        }
+
+     },
+
+    legend: {
+      display: false, // Establece display en false para ocultar el legend
+    },
+  },
+  tooltips: {
+    callbacks: {
+      label: function (tooltipItem:any) {
+        return tooltipItem.yLabel;
+      },
+    },
+  },
+
+    
+};
+ 
+
+ 
+
   cliente: Cliente = {
     id: 0, // Valor inicial para 'id'
     nombre: '', // Valor inicial para 'nombre'
@@ -25,15 +98,17 @@ export class TelefonosComponent {
   };
 
  
-
+  //Validator tld
   formTlf = new FormGroup({
     telefono: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{9}$")] )
   })
 
+  
 
   constructor(
    
     private telefonoService: TelefonoService,
+    private consumoService: ConsumoService,
     public dialogConfig : DynamicDialogConfig,
     public messageService : MessageService,
   ) {}
@@ -43,6 +118,7 @@ export class TelefonosComponent {
     if (clienteId !== null) {
       this.getCliente(clienteId);
       this.getTelefonosList(clienteId);
+      
     }
     
   }
@@ -56,7 +132,7 @@ export class TelefonosComponent {
       (response: Telefono[]) => {
         console.log(response);
         this.telefonos = response;
-       
+        
       },
       (error) => {
         // Manejo de errores
@@ -66,6 +142,8 @@ export class TelefonosComponent {
     );
   }
 
+
+ 
   getCliente(id: string) {
     this.telefonoService.getCliente(id).subscribe(
       (response: Cliente) => {
@@ -192,6 +270,78 @@ export class TelefonosComponent {
      });
   }
    }
+
+   getData(telefono: Telefono, indice: number) {
+    //carga datos, en caso de que sean muchos
+   this.loading = true;
+
+    this.consumoService.getConsumosTelefono(telefono.id).subscribe(
+      (response) => {
+        if (response.length === 0){ // vacío, no hay chart
+          this.emptychart.splice(indice,1,true);
+          this.chartData.splice(indice, 1,[]);
+          this.chartDataPromedioMaxMin.splice(indice, 1, []);
+
+        }else{  //hay chart ya que hay consumos
+          this.emptychart.splice(indice,1,false); 
+          // Formatear las fechas y especificar los labels
+          const formattedDates = response.map((consumo) => {
+            return format(new Date(consumo.fecha), 'MMMM - yyyy',);
+          });
+
+          //genermoas un color random
+
+          const backgroundColor = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.2)`;
+          const borderColor = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 1)`;
+
+
+          //data set de consumos
+          const dataset = {
+            labels: formattedDates,
+            datasets: [
+              {
+                
+                label: 'Consumos',
+                data: response.map((consumo: Consumo) => consumo.consumo),
+                borderColor: borderColor,
+                borderWidth: 1,
+               
+              }
+            ],
+          
+          } 
+          
+          //media, máximo y mínimo  
+          const mediaValue = response.reduce((acc, consumo) => acc + consumo.consumo, 0) / response.length;
+          const maxValue = Math.max(...response.map((consumo) => consumo.consumo));
+          const minValue = Math.min(...response.map((consumo) => consumo.consumo));
+
+          //data set de valores estadístico
+          const dataset2 = {
+            labels: ["Media", "Máximo", "Mínimo"],
+            datasets: [
+              {
+                
+                data: [mediaValue, maxValue, minValue],
+                backgroundColor: backgroundColor,
+                borderColor: borderColor,
+                borderWidth: 1,
+              },
+          
+            ],
+            
+          };
+          
+          this.chartData.splice(indice, 1, dataset);
+          console.log(mediaValue, maxValue, minValue);
+          this.chartDataPromedioMaxMin.splice(indice, 1, dataset2);
+        }
+        
+        this.loading = false;
+       
+    });
+   
+}
 
   
 }
