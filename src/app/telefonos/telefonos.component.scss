@@ -2,3 +2,7 @@
 .centered-header {
     text-align: center; /* Establece la alineación del texto al centro */
 }
+.calendar-overlay {
+    position: absolute;
+    z-index: 9999; /* Un valor alto para asegurarse de que esté por encima del panel */
+}

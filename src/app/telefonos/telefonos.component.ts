@@ -26,6 +26,11 @@ export class TelefonosComponent {
   telefonos: Telefono[] = [];
 
   //Consumos y chart
+  consumoForm: FormGroup = new FormGroup({
+    fecha: new FormControl('', [Validators.required]),
+    consumo: new FormControl('', [Validators.required]),
+    
+  })
   loading = false;
   checkedConsumo: boolean[] = [];
   emptychart: boolean[] = [];
@@ -271,6 +276,9 @@ export class TelefonosComponent {
   }
    }
 
+/*
+---------------------------------CONSUMOS--------------------------------
+*/
    getData(telefono: Telefono, indice: number) {
     //carga datos, en caso de que sean muchos
    this.loading = true;
@@ -342,6 +350,18 @@ export class TelefonosComponent {
     });
    
 }
-
+crearConsumo(id: string) {
+  /*
+  this.consumoService.createConsumo(id).subscribe(
+    (response: Consumo) => {
+      console.log(response);
+      this.getData(this.telefono, this.telefonos.length - 1);
+    },
+    (error) => {
+      // Manejo de errores
+      console.error('Error al crear el consumo:', error);
   
+}
+*/
+}
 }

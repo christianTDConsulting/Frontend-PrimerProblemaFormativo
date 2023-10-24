@@ -19,6 +19,10 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { AccordionModule } from 'primeng/accordion';
 import { ChartModule } from 'primeng/chart';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { CardModule } from 'primeng/card';
+
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
   declarations: [
@@ -38,7 +42,10 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     ToggleButtonModule,
     AccordionModule,
     ChartModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    CardModule,
+    InputNumberModule,
+    CalendarModule
     
   ], 
   exports: [
