@@ -61,4 +61,8 @@ export class ConsumoService {
 
     return this.http.delete<any>(this.url,options);
   }
+
+  getConsumoById(id:number){
+    return this.http.get<Consumo>(this.url + id);
+  }
 }

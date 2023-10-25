@@ -9,8 +9,8 @@ import { Validators } from '@angular/forms';
 import { Consumo } from './consumos/consumo';
 import { ConsumoService } from './consumos/consumo.service';
 import { format } from 'date-fns';
-//import { takeUntil } from 'rxjs/operators';
-//import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-telefonos',
@@ -24,7 +24,7 @@ export class TelefonosComponent {
   //////////////////////////////////////////////////////////////
 
   telefonos: Telefono[] = [];
-  //private destroy$: Subject<void> = new Subject<void>();
+  private destroy$: Subject<void> = new Subject<void>();
   /*
   this.miObservable.pipe(takeUntil(this.destroy$)).subscribe(
     // Manejar respuesta exitosa o error
@@ -129,7 +129,7 @@ export class TelefonosComponent {
   }
 
   getTelefonosList(id: number) {
-    this.telefonoService.getTelefonosCliente(id).subscribe(
+    this.telefonoService.getTelefonosCliente(id).pipe(takeUntil(this.destroy$)).subscribe(
       (response: Telefono[]) => {
         console.log(response);
         this.telefonos = response;
@@ -153,7 +153,7 @@ export class TelefonosComponent {
   }
 
   borrarTelefono(id: number) {
-    this.telefonoService.deleteTelefono(id).subscribe(
+    this.telefonoService.deleteTelefono(id).pipe(takeUntil(this.destroy$)).subscribe(
       response => {
         console.log(response);
         const ClienteId = this.getParam()
@@ -186,7 +186,7 @@ export class TelefonosComponent {
       console.log(nuevoTelefono);
     
 
-      this.telefonoService.addTelefono(nuevoTelefono, this.cliente.id).subscribe(
+      this.telefonoService.addTelefono(nuevoTelefono, this.cliente.id).pipe(takeUntil(this.destroy$)).subscribe(
         response => {
           console.log(response);
           const ClienteId = this.getParam();
@@ -226,7 +226,7 @@ export class TelefonosComponent {
 
   editarTelefono(telefono: Telefono) {
     if (this.isValidTelephone(telefono.numero)) {
-      this.telefonoService.editTelefono(telefono).subscribe(
+      this.telefonoService.editTelefono(telefono).pipe(takeUntil(this.destroy$)).subscribe(
         response => {
           console.log(response);
           this.messageService.add({
@@ -262,7 +262,7 @@ export class TelefonosComponent {
   getData(telefono: Telefono, indice: number) {
     this.loading = true;
     if (telefono.id != null) {
-      this.consumoService.getConsumosTelefono(telefono.id).subscribe(
+      this.consumoService.getConsumosTelefono(telefono.id).pipe(takeUntil(this.destroy$)).subscribe(
         (response) => {
           if (response.length === 0) {
             this.emptychart.splice(indice, 1, true); //Vacio
@@ -346,7 +346,7 @@ export class TelefonosComponent {
         id_telefono: telefono.id,
       }
       
-      this.consumoService.createConsumo(nuevoConsumo).subscribe(
+      this.consumoService.createConsumo(nuevoConsumo).pipe(takeUntil(this.destroy$)).subscribe(
         (response) => {
           console.log(response);
           this.messageService.add({
@@ -381,32 +381,44 @@ export class TelefonosComponent {
   }
 
   editarConsumo(consumo: Consumo, telefono: Telefono, index: number) {
-    consumo.fecha = this.dateIsUTC(consumo.fecha);
-    this.consumoService.editConsumo(consumo).subscribe(
+    
+    //Si se ha modificado la fecha, se convierte a UTC ya que el componente devuelve la hora del navegador
+    this.consumoService.getConsumoById(consumo.id!).pipe(takeUntil(this.destroy$)).subscribe(
       response => {
-        console.log(response);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Operación exitosa',
-          detail: 'Consumo editado correctamente.',
-          key: 'tlf',
-        });
-       this.getData(telefono, index);
-      },
-      (error) =>  {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Operación fallada',
-          detail: 'El consumo no ha sido editado.',
-          key: 'tlf',
-        });
-        console.log(error);
+        if (response.fecha !== consumo.fecha) {
+          consumo.fecha = this.dateIsUTC(consumo.fecha);
+        }
+        //Se edita el consumo y toast
+        this.consumoService.editConsumo(consumo).pipe(takeUntil(this.destroy$)).subscribe(
+          response => {
+            console.log(response);
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Operación exitosa',
+              detail: 'Consumo editado correctamente.',
+              key: 'tlf',
+            });
+           this.getData(telefono, index);
+          },
+          (error) =>  {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Operación fallada',
+              detail: 'El consumo no ha sido editado.',
+              key: 'tlf',
+            });
+            console.log(error);
+          }
+        )
       }
-    )
+    );
+    
+    
+    
   }
 
   eliminarConsumo(id:number, telefono: Telefono, index:number){
-    this.consumoService.deleteConsumo(id).subscribe(
+    this.consumoService.deleteConsumo(id).pipe(takeUntil(this.destroy$)).subscribe(
       response => {
         console.log(response);
         this.messageService.add({
