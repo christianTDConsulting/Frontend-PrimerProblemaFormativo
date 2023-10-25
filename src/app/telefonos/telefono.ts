@@ -1,5 +1,5 @@
 export interface Telefono {
-    id: string,
+    id: number,
     numero: string;
     id_cliente: number;
 }

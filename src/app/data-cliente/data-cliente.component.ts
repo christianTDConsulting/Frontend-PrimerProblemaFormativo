@@ -68,22 +68,19 @@ export class DataClienteComponent {
   private getParam(){
     return this.dialogConfig.data.id;
   }
-   //Tue Jan 11 2000 00:00:00 GMT+0100 
-   //"2000-01-01T00:00:00Z"
-
+   
+   //El componente de calendario de primeNG, devuelve la hora del navegador en este caso Europa, por lo tanto, hago esta función para cambiar a GMT que es la fecha de la bbdd
   private dateIsUTC (fecha:Date) {
     // Verifica si la fecha tiene una zona horaria GMT
     if (fecha.toTimeString().includes('Z')) {
       // La fecha ya tiene una zona horaria GMT, no es necesario hacer nada
       return fecha;
-    } else {
-      
+    } else  {
 
-      fecha.setHours(fecha.getHours() + 2);
+      const utcDate = new Date(fecha);
+      utcDate.setMinutes(utcDate.getMinutes() - fecha.getTimezoneOffset());
       
-      return fecha;
-    
-    
+      return utcDate;
     }
   }
 
