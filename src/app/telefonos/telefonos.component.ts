@@ -300,6 +300,7 @@ export class TelefonosComponent {
               const maxValue = Math.max(...response.map((consumo) => consumo.consumo));
               const minValue = Math.min(...response.map((consumo) => consumo.consumo));
 
+              
               const dataset2 = {
                 labels: ["Media", "Máximo", "Mínimo"],
                 datasets: [
