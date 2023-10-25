@@ -151,20 +151,19 @@
                                         <tr>
                                             
                                             <td>
-                                                <p-inputNumber [showButtons]="true" [(ngModel)]="consumo.consumo"   mode="currency" currency="EUR" inputId="withoutgrouping" [useGrouping]="false"> </p-inputNumber>
+                                                <p-inputNumber [showButtons]="true"  [(ngModel)]="consumo.consumo" (keyup.enter)="editarConsumo(consumo, telefonos, i)"  mode="currency" currency="EUR" inputId="withoutgrouping" [useGrouping]="false"> </p-inputNumber>
                                             </td>
                                             <td>
                                                
                                                 <span class="p-float-label">
-                                                    <p-calendar [showIcon]="true" view="month"  dateFormat="M/y" [showWeek]="true" [(ngModel)]="consumo.fecha"  ></p-calendar>
+                                                    
+                                                    <p-calendar  appendTo="body"  [showIcon]="true" view="month" [showButtonBar]="true"  dateFormat="mm/yy"  [(ngModel)]="consumo.fecha" (onSelect)="editarConsumo(consumo, telefonos,i)"></p-calendar>
+                                                   
                                                     <label> {{  consumo.fecha | date:'MM/yyyy' }}</label>
                                                 </span>
                                             </td>
-                                            <td>
-                                                <p-button label="Editar Consumo"  severity="success" (click)="editarConsumo(consumo, telefonos)" ></p-button>
-                                                <br>
-                                                <br>
-                                                <p-button label="Borrar Consumo"  (click)="eliminarConsumo(consumo.id)" severity="danger" ></p-button>
+                                            <td>                                           
+                                                <p-button label="Borrar Consumo"  (click)="eliminarConsumo(consumo.id, telefonos, i)" severity="danger" ></p-button>
                                             </td>
                                             
                                         </tr>

@@ -9,6 +9,8 @@ import { Validators } from '@angular/forms';
 import { Consumo } from './consumos/consumo';
 import { ConsumoService } from './consumos/consumo.service';
 import { format } from 'date-fns';
+//import { takeUntil } from 'rxjs/operators';
+//import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-telefonos',
@@ -22,12 +24,19 @@ export class TelefonosComponent {
   //////////////////////////////////////////////////////////////
 
   telefonos: Telefono[] = [];
+  //private destroy$: Subject<void> = new Subject<void>();
+  /*
+  this.miObservable.pipe(takeUntil(this.destroy$)).subscribe(
+    // Manejar respuesta exitosa o error
+  );
+  */
 
   // CONSUMOS Y CHART
   consumoForm: FormGroup = new FormGroup({
     fecha: new FormControl('', [Validators.required]),
     consumo: new FormControl('', [Validators.required]),
   });
+  
   loading = false;
   checkedConsumo: boolean[] = [];
   emptychart: boolean[] = [];
@@ -102,6 +111,8 @@ export class TelefonosComponent {
     public dialogConfig: DynamicDialogConfig,
     public messageService: MessageService,
   ) {}
+ 
+
   //////////////////////////////////////////////////////////////
   //------------------MÉTODOS TELEFONO------------------------//
   //////////////////////////////////////////////////////////////
@@ -369,7 +380,8 @@ export class TelefonosComponent {
    
   }
 
-  editarConsumo(consumo: Consumo, telefono: Telefono){
+  editarConsumo(consumo: Consumo, telefono: Telefono, index: number) {
+    consumo.fecha = this.dateIsUTC(consumo.fecha);
     this.consumoService.editConsumo(consumo).subscribe(
       response => {
         console.log(response);
@@ -379,13 +391,43 @@ export class TelefonosComponent {
           detail: 'Consumo editado correctamente.',
           key: 'tlf',
         });
-       
+       this.getData(telefono, index);
+      },
+      (error) =>  {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Operación fallada',
+          detail: 'El consumo no ha sido editado.',
+          key: 'tlf',
+        });
+        console.log(error);
       }
     )
   }
 
-  eliminarConsumo(id:number){
-
+  eliminarConsumo(id:number, telefono: Telefono, index:number){
+    this.consumoService.deleteConsumo(id).subscribe(
+      response => {
+        console.log(response);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Operación exitosa',
+          detail: 'Consumo eliminado correctamente.',
+          key: 'tlf',
+        });
+        this.getData(telefono, index);
+      },
+      (error) =>  {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Operación fallada',
+          detail: 'El consumo no ha sido eliminado.',
+          key: 'tlf',
+        });
+        console.log(error);
+      }
+    )
   }
+  
   
 }
