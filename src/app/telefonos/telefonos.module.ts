@@ -12,6 +12,18 @@ import { FormsModule } from '@angular/forms';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
 
+
+
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { AccordionModule } from 'primeng/accordion';
+import { ChartModule } from 'primeng/chart';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { CardModule } from 'primeng/card';
+
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CalendarModule } from 'primeng/calendar';
+
 @NgModule({
   declarations: [
     TelefonosComponent
@@ -25,7 +37,16 @@ import { ToastModule } from 'primeng/toast';
     FormsModule,
     DynamicDialogModule,
     ToastModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ProgressSpinnerModule,
+    ToggleButtonModule,
+    AccordionModule,
+    ChartModule,
+    OverlayPanelModule,
+    CardModule,
+    InputNumberModule,
+    CalendarModule
+    
   ], 
   exports: [
     TelefonosComponent

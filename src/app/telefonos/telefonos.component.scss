@@ -1,0 +1,13 @@
+/* En un archivo CSS externo o en un componente CSS */
+.centered-header {
+    text-align: center; /* Establece la alineación del texto al centro */
+}
+.calendar-overlay {
+    position: absolute;
+    z-index: 9999; /* Un valor alto para asegurarse de que esté por encima del panel */
+}
+.custom-calendar .p-datepicker {
+    overflow: visible;
+    z-index: 999;
+  }
+  

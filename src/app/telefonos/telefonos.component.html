@@ -2,23 +2,25 @@
 <div class ="card">
     <p-table 
     [value]="telefonos"
+    
     #dt2
     dataKey="id"
     [rows]="7"
     [showCurrentPageReport]="true"
     [rowsPerPageOptions]="[7, 14, 21]"
-    [paginator]="true"
+    
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
     [globalFilterFields]="['numero']"
     [tableStyle]="{ 'min-width': '75rem' }"
     >
-    <ng-template pTemplate="emptymessage" let-columns>
+    <ng-template pTemplate="emptymessage" let-columns >
        
            
            <tr>
            
             <th style="width:99%"> <h3>No existen teléfonos</h3>  </th>
             <th></th>
+            
            </tr>
          
             
@@ -34,7 +36,7 @@
    
         <ng-template pTemplate="header">
             <tr>
-                <th style="width:70%">
+                <th style="width:100%">
                     Añadir nuevo número de teléfono
                     <span style="margin: 0 8px;"></span> 
 
@@ -46,29 +48,150 @@
                    
                 </th>
                 <th></th>
+          
+            
+       
                 
             </tr>
             <tr >
-                <th pSortableColumn="numero" style="width:60%">Número <p-sortIcon field="numero"></p-sortIcon></th>
-                <th style="width:40%">Opciones</th>
+                <th pSortableColumn="numero" >Número <p-sortIcon field="numero"></p-sortIcon></th>                
+                <th >Opciones </th>
                 
     
             </tr>
             <tr>
+               
                 <th>
                     <p-columnFilter type="text" field="numero"></p-columnFilter>
                 </th>
+                
                 <th></th>
+               
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-telefonos>
-            <tr>
+        <ng-template pTemplate="body" let-telefonos let-i="rowIndex">
+            <tr> 
                 <td>
-                    <input type="text" pKeyFilter="int" [value]="telefonos.numero" pInputText (keyup.enter)="editarTelefono(telefonos)"  (click)="updateEditTelefono(telefonos.numero)" style="border: none;" [(ngModel)]="telefonos.numero" [id]="'editar' + telefonos.numero">
-                </td>
-              <td> <p-button label="Borrar" (onClick)="borrarTelefono(telefonos.numero)" severity="danger" ></p-button></td>
+                   
+                    <p-accordion (onOpen)="getData(telefonos, i)" >
+                       
+                        <p-accordionTab header="{{telefonos.numero}}" >
+                            <div class="mb-3">
+                                <div class="mb-3 " >
+                                    
+                                <form [formGroup]="consumoForm" >
+                                    <p-card header="Crear nuevo consumo" >
+                                        
+                                        <div class="card-container"> 
+                                            <div class="inline-block mx-3">
+                                           
+                                             <p-inputNumber [showButtons]="true"  formControlName="consumo" mode="currency" currency="EUR" inputId="withoutgrouping" [useGrouping]="false"> </p-inputNumber>
+                                                  
+                                            </div>
+                                            <div class="inline-block mb-3 mx-3">
+                                                <span class="p-float-label">
+                                                    <p-calendar [showIcon]="true" view="month"   dateFormat="mm/yy" formControlName="fecha"  ></p-calendar>
+                                                    <label>Fecha</label>
+                                                </span>
+                                            </div>
+                                            <div class="block  mx-3 ">
+                                                <p-button label="Crear consumo"  (click)="crearConsumo(telefonos, i)" severity="success"></p-button>
+                                            </div>
+                                        </div>
+                                    </p-card>
+                                       
+                                   
+                                    
+                                </form>
+                                
+                            
     
-            </tr>
+                                </div>
+                                <div>
+                                    <p-toggleButton [(ngModel)]="checkedConsumo[i]" onLabel="Tabla" offLabel="Gráfica"></p-toggleButton>
+                                </div>
+                              
+                            </div>
+                            
+                            
+                            
+                            <div *ngIf="emptychart[i]; else mostrarConsumos"> <!-- En caso de que no haya consumos-->
+                                <h3>No hay consumos apuntados</h3>
+                            </div>
+                        
+                        <ng-template #mostrarConsumos> <!-- Si hay consumos: -->
+
+                            <div *ngIf="!checkedConsumo[i]; else mostrarTabla"> 
+                                <!-- MOSTRAR GRÁFICAS-->
+                                <p-progressSpinner *ngIf="loading" [style]="{ width: '50px', height: '50px' }"></p-progressSpinner>
+                            
+
+                                <div style="display: block">
+                                    <p-chart type="line" [data]="chartData[i]" [options]="chartOptions" ></p-chart>
+                                    <p-chart type="bar" [data]="chartDataPromedioMaxMin[i]" [options]="chartOptionsPromedioMaxMin"></p-chart>
+                                </div>
+
+
+                            </div>
+                            
+                            <ng-template #mostrarTabla> 
+                                <!--MOSTRAR TABLA-->
+
+                            <div>
+                                <p-table [value]="consumos[i]" [tableStyle]="{ 'min-width': '50rem' }">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th>Consumo</th>
+                                            <th>Fecha</th>
+                                            <th>Opciones</th>
+                                            
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-consumo>
+                                        <tr>
+                                            
+                                            <td>
+                                                <p-inputNumber [showButtons]="true"  [(ngModel)]="consumo.consumo" (keyup.enter)="editarConsumo(consumo, telefonos, i)"  mode="currency" currency="EUR" inputId="withoutgrouping" [useGrouping]="false"> </p-inputNumber>
+                                            </td>
+                                            <td>
+                                               
+                                                <span class="p-float-label">
+                                                    
+                                                    <p-calendar  appendTo="body"  [showIcon]="true" view="month" [showButtonBar]="true"  dateFormat="mm/yy"  [(ngModel)]="consumo.fecha" (onSelect)="editarConsumo(consumo, telefonos,i)"></p-calendar>
+                                                   
+                                                    <label> {{  consumo.fecha | date:'MM/yyyy' }}</label>
+                                                </span>
+                                            </td>
+                                            <td>                                           
+                                                <p-button label="Borrar Consumo"  (click)="eliminarConsumo(consumo.id, telefonos, i)" severity="danger" ></p-button>
+                                            </td>
+                                            
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+
+
+
+                            </ng-template>
+                        </ng-template>       
+                      
+                            
+                        </p-accordionTab>
+                    </p-accordion>
+                </td>
+              
+              <td> <p-button label="Borrar teléfono" (click)="borrarTelefono(telefonos.id)" severity="danger" ></p-button>
+                    <br>
+                    <br>
+                    <p-overlayPanel #op>
+                        <input type="text" pKeyFilter="int" [value]="telefonos.numero" pInputText (keyup.enter)="editarTelefono(telefonos)"   style="border: none;" [(ngModel)]="telefonos.numero" [id]="'editar' + telefonos.numero">
+                    </p-overlayPanel>
+                    <p-button label="Editar teléfono" (click)="op.toggle($event)" severity="success" ></p-button>
+            </td>
+               
+        </tr>
+           
         </ng-template>
     
     </p-table>
