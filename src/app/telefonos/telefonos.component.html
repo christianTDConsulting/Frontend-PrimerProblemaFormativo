@@ -107,8 +107,19 @@
                             
     
                                 </div>
-                                <div>
-                                    <p-toggleButton [(ngModel)]="checkedConsumo[i]" onLabel="Tabla" offLabel="Gráfica"></p-toggleButton>
+                                <div class="card-container">
+                                        <div class="inline-block  mx-3">
+                                            <p-toggleButton [(ngModel)]="checkedConsumo[i]" onLabel="Tabla" offLabel="Gráfica"></p-toggleButton>                                              
+                                       </div>
+
+                                       <div class="inline-block  mx-3">
+                                            <p-button label="Generar pdf" (click)="generatePDF(telefonos,i)" icon="pi pi-file-pdf"  ></p-button>
+                                       </div>
+
+                                       <div class="inline-block  mx-3">
+                                            <p-button label="Mandar por email" icon="pi pi-send" ></p-button>
+                                       </div>  
+                                
                                 </div>
                               
                             </div>
@@ -127,8 +138,8 @@
                             
 
                                 <div style="display: block">
-                                    <p-chart type="line" [data]="chartData[i]" [options]="chartOptions" ></p-chart>
-                                    <p-chart type="bar" [data]="chartDataPromedioMaxMin[i]" [options]="chartOptionsPromedioMaxMin"></p-chart>
+                                    <p-chart type="line" id = "chart1{{i}}" [data]="chartData[i]" [options]="chartOptions"  ></p-chart>
+                                    <p-chart type="bar" [data]="chartDataPromedioMaxMin[i]" [options]="chartOptionsPromedioMaxMin" ></p-chart>
                                 </div>
 
 

@@ -11,6 +11,8 @@ import { ConsumoService } from './consumos/consumo.service';
 import { format } from 'date-fns';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import {jsPDF, TableConfig} from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-telefonos',
@@ -25,11 +27,24 @@ export class TelefonosComponent {
 
   telefonos: Telefono[] = [];
   private destroy$: Subject<void> = new Subject<void>();
-  /*
-  this.miObservable.pipe(takeUntil(this.destroy$)).subscribe(
-    // Manejar respuesta exitosa o error
-  );
-  */
+ 
+  cliente: Cliente = {
+    id: 0,
+    nombre: '',
+    email: '',
+    bio: '',
+    nacimiento: new Date()
+  };
+
+  // Validator tld
+  formTlf = new FormGroup({
+    telefono: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{9}$")])
+  });
+  //PDF
+  
+  doc = new jsPDF();
+  //@ViewChildren('chart1') charts!: QueryList<ElementRef>;
+  //chartImgArray: string[] = []; // Un array para almacenar las imágenes
 
   // CONSUMOS Y CHART
   consumoForm: FormGroup = new FormGroup({
@@ -90,18 +105,7 @@ export class TelefonosComponent {
     },
   };
 
-  cliente: Cliente = {
-    id: 0,
-    nombre: '',
-    email: '',
-    bio: '',
-    nacimiento: new Date()
-  };
 
-  // Validator tld
-  formTlf = new FormGroup({
-    telefono: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{9}$")])
-  });
   //////////////////////////////////////////////////////////////
   //------------------CONSTRUCTOR-----------------------------//
   //////////////////////////////////////////////////////////////
@@ -121,6 +125,7 @@ export class TelefonosComponent {
     if (clienteId !== null) {
       this.getCliente(clienteId);
       this.getTelefonosList(clienteId);
+
     }
   }
 
@@ -282,7 +287,7 @@ export class TelefonosComponent {
               const backgroundColor = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.2)`;
               const borderColor = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 1)`;
 
-              const dataset = {
+              const dataset =  {
                 labels: formattedDates,
                 datasets: [
                   {
@@ -451,6 +456,53 @@ export class TelefonosComponent {
       }
     )
   }
+
   
+  //////////////////////////////////////////////////////////////
+  //------------------MÉTODOS PDF-----------------------------//
+  //////////////////////////////////////////////////////////////
+  /*
+  ngAfterViewInit() {
+    this.charts.forEach((chart, i) => {
+      html2canvas(chart.nativeElement).then(canvas => {
+        this.chartImgArray[i] = canvas.toDataURL('image/png');
+      });
+    });
+  }
+*/
+  async getChartImage(index:number)  {
+       
+  }
+
+  async generatePDF(telefono:Telefono, index:number){
+  console.log("Generando PDF...");
+    this.doc.setFont("helvetica","bold"); //texto en negrita
+    this.doc.text('Datos de consumo del teléfono '+telefono.numero, 20, 20); //titulo
+ 
+    this.doc.setFont("helvetica","normal"); //texto normal
+
+    const headers = ['Fecha', 'Consumo'];
+
+    const options: TableConfig = {
+       
+    };
+   
+    const data = this.consumos[index].map(item => {
+      // Formatear la fecha como MM/yyyy
+      const formattedFecha =  format(new Date(item.fecha), 'MMMM - yyyy',);
+      // Formatear el consumo como una cadena
+      const formattedConsumo = item.consumo.toString();
+      return {Fecha: formattedFecha, Consumo: formattedConsumo};
+  });
+
+    this.doc.table(70, 40, data, headers, options); //TABLA
+
+
+    const chartImage =  await this.getChartImage(index);
+
+    //this.doc.addImage(chartImage, 'PNG', 70, 60, 600,400, undefined, 'FAST') //CHAR 1
+
+    this.doc.save(telefono.numero+'-Consumos.pdf'); //save
+  }
   
 }
