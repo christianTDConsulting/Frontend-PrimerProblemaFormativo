@@ -260,15 +260,15 @@ export class TelefonosComponent {
   //////////////////////////////////////////////////////////////
 
   getData(telefono: Telefono, indice: number) {
-    this.loading = true;
-    if (telefono.id != null) {
-      this.consumoService.getConsumosTelefono(telefono.id).pipe(takeUntil(this.destroy$)).subscribe(
+    this.loading = true; //Activa el loading
+    if (telefono.id != null) { //Si existe no es null
+      this.consumoService.getConsumosTelefono(telefono.id).pipe(takeUntil(this.destroy$)).subscribe( //OBTENGO LOS CONSUMOS DEL TELEFONO PARA INICIALIAR LOS CHART
         (response) => {
-          if (response.length === 0) {
+          if (response.length === 0) { //SI NO HAY CONSUMOS EN EL TELEFONO
             this.emptychart.splice(indice, 1, true); //Vacio
             this.chartData.splice(indice, 1, []); //Inicializa charts a vacío
             this.chartDataPromedioMaxMin.splice(indice, 1, []);
-          } else {
+          } else { //SI HAY CONSUMOS
             this.emptychart.splice(indice, 1, false); //No Está vacío
             //Inicializa consumos para mostrar en la tabla
             this.consumos.splice(indice, 1, response); 
@@ -290,31 +290,41 @@ export class TelefonosComponent {
                     data: response.map((consumo: Consumo) => consumo.consumo),
                     borderColor: borderColor,
                     borderWidth: 1,
+                    tension: 0.4,
                   }
                 ],
               };
+
+              this.chartData.splice(indice, 1, dataset); //Inserto el chart 1 en el array de charts
+
               //CHART 2
 
-              //cambiar a backend
-              const mediaValue = response.reduce((acc, consumo) => acc + consumo.consumo, 0) / response.length;
-              const maxValue = Math.max(...response.map((consumo) => consumo.consumo));
-              const minValue = Math.min(...response.map((consumo) => consumo.consumo));
+              //PARA EL CHART 2 NECESITO MEDIA, MIN, MAX QUE OBTENGO DEL BACKEND
+              this.consumoService.getMediaMaxMin(telefono.id).pipe(takeUntil(this.destroy$)).subscribe(
+                (result) => {
+                  const dataset2 = {
+                    labels: ["Media", "Máximo", "Mínimo"],
+                    datasets: [
+                      {
+                        data: [result[0].media, result[0].maximo, result[0].minimo],
+                        backgroundColor: backgroundColor,
+                        borderColor: borderColor,
+                        borderWidth: 1,
+                      },
+                    ],
+                  };
 
+                  this.chartDataPromedioMaxMin.splice(indice, 1, dataset2); //Inserto el chart 2 en el array de charts
+                }
+              )
               
-              const dataset2 = {
-                labels: ["Media", "Máximo", "Mínimo"],
-                datasets: [
-                  {
-                    data: [mediaValue, maxValue, minValue],
-                    backgroundColor: backgroundColor,
-                    borderColor: borderColor,
-                    borderWidth: 1,
-                  },
-                ],
-              };
+           
 
-              this.chartData.splice(indice, 1, dataset);
-              this.chartDataPromedioMaxMin.splice(indice, 1, dataset2);
+
+             
+
+             
+             
             }
 
           this.loading = false; //Datos cargados
@@ -391,8 +401,8 @@ export class TelefonosComponent {
         }
         //Se edita el consumo y toast
         this.consumoService.editConsumo(consumo).pipe(takeUntil(this.destroy$)).subscribe(
-          response => {
-            console.log(response);
+          result => {
+            console.log(result);
             this.messageService.add({
               severity: 'success',
               summary: 'Operación exitosa',

@@ -67,6 +67,6 @@ export class ConsumoService {
   }
 
   getMediaMaxMin(id_telefono:number){
-    return this.http.get<Consumo>('http://localhost:3000/mediaMaxMinConsumo/'+ id_telefono);
+    return this.http.get<any>('http://localhost:3000/mediaMaxMinConsumo/'+ id_telefono);
   }
 }
