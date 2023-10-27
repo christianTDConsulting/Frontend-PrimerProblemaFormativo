@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Input, ViewChildren,ElementRef, QueryList, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild,ElementRef } from '@angular/core';
 import { TelefonoService } from '../telefono.service';
 import { Telefono } from '../telefono';
 
@@ -13,6 +13,10 @@ import { format } from 'date-fns';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import {jsPDF, TableConfig} from 'jspdf';
+import html2canvas from 'html2canvas';
+
+
+
 @Component({
   selector: 'app-consumo',
   templateUrl: './consumo.component.html',
@@ -24,14 +28,14 @@ export class ConsumoComponent implements OnInit {
   //TELEFONO
   @Input() telefono!: Telefono;
  
-
+  
   private destroy$: Subject<void> = new Subject<void>();
 
    //PDF
   
    doc = new jsPDF();
-   @ViewChildren('chart1') chart1Elements!: QueryList<ElementRef>;
-  
+   
+   
  
    // CONSUMOS Y CHART
    consumoForm: FormGroup = new FormGroup({
@@ -307,7 +311,9 @@ export class ConsumoComponent implements OnInit {
 
  
 
-  async generatePDF(telefono:Telefono){
+
+  
+  generatePDF(telefono:Telefono){
   console.log("Generando PDF...");
 
   //TITULO
@@ -333,28 +339,45 @@ export class ConsumoComponent implements OnInit {
 
     this.doc.table(70, 40, data, headers, options); //insertar tabla
   //GRAFICOS
-    /*
-  this.chart1Elements.changes.subscribe((elements: QueryList<ElementRef>) => {
-    if (elements.first) {
-      // El elemento #chart1 está disponible
-      const chartElement = elements.first.nativeElement;
-      // Ahora puedes acceder al elemento y realizar las operaciones necesarias
-   
-      this.doc.addImage( chartElement.toDataURL('image/png'), 'PNG', 70, 60, 600,400, undefined, 'FAST') //insertar gráficos
-    }
-  });
-   */
-   
-    
 
-    this.doc.save(telefono.numero+'-Consumos.pdf'); //save
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Operación exitosa',
-      detail: 'PDF generado correctamente.',
-      key: 'tlf',
-    });
-  }
+    const elemento = document.getElementById('chart'); // Reemplaza 'miVistaModal' con el ID real de tu modal
+ 
+    if(elemento){
+ 
+      html2canvas(elemento).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const imgProps = this.doc.getImageProperties(imgData);
+        const pdfWidth = this.doc.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        this.doc.addPage();
+        this.doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+        this.doc.save(telefono.numero+'-Consumos.pdf'); //save
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Operación exitosa',
+          detail: 'PDF generado correctamente.',
+          key: 'tlf',
+        });
+        
+      });
+      
+
+ 
+    } else {
+      console.error('Elemento  no encontrado.');
+    }
+
+    
   
+}
+  //////////////////////////////////////////////////////////////
+  //------------------MÉTODOS CORREO--------------------------//
+  //////////////////////////////////////////////////////////////
+
+generarCorreo(telefono:Telefono){
+
+}
 
 }

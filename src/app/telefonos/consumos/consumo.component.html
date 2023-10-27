@@ -42,7 +42,7 @@
                  </div>
 
                  <div class="inline-block  mx-3">
-                      <p-button label="Mandar por email" icon="pi pi-send" ></p-button>
+                      <p-button label="Mandar por email" icon="pi pi-send" (click)="generarCorreo(telefono)"></p-button>
                  </div>  
           
           </div>
@@ -60,11 +60,15 @@
       <div *ngIf="!checkedConsumo; else mostrarTabla"> 
           <!-- MOSTRAR GRÁFICAS-->
           <p-progressSpinner *ngIf="loading" [style]="{ width: '50px', height: '50px' }"></p-progressSpinner>
-      
 
           <div style="display: block">
-              <p-chart type="line" #chart1 [data]="chartData" [options]="chartOptions"  ></p-chart>
-              <p-chart type="bar" [data]="chartDataPromedioMaxMin" [options]="chartOptionsPromedioMaxMin" ></p-chart>
+            
+            <div id = "chart">
+                <p-chart type="line" [data]="chartData" [options]="chartOptions"  className="UIchart" ></p-chart>
+            
+              
+              <p-chart type="bar" [data]="chartDataPromedioMaxMin" [options]="chartOptionsPromedioMaxMin" id = "chart2" className="UIchart" ></p-chart>
+            </div>
           </div>
 
 
