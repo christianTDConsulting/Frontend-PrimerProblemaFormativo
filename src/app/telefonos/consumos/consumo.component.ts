@@ -14,6 +14,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import {jsPDF, TableConfig} from 'jspdf';
 import html2canvas from 'html2canvas';
+import {createTransport, SendMailOptions } from 'nodemailer';
+import 'dotenv/config'
 
 
 
@@ -101,6 +103,7 @@ export class ConsumoComponent implements OnInit {
     private consumoService: ConsumoService,
     public dialogConfig: DynamicDialogConfig,
     public messageService: MessageService,
+    private env = process.env
   ) { }
 
   ngOnInit() {
@@ -313,9 +316,10 @@ export class ConsumoComponent implements OnInit {
 
 
   
-  generatePDF(telefono:Telefono){
+  generatePDF(telefono:Telefono, download: boolean){
   console.log("Generando PDF...");
-
+  //REINICIAR PDF
+    this.doc =  new jsPDF();
   //TITULO
     this.doc.setFont("helvetica","bold"); //texto en negrita
     this.doc.text('Datos de consumo del teléfono '+telefono.numero, 20, 20); //titulo
@@ -352,18 +356,21 @@ export class ConsumoComponent implements OnInit {
         this.doc.addPage();
         this.doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
 
-        this.doc.save(telefono.numero+'-Consumos.pdf'); //save
+        if (download){
+          this.doc.save(telefono.numero+'-Consumos.pdf'); //save
 
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Operación exitosa',
-          detail: 'PDF generado correctamente.',
-          key: 'tlf',
-        });
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Operación exitosa',
+            detail: 'PDF generado correctamente.',
+            key: 'tlf',
+          });
         
+        }
       });
-      
-
+        
+        
  
     } else {
       console.error('Elemento  no encontrado.');
@@ -377,7 +384,46 @@ export class ConsumoComponent implements OnInit {
   //////////////////////////////////////////////////////////////
 
 generarCorreo(telefono:Telefono){
+  
+  this.telefonoService.getClienteFromTlf(telefono.id).pipe(takeUntil(this.destroy$)).subscribe(
+    response => {
+      console.log(response.email);
+      // Configura el transporte (SMTP)
+      const transporter = createTransport({
+        service: 'Gmail', // Cambia esto al servicio que desees utilizar
+        auth: {
+          user: process.env['MY_EMAIL'], // Tu dirección de correo electrónico
+          pass: process.env['MY_PSW'] // Tu contraseña
+        }
+      });
+                                  //download
+      this.generatePDF(telefono, false);
 
+      // Contenido del correo
+      const mailOptions: SendMailOptions = {
+        from: 'tu_correo@gmail.com',
+        to: response.email, // Dirección del destinatario
+        subject: 'Consumos telefónicos',
+        text: 'Buenas, Estos son sus datos de consumos teléfonicos. Un saludo',
+        attachments:  [
+          {
+          
+          }
+        ]
+      };
+
+      // Enviar el correo
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error('Error al enviar el correo:', error);
+        } else {
+          console.log('Correo enviado:', info.response);
+        }
+      });
+      
+    }
+  )
+  
 }
 
 }
