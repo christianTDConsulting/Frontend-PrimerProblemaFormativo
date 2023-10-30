@@ -15,7 +15,7 @@ import { Subject } from 'rxjs';
 import {jsPDF, TableConfig} from 'jspdf';
 import html2canvas from 'html2canvas';
 import {MailerService} from './mailer.service';
-
+import { Buffer } from 'buffer';
 
 
 
@@ -357,7 +357,7 @@ export class ConsumoComponent implements OnInit {
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
         this.doc.addPage();
         this.doc.addImage(imgData, 'PNG', 0, 20, pdfWidth, pdfHeight, '', 'SLOW');
-
+        //SI SE QUIERE DESCARGAR EL PDF
         if (download){
           this.doc.save(telefono.numero+'-Consumos.pdf'); //save
 
@@ -368,7 +368,10 @@ export class ConsumoComponent implements OnInit {
             detail: 'PDF generado correctamente.',
             key: 'tlf',
           });
-        
+        //SI SE QUIERE ENVIAR EL CORREO
+        }else{
+
+          this.generarCorreo(telefono);
         }
       });
         
@@ -385,35 +388,50 @@ export class ConsumoComponent implements OnInit {
   //------------------MÉTODOS CORREO--------------------------//
   //////////////////////////////////////////////////////////////
 
-generarCorreo(telefono:Telefono){
+  generarCorreo(telefono: Telefono) {
+    // Obtener información del cliente a partir del ID del teléfono
+    this.telefonoService.getClienteFromTlf(telefono.id).pipe(takeUntil(this.destroy$)).subscribe(
+      response => {
+        // Imprimir el correo del cliente en la consola
+        console.log(response.email);
   
-  this.telefonoService.getClienteFromTlf(telefono.id).pipe(takeUntil(this.destroy$)).subscribe(
-    response => {
-      console.log(response.email);
-    
-      this.generatePDF(telefono, false);
-
-      this.mailerService.sendMail(response.email,this.doc.output()).pipe(takeUntil(this.destroy$)).subscribe(
-        res => {
-          console.log(res);
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Operación exitosa',
-            detail: 'Correo envíado correctamente, mire su bandeja de entrada.',
-            key: 'tlf',
-          })
-        }, 
-        (error) => {
-          console.log(error);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Operación fallada',
-            detail: 'El correo no ha sido enviado.',
-            key: 'tlf',
-          })
-        });
-     
-    }
-  );}
+        // Generar un PDF con los datos del consumo del teléfono
+        
+  
+        // Obtener el contenido binario del PDF como un ArrayBuffer
+        const binary = this.doc.output('arraybuffer');
+  
+        // Convertir el contenido binario del PDF a una cadena base64
+        const pdfOutput = binary ? Buffer.from(binary).toString('base64') : '';
+  
+        // Enviar el correo con el PDF adjunto
+        this.mailerService.sendMail(response.email, pdfOutput).pipe(takeUntil(this.destroy$)).subscribe(
+          res => {
+            // Imprimir la respuesta del servicio de correo en la consola
+            console.log(res);
+            // Mostrar un mensaje de éxito en la interfaz de usuario
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Operación exitosa',
+              detail: 'Correo enviado correctamente, mire su bandeja de entrada.',
+              key: 'tlf',
+            });
+          },
+          (error) => {
+            // Manejar errores de envío de correo
+            console.log(error);
+            // Mostrar un mensaje de error en la interfaz de usuario
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Operación fallada',
+              detail: 'El correo no ha sido enviado.',
+              key: 'tlf',
+            });
+          }
+        );
+      }
+    );
+  }
+  
 
 }
