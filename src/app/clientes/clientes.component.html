@@ -25,6 +25,7 @@
             </th>
             <th></th>
             <th></th>
+           
         </tr>
         <div class="flex align-content-center flex-wrap" >
            
@@ -45,13 +46,16 @@
             </th>
             <th></th>
             <th></th>
+            <th></th>
+            
+            
         </tr>
             <tr>
-                <th pSortableColumn="id" style="width:25%">Id <p-sortIcon field="id"></p-sortIcon></th>
+                <th pSortableColumn="id" style="width:10%">Id <p-sortIcon field="id"></p-sortIcon></th>
                 <th pSortableColumn="nombre" style="width:25%">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
-                <th pSortableColumn="nombre" style="width:25%">Email <p-sortIcon field="email"></p-sortIcon></th>
-                <th>Teléfonos</th>
-                <th>Opciones</th>
+                <th pSortableColumn="nombre" style="width:30%">Email <p-sortIcon field="email"></p-sortIcon></th>
+    
+                <th style="width: 35%;">Opciones</th>
                 
             </tr>
             <tr>
@@ -78,9 +82,13 @@
                 <td>
                     <input type="text" [value]="clientes.email" pInputText (keyup.enter)="editarEmail(clientes)" style="border: none;" [(ngModel)]="clientes.email" [id]="'editarClienteEmail' + clientes.id">
                 </td>
-    
+                <!--
                 <td><p-button label="Ver Teléfonos" (click)="show(clientes.id)" severity="help"></p-button></td>
+                -->
                 <td>
+               
+                   
+                    <!--
                     <div class = "card">
                         <div class=" flex align-items-center justify-content-center  m-2"> 
                             <p-button label="Editar" (click)="showEdition(clientes.id)" severity="success" ></p-button> 
@@ -88,6 +96,11 @@
                         <div class=" flex align-items-center justify-content-center  m-2"> 
                             <p-button label="Borrar" (click)="borrarUsuario(clientes.id)" severity="danger" ></p-button> 
                         </div>
+                    </div>
+                    -->
+                    <div class="card" style="height: 80px;">
+                        <div class="p-mt-3 p-mb-3">  <p-speedDial   direction="right" [model]="actions" (onClick)="onClickSpeedDial(clientes.id)"></p-speedDial> </div>                 
+                             
                     </div>
                     
                 </td>

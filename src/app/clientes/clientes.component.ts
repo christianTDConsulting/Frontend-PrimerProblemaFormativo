@@ -32,6 +32,8 @@ export class ClientesComponent {
     this.getClientesList();
   }
 
+  //Inicializar lista de clientes
+
   getClientesList() {
     this.clienteService.getClientes().subscribe(
       response => {
@@ -41,6 +43,7 @@ export class ClientesComponent {
     )
   }
 
+  //borrar Cliente
   borrarUsuario(id:string){
     this.clienteService.deleteCliente(id).subscribe(
       response => {
@@ -63,6 +66,7 @@ export class ClientesComponent {
     )
     
   }
+  //editar nombre
  
   editarNombre(cliente:Cliente){
     if (cliente.nombre != ''){
@@ -90,6 +94,7 @@ export class ClientesComponent {
      }
   }
 
+  //comprobar que el correo es correcto
   private isValidEmail(email: string): boolean {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
@@ -127,8 +132,7 @@ export class ClientesComponent {
 }
 
  
-  
-
+  //abrir dynamic dialog de telefonos
   show(id:string){
     this.clienteService.getCliente(id).subscribe(
       (cliente: Cliente) => {
@@ -156,6 +160,7 @@ export class ClientesComponent {
     }
 }
 
+//abrir dynamic dialog de Creacion
 showCreation(){
 
   this.ref = this.dialogService.open(DataClienteComponent, {
@@ -177,6 +182,8 @@ showCreation(){
     this.getClientesList();
   });  
 }
+
+//abrir dynamic dialog de Edicion
 showEdition(id:string){
   this.clienteService.getCliente(id).subscribe(
     (cliente: Cliente) => {
@@ -204,4 +211,39 @@ showEdition(id:string){
 }
 
 
+//Spped Dial
+actions: any[] = [];
+
+
+createActions(clientesId: string) {
+  this.actions = [
+    { 
+      icon: 'pi pi-user-edit', 
+      command: () => { 
+        this.showEdition(clientesId);
+      },
+    }, 
+    { 
+      icon: 'pi pi-trash', 
+      command: () => { 
+        this.borrarUsuario(clientesId);
+      } 
+    }, 
+    { 
+      icon: 'pi pi-phone', 
+      command: () => { 
+        this.show(clientesId);
+      } 
+    },
+  ];
 }
+
+onClickSpeedDial(clientesId: string) {
+  this.createActions(clientesId);
+}
+
+} 
+
+
+
+

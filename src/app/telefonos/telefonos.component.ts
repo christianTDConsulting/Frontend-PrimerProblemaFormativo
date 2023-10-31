@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component ,  ViewChild} from '@angular/core';
 import { TelefonoService } from './telefono.service';
 import { Telefono } from './telefono';
 import { Cliente } from '../clientes/cliente';
@@ -6,12 +6,9 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { Consumo } from './consumos/consumo';
 import { ConsumoService } from './consumos/consumo.service';
-import { format } from 'date-fns';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import {jsPDF, TableConfig} from 'jspdf';
 
 
 @Component({
@@ -195,7 +192,45 @@ export class TelefonosComponent {
         key: 'tlf',
       });
     }
+
+  this.changeInputBool(); //SpeedDial
   }
+
+  //////////////////////////////////////////////////////////////
+  //------------------SPEED DIAL-------------------------------//
+  //////////////////////////////////////////////////////////////
+
+
+
+actions: any[] = [];
+inputTextBool: boolean = true;
+
+
+changeInputBool() {
+  this.inputTextBool = !this.inputTextBool;
+}
+
+createActions(telefonoId: number) {
+  this.actions = [
+    { 
+      icon: 'pi pi-user-edit', 
+      command: (event:any) => { 
+        this.changeInputBool();
+      } 
+    }, 
+    { 
+      icon: 'pi pi-trash', 
+      command: () => { 
+        this.borrarTelefono(telefonoId);
+      } 
+    }, 
+    
+  ];
+}
+
+onClickSpeedDial(telefonoId: number) {
+  this.createActions(telefonoId);
+}
 
  
 }
