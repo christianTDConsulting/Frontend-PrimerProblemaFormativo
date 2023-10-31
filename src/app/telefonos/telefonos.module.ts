@@ -23,10 +23,12 @@ import { CardModule } from 'primeng/card';
 
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CalendarModule } from 'primeng/calendar';
+import { ConsumoComponent } from './consumos/consumo.component';
 
 @NgModule({
   declarations: [
-    TelefonosComponent
+    TelefonosComponent,
+    ConsumoComponent
   ],
   imports: [
     CommonModule,

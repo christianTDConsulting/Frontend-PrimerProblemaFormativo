@@ -50,7 +50,7 @@ export class ConsumoService {
 
     // Define las cabeceras de la solicitud, si es necesario
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/pdf',
     });
 
     const options = {
@@ -69,4 +69,9 @@ export class ConsumoService {
   getMediaMaxMin(id_telefono:number){
     return this.http.get<any>('http://localhost:3000/mediaMaxMinConsumo/'+ id_telefono);
   }
+
+  getClienteData(id_consumo:number){
+    return this.http.get<any>(this.url+ 'clientedata/'+id_consumo);
+  }
+  
 }

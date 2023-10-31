@@ -71,5 +71,9 @@ export class TelefonoService {
       //especificar tipo de datos
     return this.http.put<any>(this.url, telefono, options);
   }
+
+  getClienteFromTlf(id_telefono:number): Observable<Cliente>{
+    return this.http.get<Cliente>(this.url+ id_telefono+'/cliente');
+  }
 }
 
