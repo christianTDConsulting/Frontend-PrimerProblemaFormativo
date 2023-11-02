@@ -12,8 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TelefonosModule } from '../telefonos/telefonos.module';
 import { DataClienteModule } from '../data-cliente/data-cliente.module';
 import { ToastModule } from 'primeng/toast';
-
-
+import { SpeedDialModule } from 'primeng/speeddial';
 
 @NgModule({
   declarations: [
@@ -32,10 +31,12 @@ import { ToastModule } from 'primeng/toast';
     TelefonosModule,
     ToastModule,
     DataClienteModule,
+    SpeedDialModule
  
     ],
   exports: [
-    ClientesComponent
+    ClientesComponent,
+   
   ]
 })
 export class ClientesModule { }

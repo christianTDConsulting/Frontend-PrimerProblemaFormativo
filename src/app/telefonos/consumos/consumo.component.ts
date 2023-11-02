@@ -36,7 +36,7 @@ export class ConsumoComponent implements OnInit {
    //PDF
   
    doc = new jsPDF();
-   
+  
    
  
    // CONSUMOS Y CHART
@@ -319,7 +319,9 @@ export class ConsumoComponent implements OnInit {
 
   
   generatePDF(telefono:Telefono, download: boolean){
-  console.log("Generando PDF...");
+         
+    console.log("Generando PDF...");
+
   //REINICIAR PDF
     this.doc =  new jsPDF();
   //TITULO
@@ -345,44 +347,48 @@ export class ConsumoComponent implements OnInit {
 
     this.doc.table(70, 40, data, headers, options); //insertar tabla
   //GRAFICOS
-
-    const elemento = document.getElementById('chart'); // Reemplaza 'miVistaModal' con el ID real de tu modal
- 
-    if(elemento){
- 
-      html2canvas(elemento).then(canvas => {
-        const imgData = canvas.toDataURL('image/png');
-        const imgProps = this.doc.getImageProperties(imgData);
-        const pdfWidth = this.doc.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-        this.doc.addPage();
-        this.doc.addImage(imgData, 'PNG', 0, 20, pdfWidth, pdfHeight, '', 'SLOW');
-        //SI SE QUIERE DESCARGAR EL PDF
-        if (download){
-          this.doc.save(telefono.numero+'-Consumos.pdf'); //save
-
-
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Operación exitosa',
-            detail: 'PDF generado correctamente.',
-            key: 'tlf',
-          });
-        //SI SE QUIERE ENVIAR EL CORREO
-        }else{
-
-          this.generarCorreo(telefono);
-        }
-      });
-        
-        
- 
-    } else {
-      console.error('Elemento  no encontrado.');
-    }
-
-    
+  if (this.checkedConsumo){
+    this.checkedConsumo = false;
   
+    setTimeout(() => {
+      const elemento = document.getElementById('chart'); // Reemplaza 'miVistaModal' con el ID real de tu modal
+  
+      if(elemento){
+  
+        html2canvas(elemento).then(canvas => {
+          const imgData = canvas.toDataURL('image/png');
+          const imgProps = this.doc.getImageProperties(imgData);
+          const pdfWidth = this.doc.internal.pageSize.getWidth();
+          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+          this.doc.addPage();
+          this.doc.addImage(imgData, 'PNG', 0, 20, pdfWidth, pdfHeight, '', 'SLOW');
+          //SI SE QUIERE DESCARGAR EL PDF
+          if (download){
+            this.doc.save(telefono.numero+'-Consumos.pdf'); //save
+
+
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Operación exitosa',
+              detail: 'PDF generado correctamente.',
+              key: 'tlf',
+            });
+          //SI SE QUIERE ENVIAR EL CORREO
+          }else{
+
+            this.generarCorreo(telefono);
+          }
+        });
+          
+          
+  
+      } else {
+        console.error('Elemento  no encontrado.');
+      }
+
+    }, 500); // Atimeout
+    
+  }
 }
   //////////////////////////////////////////////////////////////
   //------------------MÉTODOS CORREO--------------------------//

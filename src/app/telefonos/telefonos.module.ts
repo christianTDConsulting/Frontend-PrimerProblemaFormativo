@@ -11,8 +11,7 @@ import { FormsModule } from '@angular/forms';
 
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
-
-
+import { SpeedDialModule } from 'primeng/speeddial';
 
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -47,7 +46,8 @@ import { ConsumoComponent } from './consumos/consumo.component';
     OverlayPanelModule,
     CardModule,
     InputNumberModule,
-    CalendarModule
+    CalendarModule,
+    SpeedDialModule
     
   ], 
   exports: [

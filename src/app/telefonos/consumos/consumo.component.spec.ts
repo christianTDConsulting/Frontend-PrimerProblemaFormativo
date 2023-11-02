@@ -2,7 +2,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {HttpClientModule} from '@angular/common/http';
 import { ConsumoComponent } from './consumo.component';
 
 describe('ConsumoComponent', () => {
@@ -11,7 +12,9 @@ describe('ConsumoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConsumoComponent ]
+      declarations: [ ConsumoComponent ],
+      imports: [HttpClientTestingModule], 
+      providers: [ConsumoComponent]
     })
     .compileComponents();
   }));

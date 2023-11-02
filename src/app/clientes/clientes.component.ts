@@ -32,6 +32,8 @@ export class ClientesComponent {
     this.getClientesList();
   }
 
+  //Inicializar lista de clientes
+
   getClientesList() {
     this.clienteService.getClientes().subscribe(
       response => {
@@ -41,7 +43,8 @@ export class ClientesComponent {
     )
   }
 
-  borrarUsuario(id:string){
+  //borrar Cliente
+  borrarUsuario(id:number){
     this.clienteService.deleteCliente(id).subscribe(
       response => {
         console.log(response);
@@ -63,6 +66,7 @@ export class ClientesComponent {
     )
     
   }
+  //editar nombre
  
   editarNombre(cliente:Cliente){
     if (cliente.nombre != ''){
@@ -90,6 +94,7 @@ export class ClientesComponent {
      }
   }
 
+  //comprobar que el correo es correcto
   private isValidEmail(email: string): boolean {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
@@ -127,9 +132,8 @@ export class ClientesComponent {
 }
 
  
-  
-
-  show(id:string){
+  //abrir dynamic dialog de telefonos
+  show(id:number){
     this.clienteService.getCliente(id).subscribe(
       (cliente: Cliente) => {
         this.ref = this.dialogService.open(TelefonosComponent, {
@@ -156,6 +160,7 @@ export class ClientesComponent {
     }
 }
 
+//abrir dynamic dialog de Creacion
 showCreation(){
 
   this.ref = this.dialogService.open(DataClienteComponent, {
@@ -177,7 +182,9 @@ showCreation(){
     this.getClientesList();
   });  
 }
-showEdition(id:string){
+
+//abrir dynamic dialog de Edicion
+showEdition(id:number){
   this.clienteService.getCliente(id).subscribe(
     (cliente: Cliente) => {
       this.ref = this.dialogService.open(DataClienteComponent, {
@@ -204,4 +211,40 @@ showEdition(id:string){
 }
 
 
+//Spped Dial
+actions: any[] = [];
+
+
+createActions(clientesId: number) {
+  this.actions = [
+    { 
+      icon: 'pi pi-user-edit', 
+      command: () => { 
+        this.showEdition(clientesId);
+      },
+    }, 
+    { 
+      icon: 'pi pi-phone', 
+      command: () => { 
+        this.show(clientesId);
+      } 
+    },
+    { 
+      icon: 'pi pi-trash', 
+      command: () => { 
+        this.borrarUsuario(clientesId);
+      } 
+    }, 
+   
+  ];
 }
+
+onClickSpeedDial(clientesId: number) {
+  this.createActions(clientesId);
+}
+
+} 
+
+
+
+
