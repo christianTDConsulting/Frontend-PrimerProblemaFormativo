@@ -36,7 +36,7 @@ export class ConsumoComponent implements OnInit {
    //PDF
   
    doc = new jsPDF();
-   
+  
    
  
    // CONSUMOS Y CHART
@@ -319,7 +319,10 @@ export class ConsumoComponent implements OnInit {
 
   
   generatePDF(telefono:Telefono, download: boolean){
-  console.log("Generando PDF...");
+    this.checkedConsumo = false;
+      
+    console.log("Generando PDF...");
+
   //REINICIAR PDF
     this.doc =  new jsPDF();
   //TITULO
@@ -345,7 +348,7 @@ export class ConsumoComponent implements OnInit {
 
     this.doc.table(70, 40, data, headers, options); //insertar tabla
   //GRAFICOS
-
+  setTimeout(() => {
     const elemento = document.getElementById('chart'); // Reemplaza 'miVistaModal' con el ID real de tu modal
  
     if(elemento){
@@ -381,6 +384,7 @@ export class ConsumoComponent implements OnInit {
       console.error('Elemento  no encontrado.');
     }
 
+  }, 500); // Atimeout
     
   
 }
