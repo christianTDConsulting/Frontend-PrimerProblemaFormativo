@@ -3,9 +3,10 @@ import { ClienteService } from './cliente.service';
 import { Router } from '@angular/router';
 import { Cliente } from './cliente';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { TelefonosComponent } from '../telefonos/telefonos.component';
 import { DataClienteComponent } from '../data-cliente/data-cliente.component';
+
 
 @Component({
   selector: 'app-clientes',
@@ -25,6 +26,7 @@ export class ClientesComponent {
     private clienteService: ClienteService,
     public dialogService: DialogService,  
     public messageService : MessageService,
+    public confirmationService : ConfirmationService
   
   ){}
 
@@ -232,7 +234,22 @@ createActions(clientesId: number) {
     { 
       icon: 'pi pi-trash', 
       command: () => { 
-        this.borrarUsuario(clientesId);
+        
+          this.confirmationService.confirm({
+            message: '¿Estas seguro que quieres eliminar el cliente?',
+            header: 'Confirmación',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => this.borrarUsuario(clientesId),
+            reject: () =>  {
+              this.messageService.add({
+                severity: 'info',
+                summary: 'Atención',
+                detail: 'Cliente no borrado.',
+                key: 'tlf',
+              });
+              this.confirmationService.close();
+            }
+          });
       } 
     }, 
    

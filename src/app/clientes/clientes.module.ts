@@ -13,6 +13,8 @@ import { TelefonosModule } from '../telefonos/telefonos.module';
 import { DataClienteModule } from '../data-cliente/data-cliente.module';
 import { ToastModule } from 'primeng/toast';
 import { SpeedDialModule } from 'primeng/speeddial';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -31,9 +33,11 @@ import { SpeedDialModule } from 'primeng/speeddial';
     TelefonosModule,
     ToastModule,
     DataClienteModule,
-    SpeedDialModule
+    SpeedDialModule,
+    ConfirmDialogModule,
  
     ],
+  providers: [ConfirmationService],
   exports: [
     ClientesComponent,
    

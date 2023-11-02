@@ -3,7 +3,7 @@ import { TelefonoService } from './telefono.service';
 import { Telefono } from './telefono';
 import { Cliente } from '../clientes/cliente';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { ConsumoService } from './consumos/consumo.service';
@@ -48,6 +48,7 @@ export class TelefonosComponent {
     private consumoService: ConsumoService,
     public dialogConfig: DynamicDialogConfig,
     public messageService: MessageService,
+    public confirmationService : ConfirmationService
   ) {}
  
 
@@ -221,7 +222,21 @@ createActions(telefonoId: number) {
     { 
       icon: 'pi pi-trash', 
       command: () => { 
-        this.borrarTelefono(telefonoId);
+        this.confirmationService.confirm({
+          message: '¿Estas seguro que quieres eliminar el telefono?',
+          header: 'Confirmación',
+          icon: 'pi pi-exclamation-triangle',
+          accept: () => this.borrarTelefono(telefonoId),
+          reject: () =>  {
+            this.messageService.add({
+              severity: 'info',
+              summary: 'Atención',
+              detail: 'Teléfono no borrado.',
+              key: 'tlf',
+            });
+            this.confirmationService.close();
+          }
+        });
       } 
     }, 
     

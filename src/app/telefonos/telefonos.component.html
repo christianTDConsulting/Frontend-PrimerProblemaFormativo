@@ -84,9 +84,10 @@
                     <div class="p-mt-3 p-mb-3 flex"> 
                        
                         <div>
-                            <p-speedDial #speedDial [hidden] = "!inputTextBool" direction="right" [model]="actions" (onClick)="onClickSpeedDial(telefonos.id)"></p-speedDial>   
-                           
                             
+                            <p-confirmDialog header="Confirmation" width="425"></p-confirmDialog>
+                            <p-speedDial #speedDial [hidden] = "!inputTextBool" direction="right" [model]="actions" (onClick)="onClickSpeedDial(telefonos.id)"></p-speedDial>   
+ 
                         </div>
                        
                      

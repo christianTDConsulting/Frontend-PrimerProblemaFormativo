@@ -336,7 +336,7 @@ export class ConsumoComponent implements OnInit {
     const options: TableConfig = {
        
     };
-   
+    
     const data = this.consumos.map(item => {
       // Formatear la fecha como MM/yyyy
       const formattedFecha =  format(new Date(item.fecha), 'MMMM - yyyy',);

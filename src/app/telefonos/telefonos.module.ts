@@ -23,6 +23,8 @@ import { CardModule } from 'primeng/card';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CalendarModule } from 'primeng/calendar';
 import { ConsumoComponent } from './consumos/consumo.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -47,9 +49,11 @@ import { ConsumoComponent } from './consumos/consumo.component';
     CardModule,
     InputNumberModule,
     CalendarModule,
-    SpeedDialModule
+    SpeedDialModule,
+    ConfirmDialogModule
     
   ], 
+  providers: [ConfirmationService],
   exports: [
     TelefonosComponent
   ]
