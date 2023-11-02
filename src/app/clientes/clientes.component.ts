@@ -37,7 +37,7 @@ export class ClientesComponent {
   //Inicializar lista de clientes
 
   getClientesList() {
-    this.clienteService.getClientes().subscribe(
+    this.clienteService.getClientesVisible(true).subscribe(
       response => {
         console.log(response);
         this.clientes = response;
@@ -46,6 +46,7 @@ export class ClientesComponent {
   }
 
   //borrar Cliente
+  /*
   borrarUsuario(id:number){
     this.clienteService.deleteCliente(id).subscribe(
       response => {
@@ -66,7 +67,27 @@ export class ClientesComponent {
       });
       }
     )
-    
+    */
+   borrarUsuario(id:number){
+    this.clienteService.toggleVisibiltyCliente(id).subscribe(
+      response => {
+        console.log(response);
+        //refresh
+        this.getClientesList();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Operación exitosa',
+          detail: 'El usuario ha sido borrado correctamente.'
+      });
+      }, (error) => {
+        console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Operación fallada',
+          detail: 'El usuario no ha sido borrado.'
+      });
+      }
+    )
   }
   //editar nombre
  

@@ -18,11 +18,19 @@ export class TelefonoService {
     return this.http.get<Telefono[]>(this.url);
 
   }
+  getTelefonosClienteVisible(idCliente:number, visible:Boolean): Observable<Telefono[]>{
+ 
+  
+ 
+    return this.http.get<Telefono[]>('http://localhost:3000/visible/telefonos/'+idCliente+'/'+visible );
+  }
+  
   getTelefonosCliente(idCliente:number): Observable<Telefono[]>{
 
     return this.http.get<Telefono[]>('http://localhost:3000/clientes/'+idCliente+'/telefonos');
 
   }
+  
 
   getCliente(idCliente:number):Observable <Cliente>{
     return this.http.get<Cliente>('http://localhost:3000/clientes/' + idCliente );
@@ -75,5 +83,13 @@ export class TelefonoService {
   getClienteFromTlf(id_telefono:number): Observable<Cliente>{
     return this.http.get<Cliente>(this.url+ id_telefono+'/cliente');
   }
+
+  toggleVisibiltyTelefono(id:number) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.put<any>(this.url + id.toString(), headers);
+  }
+  
 }
 

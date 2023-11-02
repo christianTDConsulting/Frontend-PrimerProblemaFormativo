@@ -1,7 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Cliente } from './cliente';
+
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,13 @@ export class ClienteService {
   getClientes(): Observable<Cliente[]>{
     return this.http.get<Cliente[]>(this.url);
   }
+  getClientesVisible(visible:Boolean): Observable<Cliente[]>{
+ 
+  
+ 
+    return this.http.get<Cliente[]>('http://localhost:3000/visible/clientes/'+visible );
+  }
+  
   deleteCliente(id:number){
     const body = { id: id };
 
@@ -70,5 +78,14 @@ export class ClienteService {
   getCliente(id:number): Observable<Cliente>{
     return this.http.get<Cliente>(this.url + id);
   }
+
+  toggleVisibiltyCliente(id:number) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.put<any>(this.url + id.toString(), headers);
+  }
+  
+
   
 }
