@@ -44,7 +44,7 @@ export class ClientesComponent {
   }
 
   //borrar Cliente
-  borrarUsuario(id:string){
+  borrarUsuario(id:number){
     this.clienteService.deleteCliente(id).subscribe(
       response => {
         console.log(response);
@@ -133,7 +133,7 @@ export class ClientesComponent {
 
  
   //abrir dynamic dialog de telefonos
-  show(id:string){
+  show(id:number){
     this.clienteService.getCliente(id).subscribe(
       (cliente: Cliente) => {
         this.ref = this.dialogService.open(TelefonosComponent, {
@@ -184,7 +184,7 @@ showCreation(){
 }
 
 //abrir dynamic dialog de Edicion
-showEdition(id:string){
+showEdition(id:number){
   this.clienteService.getCliente(id).subscribe(
     (cliente: Cliente) => {
       this.ref = this.dialogService.open(DataClienteComponent, {
@@ -215,7 +215,7 @@ showEdition(id:string){
 actions: any[] = [];
 
 
-createActions(clientesId: string) {
+createActions(clientesId: number) {
   this.actions = [
     { 
       icon: 'pi pi-user-edit', 
@@ -224,21 +224,22 @@ createActions(clientesId: string) {
       },
     }, 
     { 
-      icon: 'pi pi-trash', 
-      command: () => { 
-        this.borrarUsuario(clientesId);
-      } 
-    }, 
-    { 
       icon: 'pi pi-phone', 
       command: () => { 
         this.show(clientesId);
       } 
     },
+    { 
+      icon: 'pi pi-trash', 
+      command: () => { 
+        this.borrarUsuario(clientesId);
+      } 
+    }, 
+   
   ];
 }
 
-onClickSpeedDial(clientesId: string) {
+onClickSpeedDial(clientesId: number) {
   this.createActions(clientesId);
 }
 

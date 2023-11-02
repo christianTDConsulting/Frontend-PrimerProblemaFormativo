@@ -67,7 +67,7 @@
                
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-telefonos >
+        <ng-template pTemplate="body" let-telefonos>
             <tr> 
                 <td>
                    
@@ -95,7 +95,7 @@
                     </div>    
                     <div class="p-mt-3 p-mb-3 flex "  > 
                         <input type="text" pKeyFilter="int" [hidden] = "inputTextBool"  [value]="telefonos.numero" pInputText (keyup.enter)="editarTelefono(telefonos)"   [(ngModel)]="telefonos.numero" [id]="'editar' + telefonos.numero">
-                        <p-button icon="pi pi-check" [hidden] = "inputTextBool" (onClick)="changeInputBool()"></p-button>
+                        <p-button icon="pi pi-check" [hidden] = "inputTextBool" (onClick)="editarTelefono(telefonos)"></p-button>
                     </div>             
                    
                 </div>

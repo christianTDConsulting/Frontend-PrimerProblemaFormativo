@@ -99,7 +99,7 @@ export class DataClienteComponent {
       }
 
   //METODOS
-  initParams(id:string){
+  initParams(id:number){
     this.clienteService.getCliente(id).subscribe(
       response => {
 

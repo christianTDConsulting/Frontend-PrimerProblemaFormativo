@@ -16,7 +16,7 @@ export class ClienteService {
   getClientes(): Observable<Cliente[]>{
     return this.http.get<Cliente[]>(this.url);
   }
-  deleteCliente(id:string){
+  deleteCliente(id:number){
     const body = { id: id };
 
     // Define las cabeceras de la solicitud, si es necesario
@@ -67,7 +67,7 @@ export class ClienteService {
       //especificar tipo de datos
     return this.http.put<any>(this.url, cliente, options);
   }
-  getCliente(id:String): Observable<Cliente>{
+  getCliente(id:number): Observable<Cliente>{
     return this.http.get<Cliente>(this.url + id);
   }
   
