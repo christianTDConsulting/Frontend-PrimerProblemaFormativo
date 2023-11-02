@@ -3,9 +3,10 @@ import { ClienteService } from './cliente.service';
 import { Router } from '@angular/router';
 import { Cliente } from './cliente';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { TelefonosComponent } from '../telefonos/telefonos.component';
 import { DataClienteComponent } from '../data-cliente/data-cliente.component';
+
 
 @Component({
   selector: 'app-clientes',
@@ -25,6 +26,7 @@ export class ClientesComponent {
     private clienteService: ClienteService,
     public dialogService: DialogService,  
     public messageService : MessageService,
+    public confirmationService : ConfirmationService
   
   ){}
 
@@ -35,7 +37,7 @@ export class ClientesComponent {
   //Inicializar lista de clientes
 
   getClientesList() {
-    this.clienteService.getClientes().subscribe(
+    this.clienteService.getClientesVisible(true).subscribe(
       response => {
         console.log(response);
         this.clientes = response;
@@ -44,6 +46,7 @@ export class ClientesComponent {
   }
 
   //borrar Cliente
+  /*
   borrarUsuario(id:number){
     this.clienteService.deleteCliente(id).subscribe(
       response => {
@@ -64,7 +67,27 @@ export class ClientesComponent {
       });
       }
     )
-    
+    */
+   borrarUsuario(id:number){
+    this.clienteService.toggleVisibiltyCliente(id).subscribe(
+      response => {
+        console.log(response);
+        //refresh
+        this.getClientesList();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Operación exitosa',
+          detail: 'El usuario ha sido borrado correctamente.'
+      });
+      }, (error) => {
+        console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Operación fallada',
+          detail: 'El usuario no ha sido borrado.'
+      });
+      }
+    )
   }
   //editar nombre
  
@@ -232,7 +255,22 @@ createActions(clientesId: number) {
     { 
       icon: 'pi pi-trash', 
       command: () => { 
-        this.borrarUsuario(clientesId);
+        
+          this.confirmationService.confirm({
+            message: '¿Estas seguro que quieres eliminar el cliente?',
+            header: 'Confirmación',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => this.borrarUsuario(clientesId),
+            reject: () =>  {
+              this.messageService.add({
+                severity: 'info',
+                summary: 'Atención',
+                detail: 'Cliente no borrado.',
+                key: 'tlf',
+              });
+              this.confirmationService.close();
+            }
+          });
       } 
     }, 
    

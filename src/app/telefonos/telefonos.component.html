@@ -67,11 +67,22 @@
                
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-telefonos>
+        <ng-template pTemplate="body" let-telefonos  let-i="rowIndex">
             <tr> 
                 <td>
                    
-                 <app-consumo [telefono]="telefonos" > </app-consumo>
+                 <app-consumo [telefono]="telefonos" [hidden]="inputTextBool[i]"  > </app-consumo>
+                 <div class="flex flex-column gap-2">
+                    <label [hidden] = "!inputTextBool[i]"  htmlFor="username">Nº de telefono</label>
+                    <input 
+                    type="text"
+                     pKeyFilter="int" 
+                    [hidden] = "!inputTextBool[i]" 
+                     pInputText (keyup.enter)="editarTelefono(telefonos, i)"
+                    [(ngModel)]="telefonos.numero" 
+                    [id]="'editar' + telefonos.numero">
+                    <small  [hidden] = "!inputTextBool[i]"  id="username-help">Escribe un nuevo número de teléfono que sea correcto.</small>
+                </div>             
                
                 </td>
               
@@ -84,19 +95,18 @@
                     <div class="p-mt-3 p-mb-3 flex"> 
                        
                         <div>
-                            <p-speedDial #speedDial [hidden] = "!inputTextBool" direction="right" [model]="actions" (onClick)="onClickSpeedDial(telefonos.id)"></p-speedDial>   
-                           
                             
+                            <p-confirmDialog header="Confirmation" width="425"></p-confirmDialog>
+                            <p-speedDial #speedDial [hidden] = "inputTextBool[i]" direction="right" [model]="actions" (onClick)="onClickSpeedDial(telefonos.id, i)"></p-speedDial>   
+                            <p-button [hidden] = "!inputTextBool[i]" icon="pi pi-times" severity="danger" (onClick)="closeEdit(i)"></p-button>
+ 
                         </div>
                        
                      
                     
                         
                     </div>    
-                    <div class="p-mt-3 p-mb-3 flex "  > 
-                        <input type="text" pKeyFilter="int" [hidden] = "inputTextBool"  [value]="telefonos.numero" pInputText (keyup.enter)="editarTelefono(telefonos)"   [(ngModel)]="telefonos.numero" [id]="'editar' + telefonos.numero">
-                        <p-button icon="pi pi-check" [hidden] = "inputTextBool" (onClick)="editarTelefono(telefonos)"></p-button>
-                    </div>             
+                             
                    
                 </div>
 
