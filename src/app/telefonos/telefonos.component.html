@@ -37,11 +37,12 @@
         <ng-template pTemplate="header">
             <tr>
                 <th style="width: 80%;">
-                    Añadir nuevo número de teléfono
-                    <span style="margin: 0 8px;"></span> 
+                   
+                    
 
                     <form [formGroup]="formTlf">
-                        <input type="text"  pKeyFilter="int " [placeholder]="'999 999 999'" pInputText  formControlName="telefono" id = "nuevoTelefono" (keyup.enter)="crearTelefono()" />
+                        <span class="font-bold block mb-2">Crear teléfono</span>
+                        <p-inputMask mask="999-999-999" type="text"  pKeyFilter="int " placeholder="999-999-999" pInputText  formControlName="telefono" id = "nuevoTelefono" (keyup.enter)="crearTelefono()" />
                         <span style="margin: 0 8px;"></span> 
                         <p-button label="Nuevo" (click)="crearTelefono()" severity="success"></p-button>    
                     </form>
@@ -74,13 +75,13 @@
                  <app-consumo [telefono]="telefonos" [hidden]="inputTextBool[i]"  > </app-consumo>
                  <div class="flex flex-column gap-2">
                     <label [hidden] = "!inputTextBool[i]"  htmlFor="username">Nº de telefono</label>
-                    <input 
+                    <p-inputMask mask="999-999-999" placeholder="999-999-999" 
                     type="text"
                      pKeyFilter="int" 
                     [hidden] = "!inputTextBool[i]" 
-                     pInputText (keyup.enter)="editarTelefono(telefonos, i)"
+                     (keyup.enter)="editarTelefono(telefonos, i)"
                     [(ngModel)]="telefonos.numero" 
-                    [id]="'editar' + telefonos.numero">
+                    [id]="'editar' + telefonos.numero"/>
                     <small  [hidden] = "!inputTextBool[i]"  id="username-help">Escribe un nuevo número de teléfono que sea correcto.</small>
                 </div>             
                

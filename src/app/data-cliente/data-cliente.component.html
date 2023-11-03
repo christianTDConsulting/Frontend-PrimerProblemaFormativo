@@ -35,6 +35,7 @@
 
       </div>
       <div class="p-col">
+        
         Fecha de nacimiento *
         <div class="box mb-5">
           
@@ -48,16 +49,19 @@
 
       <div *ngIf="crear; else editar">
         
-        <div class="p-col">
-          <div class="box mb-5">
-            <span class="p-float-label">
-              <input type="text" pKeyFilter="int "  pInputText  formControlName="telefono"  [id]="'nuevoTelefono'"/> 
-              <label >Añade un teléfono</label>
-            </span>
-          
-          </div>
+      
+         
+      <div class="p-col">
+        <div class="box mb-5">
+        <span class="p-float-label">
+          <p-inputMask mask="999-999-999" placeholder="999-999-999" type="text" pKeyFilter="int "    formControlName="telefono"  [id]="'nuevoTelefono'"/> 
+          <label >Añade un teléfono</label>
+        </span>
         </div>
+      </div>
     
+
+
         <div>
           <p-button label="Crear " (click)="crearUsuario()" severity="success"></p-button>
         </div>

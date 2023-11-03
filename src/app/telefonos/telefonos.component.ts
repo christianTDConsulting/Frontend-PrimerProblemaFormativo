@@ -34,7 +34,7 @@ export class TelefonosComponent {
 
   // Validator tld
   formTlf = new FormGroup({
-    telefono: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{9}$")])
+    telefono: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{3}-[0-9]{3}-[0-9]{3}$")])
   });
  
 
@@ -54,20 +54,17 @@ export class TelefonosComponent {
   //------------------MÉTODOS TELEFONO------------------------//
   //////////////////////////////////////////////////////////////
   ngOnInit(): void {
-    const clienteId = this.getParam();
+    const clienteId: number = this.getParam();
+    console.log(clienteId);
     if (clienteId !== null) {
-      this.getCliente(clienteId!);
-      this.getTelefonosList(clienteId!);
+      this.getCliente(clienteId);
+      this.getTelefonosList(clienteId);
 
     }
   }
 
-  getParam() {
-    if (this.cliente) {
-      return this.cliente.id;
-    } else {
-      return null; // o algún valor por defecto si `cliente` es `null` o `undefined`
-    }
+  getParam(): number {
+    return this.dialogConfig.data.id;
   }
   
   getTelefonosList(id: number) {
@@ -128,7 +125,7 @@ export class TelefonosComponent {
         console.log(response);
 
         const ClienteId = this.getParam();
-        this.getTelefonosList(ClienteId!);
+        this.getTelefonosList(ClienteId);
         
 
         this.messageService.add({
@@ -162,7 +159,7 @@ export class TelefonosComponent {
           console.log(response);
           const ClienteId = this.getParam();
           if (ClienteId !== null) {
-            this.getTelefonosList(ClienteId!);
+            this.getTelefonosList(ClienteId);
             this.messageService.add({
               severity: 'success',
               summary: 'Operación exitosa',
@@ -185,14 +182,14 @@ export class TelefonosComponent {
       this.messageService.add({
         severity: 'info',
         summary: 'Atención',
-        detail: 'Escriba un número de teléfono válido: 9 dígitos sin espacios.',
+        detail: 'Asegúrese de que el teléfono introducido es válido..',
         key: 'tlf',
       });
     }
   }
 
   isValidTelephone(numero: string): boolean {
-    return /^[0-9]{9}$/.test(numero);
+    return /^[0-9]{3}-[0-9]{3}-[0-9]{3}$/.test(numero);
   }
 
   editarTelefono(telefono: Telefono, index:number) {
@@ -224,11 +221,11 @@ export class TelefonosComponent {
       this.messageService.add({
         severity: 'info',
         summary: 'Atención',
-        detail: 'Teléfono no editado: Asegúrese de que el teléfono es válido.',
+        detail: 'Teléfono no editado: Asegúrese de que el teléfono introducido es válido.',
         key: 'tlf',
       });
       const ClienteId = this.getParam();
-      this.getTelefonosList(ClienteId!);
+      this.getTelefonosList(ClienteId);
     }
     this.changeInputBool(index); //SpeedDial
   }
@@ -251,7 +248,7 @@ changeInputBool(index:number) {
 closeEdit(index:number){
 
   const ClienteId = this.getParam();
-  this.getTelefonosList(ClienteId!);
+  this.getTelefonosList(ClienteId);
   this.messageService.add({
     severity: 'info',
     summary: 'Atención',

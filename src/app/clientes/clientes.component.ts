@@ -119,7 +119,7 @@ export class ClientesComponent {
 
   //comprobar que el correo es correcto
   private isValidEmail(email: string): boolean {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
   }
   editarEmail(cliente:Cliente){
     if (this.isValidEmail(cliente.email)){

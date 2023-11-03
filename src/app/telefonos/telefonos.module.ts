@@ -26,6 +26,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { ConsumoComponent } from './consumos/consumo.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
+import { InputMaskModule } from 'primeng/inputmask';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { ConfirmationService } from 'primeng/api';
     CalendarModule,
     SpeedDialModule,
     ConfirmDialogModule,
-    SelectButtonModule
+    SelectButtonModule,
+    InputMaskModule
     
   ], 
   providers: [ConfirmationService],
