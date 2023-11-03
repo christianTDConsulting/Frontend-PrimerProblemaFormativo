@@ -14,10 +14,10 @@
                             
                       </div>
                       <div class="inline-block mb-3 mx-3">
-                          <span class="p-float-label">
-                              <p-calendar [showIcon]="true" view="month"   dateFormat="mm/yy" formControlName="fecha"  ></p-calendar>
-                              <label>Fecha</label>
-                          </span>
+                        <div class="flex flex-column gap-2"> 
+                            <p-calendar [showIcon]="true" view="month"   dateFormat="mm/yy" formControlName="fecha" placeholder="fecha" ></p-calendar>
+                            <small id="FechaHelp">Ponga la fecha del consumo </small>
+                        </div>
                       </div>
                       <div class="block  mx-3 ">
                           <p-button label="Crear consumo"  (click)="crearConsumo(telefono)" severity="success"></p-button>
@@ -33,16 +33,17 @@
 
           </div>
           <div class="card-container">
-                  <div class="inline-block  mx-3">
-                      <p-toggleButton [(ngModel)]="checkedConsumo" onLabel="Tabla" offLabel="Gráfica"></p-toggleButton>                                              
+                  <div class="inline-block  mx-2">
+                     <!-- <p-toggleButton [(ngModel)]="checkedConsumo" onLabel="Tabla" offLabel="Gráfica"></p-toggleButton>  -->  
+                     <p-selectButton [options]="opcionesSelectButton" [(ngModel)]="checkedConsumo" [hidden]="emptychart"></p-selectButton>                                       
                  </div>
 
-                 <div class="inline-block  mx-3">
-                      <p-button label="Generar pdf" (click)="generatePDF(telefono, true)" icon="pi pi-file-pdf"  ></p-button>
+                 <div class="inline-block  mx-2">
+                      <p-button label="Generar pdf" (click)="generatePDF(telefono, true)" icon="pi pi-file-pdf" [hidden]="emptychart" ></p-button>
                  </div>
 
-                 <div class="inline-block  mx-3">
-                      <p-button label="Mandar por email" icon="pi pi-send" (click)="generatePDF(telefono,false)"></p-button>
+                 <div class="inline-block  mx-2">
+                      <p-button label="Mandar por email" icon="pi pi-send" (click)="generatePDF(telefono,false)" [hidden]="emptychart"></p-button>
                  </div>  
           
           </div>
@@ -91,7 +92,12 @@
                   <tr>
                       
                       <td>
-                          <p-inputNumber [showButtons]="true"  [(ngModel)]="consumo.consumo" (keyup.enter)="editarConsumo(consumo, telefono)"  mode="currency" currency="EUR" inputId="withoutgrouping" [useGrouping]="false"> </p-inputNumber>
+                        <div class="flex flex-column gap-2">
+                            <!-- <small id="Help">Pulsa 'enter' para editar </small> -->
+                            <p-inputNumber [showButtons]="true"  [(ngModel)]="consumo.consumo" (keyup.enter)="editarConsumo(consumo, telefono)" (onBlur)="editarConsumo(consumo, telefono)"  mode="currency" currency="EUR" inputId="withoutgrouping" [useGrouping]="false"> </p-inputNumber>
+                            
+                        </div>
+                          
                       </td>
                       <td>
                          
@@ -104,6 +110,7 @@
                       </td>
                       <td>                                           
                           <p-button label="Borrar Consumo"  (click)="eliminarConsumo(consumo.id, telefono)" severity="danger" ></p-button>
+    
                       </td>
                       
                   </tr>

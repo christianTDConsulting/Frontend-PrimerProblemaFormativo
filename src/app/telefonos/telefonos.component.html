@@ -97,7 +97,7 @@
                         <div>
                             
                             <p-confirmDialog header="Confirmation" width="425"></p-confirmDialog>
-                            <p-speedDial #speedDial [hidden] = "inputTextBool[i]" direction="right" [model]="actions" (onClick)="onClickSpeedDial(telefonos.id, i)"></p-speedDial>   
+                            <p-speedDial #speedDial [hidden] = "inputTextBool[i]" direction="right" showIcon="pi pi-phone" [model]="actions" (onClick)="onClickSpeedDial(telefonos.id, i)"></p-speedDial>   
                             <p-button [hidden] = "!inputTextBool[i]" icon="pi pi-times" severity="danger" (onClick)="closeEdit(i)"></p-button>
  
                         </div>

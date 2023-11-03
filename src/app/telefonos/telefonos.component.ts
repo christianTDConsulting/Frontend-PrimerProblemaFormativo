@@ -54,18 +54,22 @@ export class TelefonosComponent {
   //------------------MÉTODOS TELEFONO------------------------//
   //////////////////////////////////////////////////////////////
   ngOnInit(): void {
-    const clienteId:number = this.getParam();
+    const clienteId = this.getParam();
     if (clienteId !== null) {
-      this.getCliente(clienteId);
-      this.getTelefonosList(clienteId);
+      this.getCliente(clienteId!);
+      this.getTelefonosList(clienteId!);
 
     }
   }
 
-  private getParam() {
-    return this.dialogConfig.data.id;
+  getParam() {
+    if (this.cliente) {
+      return this.cliente.id;
+    } else {
+      return null; // o algún valor por defecto si `cliente` es `null` o `undefined`
+    }
   }
-
+  
   getTelefonosList(id: number) {
     this.telefonoService.getTelefonosClienteVisible(id,true).pipe(takeUntil(this.destroy$)).subscribe(
       (response: Telefono[]) => {
@@ -124,7 +128,7 @@ export class TelefonosComponent {
         console.log(response);
 
         const ClienteId = this.getParam();
-        this.getTelefonosList(ClienteId);
+        this.getTelefonosList(ClienteId!);
         
 
         this.messageService.add({
@@ -158,7 +162,7 @@ export class TelefonosComponent {
           console.log(response);
           const ClienteId = this.getParam();
           if (ClienteId !== null) {
-            this.getTelefonosList(ClienteId);
+            this.getTelefonosList(ClienteId!);
             this.messageService.add({
               severity: 'success',
               summary: 'Operación exitosa',
@@ -224,7 +228,7 @@ export class TelefonosComponent {
         key: 'tlf',
       });
       const ClienteId = this.getParam();
-      this.getTelefonosList(ClienteId);
+      this.getTelefonosList(ClienteId!);
     }
     this.changeInputBool(index); //SpeedDial
   }
@@ -247,7 +251,7 @@ changeInputBool(index:number) {
 closeEdit(index:number){
 
   const ClienteId = this.getParam();
-  this.getTelefonosList(ClienteId);
+  this.getTelefonosList(ClienteId!);
   this.messageService.add({
     severity: 'info',
     summary: 'Atención',

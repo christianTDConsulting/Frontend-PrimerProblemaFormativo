@@ -47,6 +47,7 @@ export class ConsumoComponent implements OnInit {
    
    loading = false;
    checkedConsumo: boolean = false;
+  opcionesSelectButton = [{label: 'Tabla', value: true}, {label: 'Gráfica', value: false}];
    emptychart: boolean = true;
    consumosPorTelefono: Consumo[] = [];
    chartData = {};
@@ -115,6 +116,8 @@ export class ConsumoComponent implements OnInit {
   //------------------MÉTODOS CONSUMOS -----------------------//
   //////////////////////////////////////////////////////////////
 
+ 
+   
   getData(telefono: Telefono) {
     this.loading = true; //Activa el loading
     if (telefono.id != null) { //Si existe no es null
