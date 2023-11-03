@@ -19,8 +19,8 @@ export class ClientesComponent {
   clientes: Cliente[] = [];
   ref : DynamicDialogRef | undefined;
   displayDialog: boolean = false;
-
-  
+  selectClientes: Cliente[] = [];
+  eliminados:Boolean = false;
 
   constructor(
     private clienteService: ClienteService,
@@ -68,17 +68,34 @@ export class ClientesComponent {
       }
     )
     */
+    deleteSelectedClientes() {
+      this.selectClientes.map(cliente => {
+        this.borrarUsuario(cliente.id!);
+      })
+    }
+    
+    
    borrarUsuario(id:number){
     this.clienteService.toggleVisibiltyCliente(id).subscribe(
       response => {
         console.log(response);
         //refresh
-        this.getClientesList();
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Operación exitosa',
-          detail: 'El usuario ha sido borrado correctamente.'
-      });
+        if (this.eliminados){
+          this.getListEliminados();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Operación exitosa',
+            detail: 'El usuario ha sido recuperado correctamente.'
+        });
+        }else{
+          this.getClientesList();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Operación exitosa',
+            detail: 'El usuario ha sido borrado correctamente.'
+        });
+        }
+       
       }, (error) => {
         console.log(error);
         this.messageService.add({
@@ -277,9 +294,41 @@ createActions(clientesId: number) {
   ];
 }
 
+getListEliminados(){
+  this.clienteService.getClientesVisible(false).subscribe(
+    response => {
+      console.log(response);
+      this.clientes = response;
+      
+    } //control de error
+  )
+}
 onClickSpeedDial(clientesId: number) {
   this.createActions(clientesId);
 }
+items = [
+  {
+      label: 'Clientes',
+      icon: 'pi pi-user',
+      command: () => {
+        this.eliminados = false;
+          this.getClientesList();
+      }
+     
+  },
+  {
+      label: 'Eliminados',
+      icon: 'pi-trash',
+      command: () => {
+        this.eliminados = true;
+        this.getListEliminados();
+      }
+  },
+  
+];
+
+
+
 
 } 
 

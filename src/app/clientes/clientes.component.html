@@ -1,17 +1,40 @@
 
-<h1> Clientes</h1>
-
-
 <p-toast></p-toast>
+<p-toolbar styleClass="mb-4 gap-2">
+
+    <ng-template pTemplate="left">
+        <div *ngIf="!eliminados; else recuperar">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="showCreation()"></button>
+            <button pButton pRipple [hidden]="!eliminados" label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedClientes()" [disabled]="!selectClientes || !selectClientes.length"></button>
+          
+          </div>
+          
+          <ng-template #recuperar>
+            <!-- Se mostrará si la condición es falsa -->
+            <button pButton pRipple [hidden]="!eliminados" label="Recuperar" icon="pi pi-backward" class="p-button-danger" (click)="deleteSelectedClientes()" [disabled]="!selectClientes || !selectClientes.length"></button>
+          </ng-template>
+        
+    </ng-template>
+
+    <ng-template pTemplate="right">
+       
+        <p-splitButton label="Opciones" [model]="items"  styleClass="p-button-help mr-2 mb-2"></p-splitButton>
+    </ng-template>
+
+   
+</p-toolbar>
+
 <div class ="card">
     <p-table 
     [value]="clientes"
     #dt2
     dataKey="id"
-    [rows]="7"
+    [rows]="5"
+    [scrollable]="true" 
     [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[7, 14, 21]"
+    [rowsPerPageOptions]="[5, 10, 15]"
     [paginator]="true"
+    [(selection)]="selectClientes"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
     [globalFilterFields]="['id', 'nombre', 'email']"
     [tableStyle]="{ 'min-width': '75rem' }"
@@ -34,31 +57,27 @@
         
 
     </ng-template>
-   
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between" >
+            <label [hidden]="eliminados"> Clientes</label>
+            <label [hidden]="!eliminados"> Clientes Eliminados</label>
+         
+        </div>
+    </ng-template>
 
         <ng-template pTemplate="header">
+          
             <tr>
-            <th></th>
-            <th  style="width:40%">
-                Añadir nuevo usuario
-                <span style="margin: 0 8px;"></span> 
-                 <p-button label="Nuevo" severity="success"  pRipple (click)="showCreation()" ></p-button>
-            </th>
-            <th></th>
-            <th></th>
-            <th></th>
-            
-            
-        </tr>
-            <tr>
+                <th style="width:1%"></th>
                 <th pSortableColumn="id" style="width:10%">Id <p-sortIcon field="id"></p-sortIcon></th>
-                <th pSortableColumn="nombre" style="width:25%">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+                <th pSortableColumn="nombre" style="width:30%">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
                 <th pSortableColumn="nombre" style="width:30%">Email <p-sortIcon field="email"></p-sortIcon></th>
     
-                <th style="width: 35%;">Opciones</th>
+                <th>Opciones</th>
                 
             </tr>
             <tr>
+                <th></th>
                 <th>
                     <p-columnFilter type="text" field="id"></p-columnFilter>
                     
@@ -69,11 +88,12 @@
 
                 <th><p-columnFilter type="text" field="email"></p-columnFilter></th>
                 <th></th>
-                <th></th>
+              
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-clientes>
             <tr>
+                <td>  <p-tableCheckbox [value]="clientes"></p-tableCheckbox> </td>
                 <td>{{ clientes.id }}</td>
                
                 <td>
@@ -98,12 +118,17 @@
                         </div>
                     </div>
                     -->
-                    <div class="card" style="height: 80px;">
-                        <p-confirmDialog header="Confirmation" width="425"></p-confirmDialog>
-                        <div class="p-mt-3 p-mb-3">  <p-speedDial   direction="right" [model]="actions" (onClick)="onClickSpeedDial(clientes.id)"></p-speedDial> </div>                 
-                             
+                    <div *ngIf="!eliminados; else recuperar">
+                        <div class="card" style="height: 80px;">
+                            <p-confirmDialog header="Confirmation" width="425"></p-confirmDialog>
+                            <div class="p-mt-3 p-mb-3">  <p-speedDial   direction="right" [model]="actions" (onClick)="onClickSpeedDial(clientes.id)"></p-speedDial> </div>                 
+                                
+                        </div>
                     </div>
-                    
+                    <ng-template #recuperar>
+                        <!-- Se mostrará si la condición es falsa -->
+                        <button pButton pRipple [hidden]="!eliminados" label="Recuperar" icon="pi pi-backward" class="p-button-danger" (click)="borrarUsuario(clientes.id)" ></button>
+                      </ng-template>
                 </td>
                 
     
