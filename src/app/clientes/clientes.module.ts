@@ -16,8 +16,7 @@ import { SpeedDialModule } from 'primeng/speeddial';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { ToolbarModule } from 'primeng/toolbar';
-import { SplitButtonModule } from 'primeng/splitbutton';
-
+import { DropdownModule } from 'primeng/dropdown';
 @NgModule({
   declarations: [
     ClientesComponent
@@ -38,7 +37,8 @@ import { SplitButtonModule } from 'primeng/splitbutton';
     SpeedDialModule,
     ConfirmDialogModule,
     ToolbarModule,
-    SplitButtonModule
+
+    DropdownModule
  
     ],
   providers: [ConfirmationService],
