@@ -4,5 +4,4 @@ export interface Cliente {
     email: string,
     bio: string,
     nacimiento: Date
-
 }

@@ -15,7 +15,8 @@ import { ToastModule } from 'primeng/toast';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
-
+import { ToolbarModule } from 'primeng/toolbar';
+import { DropdownModule } from 'primeng/dropdown';
 @NgModule({
   declarations: [
     ClientesComponent
@@ -35,6 +36,9 @@ import { ConfirmationService } from 'primeng/api';
     DataClienteModule,
     SpeedDialModule,
     ConfirmDialogModule,
+    ToolbarModule,
+
+    DropdownModule
  
     ],
   providers: [ConfirmationService],

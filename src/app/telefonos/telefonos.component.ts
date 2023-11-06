@@ -34,7 +34,7 @@ export class TelefonosComponent {
 
   // Validator tld
   formTlf = new FormGroup({
-    telefono: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{9}$")])
+    telefono: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{3}-[0-9]{3}-[0-9]{3}$")])
   });
  
 
@@ -54,7 +54,8 @@ export class TelefonosComponent {
   //------------------MÉTODOS TELEFONO------------------------//
   //////////////////////////////////////////////////////////////
   ngOnInit(): void {
-    const clienteId:number = this.getParam();
+    const clienteId: number = this.getParam();
+    console.log(clienteId);
     if (clienteId !== null) {
       this.getCliente(clienteId);
       this.getTelefonosList(clienteId);
@@ -62,10 +63,10 @@ export class TelefonosComponent {
     }
   }
 
-  private getParam() {
+  getParam(): number {
     return this.dialogConfig.data.id;
   }
-
+  
   getTelefonosList(id: number) {
     this.telefonoService.getTelefonosClienteVisible(id,true).pipe(takeUntil(this.destroy$)).subscribe(
       (response: Telefono[]) => {
@@ -181,14 +182,14 @@ export class TelefonosComponent {
       this.messageService.add({
         severity: 'info',
         summary: 'Atención',
-        detail: 'Escriba un número de teléfono válido: 9 dígitos sin espacios.',
+        detail: 'Asegúrese de que el teléfono introducido es válido..',
         key: 'tlf',
       });
     }
   }
 
   isValidTelephone(numero: string): boolean {
-    return /^[0-9]{9}$/.test(numero);
+    return /^[0-9]{3}-[0-9]{3}-[0-9]{3}$/.test(numero);
   }
 
   editarTelefono(telefono: Telefono, index:number) {
@@ -220,7 +221,7 @@ export class TelefonosComponent {
       this.messageService.add({
         severity: 'info',
         summary: 'Atención',
-        detail: 'Teléfono no editado: Asegúrese de que el teléfono es válido.',
+        detail: 'Teléfono no editado: Asegúrese de que el teléfono introducido es válido.',
         key: 'tlf',
       });
       const ClienteId = this.getParam();

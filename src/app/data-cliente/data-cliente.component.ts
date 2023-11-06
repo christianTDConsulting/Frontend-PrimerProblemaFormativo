@@ -29,11 +29,11 @@ export class DataClienteComponent {
   
   profileForm: FormGroup = new FormGroup({
     nombre: new FormControl('', [Validators.required, Validators.maxLength(50)]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    //email : new FormControl('', [Validators.required, Validators.pattern("^[^\s@]+@[^\s@]+\.[^\s@]+$")]),
+    //email: new FormControl('', [Validators.required, Validators.email]),
+    email : new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")]),
     bio: new FormControl('',[ Validators.maxLength(200)] ),
     nacimiento: new FormControl(new Date("2000-01-01T00:00:00Z"), Validators.required),
-    telefono: new FormControl('',[ Validators.pattern("^[0-9]{9}$")] )
+    telefono: new FormControl('',[ Validators.pattern("^[0-9]{3}-[0-9]{3}-[0-9]{3}$")] )
   
   })
  

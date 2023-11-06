@@ -16,12 +16,25 @@ import { DataClienteComponent } from '../data-cliente/data-cliente.component';
 })
 export class ClientesComponent {
 
+  //////////////////////////////////////////////////////////////
+  //------------------VARIABLES GLOBALES----------------------//
+  //////////////////////////////////////////////////////////////
   clientes: Cliente[] = [];
   ref : DynamicDialogRef | undefined;
   displayDialog: boolean = false;
-
+  selectClientes: Cliente[] = [];
+  //eliminados:Boolean = false;
+  actions: any[] = [];
+  selectedList: 'Clientes' | 'Eliminados' = 'Clientes';
+  items = [
+    { label: 'Clientes', value: 'Clientes' },
+    { label: 'Eliminados', value: 'Eliminados' }
+  ];
   
 
+  //////////////////////////////////////////////////////////////
+  //------------------CONSTRUCTOR-----------------------------//
+  //////////////////////////////////////////////////////////////
   constructor(
     private clienteService: ClienteService,
     public dialogService: DialogService,  
@@ -36,6 +49,9 @@ export class ClientesComponent {
 
   //Inicializar lista de clientes
 
+  //////////////////////////////////////////////////////////////
+  //------------------MÉTOFOD CLIENTES------------------------//
+  //////////////////////////////////////////////////////////////
   getClientesList() {
     this.clienteService.getClientesVisible(true).subscribe(
       response => {
@@ -68,17 +84,57 @@ export class ClientesComponent {
       }
     )
     */
-   borrarUsuario(id:number){
+
+    toggleVisibleStateSelectedClientes() {
+      this.selectClientes.map(cliente => {
+        this.ToggleVisibleStateCliente(cliente.id!);
+      })
+    }
+    deleteSelectedClientes() {
+     
+        
+        this.confirmationService.confirm({
+          message: '¿Estas seguro que quieres eliminar los clientes?',
+          header: 'Confirmación',
+          icon: 'pi pi-exclamation-triangle',
+          accept: () => this.toggleVisibleStateSelectedClientes(),
+          reject: () =>  {
+            this.messageService.add({
+              severity: 'info',
+              summary: 'Atención',
+              detail: 'Cliente no borrado.',
+              key: 'tlf',
+            });
+            this.confirmationService.close();
+        }
+        });
+     
+      
+    }
+    
+    
+   ToggleVisibleStateCliente(id:number){
     this.clienteService.toggleVisibiltyCliente(id).subscribe(
       response => {
         console.log(response);
+        this.selectClientes = [];
         //refresh
-        this.getClientesList();
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Operación exitosa',
-          detail: 'El usuario ha sido borrado correctamente.'
-      });
+        if (this.selectedList==='Eliminados'){
+          this.getListEliminados();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Operación exitosa',
+            detail: 'El usuario ha sido recuperado correctamente.'
+        });
+        }else{
+          this.getClientesList();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Operación exitosa',
+            detail: 'El usuario ha sido borrado correctamente.'
+        });
+        }
+       
       }, (error) => {
         console.log(error);
         this.messageService.add({
@@ -89,8 +145,8 @@ export class ClientesComponent {
       }
     )
   }
+
   //editar nombre
- 
   editarNombre(cliente:Cliente){
     if (cliente.nombre != ''){
       console.log(cliente.nombre)
@@ -119,7 +175,7 @@ export class ClientesComponent {
 
   //comprobar que el correo es correcto
   private isValidEmail(email: string): boolean {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
   }
   editarEmail(cliente:Cliente){
     if (this.isValidEmail(cliente.email)){
@@ -154,6 +210,9 @@ export class ClientesComponent {
   }
 }
 
+  //////////////////////////////////////////////////////////////
+  //------------------DYNAMIC DIALOGS-------------------------//
+  //////////////////////////////////////////////////////////////
  
   //abrir dynamic dialog de telefonos
   show(id:number){
@@ -234,8 +293,12 @@ showEdition(id:number){
 }
 
 
-//Spped Dial
-actions: any[] = [];
+  //////////////////////////////////////////////////////////////
+  //------------------SPEED DIAL Y ELIMINADOS-----------------//
+  //////////////////////////////////////////////////////////////
+
+
+
 
 
 createActions(clientesId: number) {
@@ -260,7 +323,7 @@ createActions(clientesId: number) {
             message: '¿Estas seguro que quieres eliminar el cliente?',
             header: 'Confirmación',
             icon: 'pi pi-exclamation-triangle',
-            accept: () => this.borrarUsuario(clientesId),
+            accept: () => this.ToggleVisibleStateCliente(clientesId),
             reject: () =>  {
               this.messageService.add({
                 severity: 'info',
@@ -277,9 +340,34 @@ createActions(clientesId: number) {
   ];
 }
 
+getListEliminados(){
+  this.clienteService.getClientesVisible(false).subscribe(
+    response => {
+      console.log(response);
+      this.clientes = response;
+      
+    } //control de error
+  )
+}
 onClickSpeedDial(clientesId: number) {
   this.createActions(clientesId);
 }
+
+
+
+updateList(){
+  console.log(this.selectedList);
+  this.selectClientes = [];
+  if(this.selectedList === 'Clientes'){
+   
+    this.getClientesList();
+  }else {
+   
+    this.getListEliminados();
+  }
+}
+
+
 
 } 
 

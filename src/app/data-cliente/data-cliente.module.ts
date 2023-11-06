@@ -15,6 +15,8 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
 import { CalendarModule } from 'primeng/calendar';
 
+import { InputMaskModule } from 'primeng/inputmask';
+
 @NgModule({
   declarations: [
     DataClienteComponent
@@ -30,7 +32,8 @@ import { CalendarModule } from 'primeng/calendar';
     InputTextModule,
     InputTextareaModule,
     ReactiveFormsModule,
-    CalendarModule
+    CalendarModule,
+    InputMaskModule
   ], 
   exports: [
     DataClienteComponent
