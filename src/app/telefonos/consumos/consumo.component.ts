@@ -357,7 +357,7 @@ export class ConsumoComponent implements OnInit {
       
     
       setTimeout(() => {
-        const elemento = document.getElementById('chart'); // Reemplaza 'miVistaModal' con el ID real de tu modal
+        const elemento = document.getElementById('chart'); 
     
         if(elemento){
     
