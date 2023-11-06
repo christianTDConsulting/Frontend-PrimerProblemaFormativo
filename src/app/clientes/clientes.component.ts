@@ -363,7 +363,7 @@ onClickSpeedDial(clientesId: number) {
 
 
 updateList(){
-  console.log(this.selectedList);
+
   this.selectClientes = [];
   if(this.selectedList === 'Clientes'){
    
