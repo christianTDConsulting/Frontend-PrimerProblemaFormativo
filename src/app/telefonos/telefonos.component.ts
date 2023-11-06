@@ -8,7 +8,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-telefonos',
@@ -36,7 +36,18 @@ export class TelefonosComponent {
   formTlf = new FormGroup({
     telefono: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{3}-[0-9]{3}-[0-9]{3}$")])
   });
+
+actions: any[] = []; //speedDial
+ inputTextBool: boolean [] = [];
+ //dropdown
+ itemsDropdown = [
+  { label: 'Telefonos', value: 'Telefonos' },
+  { label: 'Eliminados', value: 'Eliminados' }
+];
+
+ selectedList : 'Telefonos' | 'Eliminados' = 'Telefonos';
  
+selectedTLF: Telefono[] = [];
 
 
   //////////////////////////////////////////////////////////////
@@ -48,8 +59,8 @@ export class TelefonosComponent {
     public messageService: MessageService,
     public confirmationService : ConfirmationService
   ) {}
- 
 
+ 
   //////////////////////////////////////////////////////////////
   //------------------MÉTODOS TELEFONO------------------------//
   //////////////////////////////////////////////////////////////
@@ -62,11 +73,18 @@ export class TelefonosComponent {
 
     }
   }
+  //Limpia los filtros
+  clear(table: Table) {
+    this.selectedTLF = [];
+    table.clear();
+}
 
+//obtiene el id del cliente pasado en el dialog
   getParam(): number {
     return this.dialogConfig.data.id;
   }
   
+  //Lista de todos los telefonos visibles
   getTelefonosList(id: number) {
     this.telefonoService.getTelefonosClienteVisible(id,true).pipe(takeUntil(this.destroy$)).subscribe(
       (response: Telefono[]) => {
@@ -78,7 +96,20 @@ export class TelefonosComponent {
       }
     );
   }
+    //Lista de todos los telefonos eliminados
+  getTelefonosEliminadosList(id: number) {
+    this.telefonoService.getTelefonosClienteVisible(id,false).pipe(takeUntil(this.destroy$)).subscribe(
+      (response: Telefono[]) => {
+        console.log(response);
+        this.telefonos = response;
+      },
+      (error) => {
+        console.error('Error al obtener la lista de teléfonos:', error);
+      }
+    );
+  }
 
+  //obtener el cliente
   getCliente(id: number) {
     this.telefonoService.getCliente(id).subscribe(
       (response: Cliente) => {
@@ -90,6 +121,7 @@ export class TelefonosComponent {
       }
     );
   }
+
 /*
   borrarTelefono(id: number) {
     this.telefonoService.deleteTelefono(id).pipe(takeUntil(this.destroy$)).subscribe(
@@ -119,35 +151,78 @@ export class TelefonosComponent {
     );
   }
   */
-  borrarTelefono(id: number) {
+ //cambiar la visibilidad del telefono
+  toggleVisibleTelefono(id: number) {
     this.telefonoService.toggleVisibiltyTelefono(id).pipe(takeUntil(this.destroy$)).subscribe(
       response => {
         console.log(response);
 
         const ClienteId = this.getParam();
-        this.getTelefonosList(ClienteId);
+        this.selectedTLF = [];
         
+        if (this.selectedList === 'Telefonos'){
+          this.getTelefonosList(ClienteId); //refresh
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Operación exitosa',
+            detail: 'El telefono ha sido borrado correctamente.',
+            key: 'tlf',
+          });
+          this.confirmationService.close();
+        } else{
+          this.getTelefonosEliminadosList(ClienteId); //refresh
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Operación exitosa',
+            detail: 'El telefono ha sido recuperado correctamente.',
+            key: 'tlf',
+          });
+          this.confirmationService.close();
+        }
 
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Operación exitosa',
-          detail: 'El telefono ha sido borrado correctamente.',
-          key: 'tlf',
-        });
-        this.confirmationService.close();
+       
       },
       (error) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Operación fallada',
-          detail: 'El teléfono no ha sido borrado.',
+          detail: 'El teléfono no ha sido borrado/recuperado.',
           key: 'tlf',
         });
         console.log(error);
       }
     );
   }
+  //cambiar la visibilidad de varios telefonos seleccionados
+  toggleVisibleSelectedTelefonos() {
+    this.selectedTLF.map(telefono => {
+      this.toggleVisibleTelefono(telefono.id);
+    })
+  }
 
+  //Cambiar visibilidad de varios telefonos con confirmationService
+  deleteSelectedTelefonos() {
+   
+      
+      this.confirmationService.confirm({
+        message: '¿Estás seguro que quieres eliminar los telefonos?',
+        header: 'Confirmación',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => this.toggleVisibleSelectedTelefonos(),
+        reject: () =>  {
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Atención',
+            detail: 'Telefono no borrado.',
+            key: 'tlf',
+          });
+          this.confirmationService.close();
+      }
+      });
+   
+    
+  }
+  
   crearTelefono() {
     if (this.formTlf.valid && this.cliente.id !== undefined) {
       const nuevoTelefono = this.formTlf.value.telefono as string;
@@ -179,10 +254,11 @@ export class TelefonosComponent {
         }
       );
     } else {
+      console.log(this.formTlf.value);
       this.messageService.add({
         severity: 'info',
         summary: 'Atención',
-        detail: 'Asegúrese de que el teléfono introducido es válido..',
+        detail: 'Asegúrese de que el teléfono introducido es válido.',
         key: 'tlf',
       });
     }
@@ -231,18 +307,16 @@ export class TelefonosComponent {
   }
 
   //////////////////////////////////////////////////////////////
-  //------------------SPEED DIAL-------------------------------//
+  //------------------SPEED DIAL y DROWDOWN.------------------//
   //////////////////////////////////////////////////////////////
 
 
 
-actions: any[] = [];
-inputTextBool: boolean [] = [];
 
-
+//EDIT
 changeInputBool(index:number) {
 
-  this.inputTextBool[index] = !this.inputTextBool[index];
+  this.inputTextBool[index] = !this.inputTextBool[index]; 
 }
 
 closeEdit(index:number){
@@ -257,7 +331,7 @@ closeEdit(index:number){
   });
   this.changeInputBool(index);
 }
-
+//speed dial
 createActions(telefonoId: number, index: number) {
   this.actions = [
     { 
@@ -270,10 +344,10 @@ createActions(telefonoId: number, index: number) {
       icon: 'pi pi-trash', 
       command: () => { 
         this.confirmationService.confirm({
-          message: '¿Estas seguro que quieres eliminar el telefono?',
+          message: 'Estás seguro que quieres eliminar el telefono?',
           header: 'Confirmación',
           icon: 'pi pi-exclamation-triangle',
-          accept: () => this.borrarTelefono(telefonoId),
+          accept: () => this.toggleVisibleTelefono(telefonoId),
           reject: () =>  {
             this.messageService.add({
               severity: 'info',
@@ -295,5 +369,14 @@ onClickSpeedDial(telefonoId: number, index:number) {
   this.createActions(telefonoId, index);
 }
 
+//Dropdown
+updateList(){
+  this.selectedTLF = [];
+  if (this.selectedList === 'Telefonos'){
+    this.getTelefonosList(this.cliente.id!);
+  } else{
+    this.getTelefonosEliminadosList(this.cliente.id!);
+  }
+}
  
 }

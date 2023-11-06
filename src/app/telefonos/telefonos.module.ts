@@ -27,6 +27,8 @@ import { ConsumoComponent } from './consumos/consumo.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { InputMaskModule } from 'primeng/inputmask';
+import { ToolbarModule } from 'primeng/toolbar';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,9 @@ import { InputMaskModule } from 'primeng/inputmask';
     SpeedDialModule,
     ConfirmDialogModule,
     SelectButtonModule,
-    InputMaskModule
+    InputMaskModule,
+    ToolbarModule,
+    DropdownModule
     
   ], 
   providers: [ConfirmationService],

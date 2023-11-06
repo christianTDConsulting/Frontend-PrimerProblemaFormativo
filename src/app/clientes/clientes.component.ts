@@ -24,9 +24,10 @@ export class ClientesComponent {
   displayDialog: boolean = false;
   selectClientes: Cliente[] = [];
   //eliminados:Boolean = false;
-  actions: any[] = [];
+  actionsSpeedDial: any[] = []; // speed dial
+  //Dropdown
   selectedList: 'Clientes' | 'Eliminados' = 'Clientes';
-  items = [
+  itemsDropdown = [
     { label: 'Clientes', value: 'Clientes' },
     { label: 'Eliminados', value: 'Eliminados' }
   ];
@@ -100,7 +101,7 @@ export class ClientesComponent {
      
         
         this.confirmationService.confirm({
-          message: '¿Estas seguro que quieres eliminar los clientes?',
+          message: '¿Estás seguro que quieres eliminar los clientes?',
           header: 'Confirmación',
           icon: 'pi pi-exclamation-triangle',
           accept: () => this.toggleVisibleStateSelectedClientes(),
@@ -146,7 +147,7 @@ export class ClientesComponent {
         this.messageService.add({
           severity: 'error',
           summary: 'Operación fallada',
-          detail: 'El usuario no ha sido borrado.'
+          detail: 'El usuario no ha sido borrado/recuperado.'
       });
       }
     )
@@ -308,7 +309,7 @@ showEdition(id:number){
 
 
 createActions(clientesId: number) {
-  this.actions = [
+  this.actionsSpeedDial = [
     { 
       icon: 'pi pi-user-edit', 
       command: () => { 
@@ -326,7 +327,7 @@ createActions(clientesId: number) {
       command: () => { 
         
           this.confirmationService.confirm({
-            message: '¿Estas seguro que quieres eliminar el cliente?',
+            message: '¿Estás seguro que quieres eliminar el cliente?',
             header: 'Confirmación',
             icon: 'pi pi-exclamation-triangle',
             accept: () => this.ToggleVisibleStateCliente(clientesId),
