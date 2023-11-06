@@ -1,14 +1,47 @@
 <p-toast key="tlf"></p-toast>
+<p-toolbar styleClass="mb-4 gap-2">
+
+    <ng-template pTemplate="left">
+        <div *ngIf="selectedList === 'Telefonos'; else recuperar">
+
+            <p-overlayPanel #op>
+                <div [formGroup]="formTlf">
+                    <p-inputMask mask="999-999-999" type="text"  pKeyFilter="int " placeholder="999-999-999" pInputText  formControlName="telefono" id = "nuevoTelefono" (keyup.enter)="crearTelefono()" />
+                    <span style="margin: 0 8px;"></span> 
+                    <p-button label="Nuevo" (click)="crearTelefono()" severity="success"></p-button>    
+                </div>
+            </p-overlayPanel>
+            <button pButton pRipple (click)="op.toggle($event)" label="New" icon="pi pi-plus"  class="p-button-success mr-2" ></button>
+           
+
+            <button pButton pRipple  label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedTelefonos()"  [disabled]="!selectedTLF || !selectedTLF.length"></button>
+          
+          </div>
+          
+          <ng-template #recuperar>
+            <!-- Se mostrará si la condición es falsa -->
+            <button pButton pRipple   label="Recuperar" icon="pi pi-backward" class="p-button-danger" (click)="toggleVisibleSelectedTelefonos()" [disabled]="!selectedTLF || !selectedTLF.length"></button>
+          </ng-template>
+        
+    </ng-template>
+
+    <ng-template pTemplate="right">
+       
+        <p-dropdown  label="Opciones" [options]="itemsDropdown"  [(ngModel)]="selectedList" (onChange)="updateList()"  styleClass="p-button-help mr-2 mb-2"></p-dropdown >
+    </ng-template>
+
+   
+</p-toolbar>
 <div class ="card">
     <p-table 
     [value]="telefonos"
     
     #dt2
     dataKey="id"
-    [rows]="7"
+    [rows]="5"
     [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[7, 14, 21]"
-    
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [(selection)]="selectedTLF"
     currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} entradas"
     [globalFilterFields]="['numero']"
     
@@ -33,43 +66,38 @@
         
 
     </ng-template>
+    
    
         <ng-template pTemplate="header">
-            <tr>
-                <th style="width: 80%;">
-                   
-                    
-
-                    <form [formGroup]="formTlf">
-                        <span class="font-bold block mb-2">Crear teléfono</span>
-                        <p-inputMask mask="999-999-999" type="text"  pKeyFilter="int " placeholder="999-999-999" pInputText  formControlName="telefono" id = "nuevoTelefono" (keyup.enter)="crearTelefono()" />
-                        <span style="margin: 0 8px;"></span> 
-                        <p-button label="Nuevo" (click)="crearTelefono()" severity="success"></p-button>    
-                    </form>
-                   
-                </th>
-                <th></th>
-          
-
-            </tr>
+       
             <tr >
+                <th></th>
                 <th pSortableColumn="numero" >Número <p-sortIcon field="numero"></p-sortIcon></th>                
                 <th style="width:30%">Opciones </th>
                 
     
             </tr>
             <tr>
-               
+               <th></th>
                 <th>
                     <p-columnFilter type="text" field="numero"></p-columnFilter>
                 </th>
                 
-                <th></th>
+                <th> <button pButton label="Limpiar filtros" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt2)"></button></th>
                
             </tr>
         </ng-template>
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between" >
+                <label [hidden]="selectedList === 'Eliminados'"> Teléfonos</label>
+                <label [hidden]="selectedList === 'Telefonos'"> Teléfonos Eliminados</label>
+                <label [hidden]="selectedTLF.length === 0"> Seleccionados: {{selectedTLF.length}}</label>
+             
+            </div>
+        </ng-template>
         <ng-template pTemplate="body" let-telefonos  let-i="rowIndex">
             <tr> 
+                <td> <p-tableCheckbox [value]="telefonos"></p-tableCheckbox></td>
                 <td>
                    
                  <app-consumo [telefono]="telefonos" [hidden]="inputTextBool[i]"  > </app-consumo>
@@ -95,14 +123,17 @@
                 <div #speedDialContainer  class="card" style="height: 80px;">
                     <div class="p-mt-3 p-mb-3 flex"> 
                        
-                        <div>
+                        <div *ngIf="selectedList === 'Telefonos'; else recuperar">
                             
                             <p-confirmDialog header="Confirmation" width="425"></p-confirmDialog>
                             <p-speedDial #speedDial [hidden] = "inputTextBool[i]" direction="right" showIcon="pi pi-phone" [model]="actions" (onClick)="onClickSpeedDial(telefonos.id, i)"></p-speedDial>   
                             <p-button [hidden] = "!inputTextBool[i]" icon="pi pi-times" severity="danger" (onClick)="closeEdit(i)"></p-button>
  
                         </div>
-                       
+                        <ng-template #recuperar>
+                            <!-- Se mostrará si la condición es falsa -->
+                            <button pButton pRipple  label="Recuperar" icon="pi pi-backward" class="p-button-danger" (click)="toggleVisibleTelefono(telefonos.id)" ></button>
+                        </ng-template>
                      
                     
                         
