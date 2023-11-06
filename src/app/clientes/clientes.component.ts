@@ -6,7 +6,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { TelefonosComponent } from '../telefonos/telefonos.component';
 import { DataClienteComponent } from '../data-cliente/data-cliente.component';
-
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-clientes',
@@ -60,6 +60,12 @@ export class ClientesComponent {
       } //control de error
     )
   }
+  //Clear filtros
+  clear(table: Table) {
+    this.selectClientes = [];
+    table.clear();
+}
+
 
   //borrar Cliente
   /*
