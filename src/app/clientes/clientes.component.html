@@ -3,22 +3,22 @@
 <p-toolbar styleClass="mb-4 gap-2">
 
     <ng-template pTemplate="left">
-        <div *ngIf="!eliminados; else recuperar">
-            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="showCreation()"></button>
-            <button pButton pRipple [hidden]="!eliminados" label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedClientes()" [disabled]="!selectClientes || !selectClientes.length"></button>
+        <div *ngIf="selectedList === 'Clientes'; else recuperar">
+            <button pButton pRipple label="New" icon="pi pi-plus"  class="p-button-success mr-2" (click)="showCreation()"></button>
+            <button pButton pRipple  label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedClientes()" [disabled]="!selectClientes || !selectClientes.length"></button>
           
           </div>
           
           <ng-template #recuperar>
             <!-- Se mostrará si la condición es falsa -->
-            <button pButton pRipple [hidden]="!eliminados" label="Recuperar" icon="pi pi-backward" class="p-button-danger" (click)="deleteSelectedClientes()" [disabled]="!selectClientes || !selectClientes.length"></button>
+            <button pButton pRipple   label="Recuperar" icon="pi pi-backward" class="p-button-danger" (click)="toggleVisibleStateSelectedClientes()" [disabled]="!selectClientes || !selectClientes.length"></button>
           </ng-template>
         
     </ng-template>
 
     <ng-template pTemplate="right">
        
-        <p-dropdown  label="Opciones" [options]="items"  styleClass="p-button-help mr-2 mb-2"></p-dropdown >
+        <p-dropdown  label="Opciones" [options]="items"  [(ngModel)]="selectedList" (onChange)="updateList()"  styleClass="p-button-help mr-2 mb-2"></p-dropdown >
     </ng-template>
 
    
@@ -59,8 +59,9 @@
     </ng-template>
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between" >
-            <label [hidden]="eliminados"> Clientes</label>
-            <label [hidden]="!eliminados"> Clientes Eliminados</label>
+            <label [hidden]="selectedList === 'Eliminados'"> Clientes</label>
+            <label [hidden]="selectedList === 'Clientes'"> Clientes Eliminados</label>
+            <label [hidden]="selectClientes.length === 0"> Seleccionados: {{selectClientes.length}}</label>
          
         </div>
     </ng-template>
@@ -118,7 +119,7 @@
                         </div>
                     </div>
                     -->
-                    <div *ngIf="!eliminados; else recuperar">
+                    <div *ngIf="selectedList === 'Clientes'; else recuperar">
                         <div class="card" style="height: 80px;">
                             <p-confirmDialog header="Confirmation" width="425"></p-confirmDialog>
                             <div class="p-mt-3 p-mb-3">  <p-speedDial   direction="right" [model]="actions" (onClick)="onClickSpeedDial(clientes.id)"></p-speedDial> </div>                 
@@ -127,7 +128,7 @@
                     </div>
                     <ng-template #recuperar>
                         <!-- Se mostrará si la condición es falsa -->
-                        <button pButton pRipple [hidden]="!eliminados" label="Recuperar" icon="pi pi-backward" class="p-button-danger" (click)="borrarUsuario(clientes.id)" ></button>
+                        <button pButton pRipple  label="Recuperar" icon="pi pi-backward" class="p-button-danger" (click)="ToggleVisibleStateCliente(clientes.id)" ></button>
                       </ng-template>
                 </td>
                 
