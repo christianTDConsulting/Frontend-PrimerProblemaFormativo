@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Cliente } from './cliente';
+import { Cliente, Usuario } from '../models/cliente';
 
 
 @Injectable({
@@ -11,17 +11,30 @@ import { Cliente } from './cliente';
 export class ClienteService {
 
   url: string = 'http://localhost:3000/clientes/';
+  urlUser: string = 'http://localhost:3000/usuarios/';
   constructor(private http: HttpClient) { }
 
 
-  getClientes(): Observable<Cliente[]>{
-    return this.http.get<Cliente[]>(this.url);
+  getClientes(): Observable<any[]>{
+    return  this.http.get<any[]>(this.url);
   }
-  getClientesVisible(visible:Boolean): Observable<Cliente[]>{
- 
+
+  getClientesVisible(visible:Boolean): Observable<any[]>{
+    return this.http.get<any[]>('http://localhost:3000/visible/clientes/'+visible );
+  }
+  editCredentialsUsuario(usuario:Usuario){
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
   
- 
-    return this.http.get<Cliente[]>('http://localhost:3000/visible/clientes/'+visible );
+    const options = { headers: headers };
+
+    return this.http.put<any>(this.urlUser, usuario, options);
+  }
+
+  getUsuarioPorId(id: number)  {
+    const usuarioUrl = `http://localhost:3000/usuarios/${id}`;
+    return (this.http.get<any>(usuarioUrl));
   }
   
   deleteCliente(id:number){

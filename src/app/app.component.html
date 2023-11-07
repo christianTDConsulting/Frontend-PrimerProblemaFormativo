@@ -1,1 +1,22 @@
-<router-outlet></router-outlet>
+
+
+
+
+<div>
+ 
+    <ng-container *ngIf="state() === 'register'">
+     <app-register></app-register>
+    </ng-container>
+
+    <ng-container *ngIf="state() === 'login'">
+      <app-login [state]="state"></app-login>
+    </ng-container>
+
+    <ng-container *ngIf="state() === 'view'">
+    
+    </ng-container>
+
+    <ng-container *ngIf="state() === 'viewAdmin'">
+    <app-clientes></app-clientes>
+    </ng-container>
+</div>

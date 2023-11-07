@@ -4,7 +4,7 @@
 
     <ng-template pTemplate="left">
         <div *ngIf="selectedList === 'Clientes'; else recuperar">
-            <button pButton pRipple label="Nuevo" icon="pi pi-plus"  class="p-button-success mr-2" (click)="showCreation()"></button>
+           <!-- <button pButton pRipple label="Nuevo" icon="pi pi-plus"  class="p-button-success mr-2" (click)="showCreation()"></button> -->
             <button pButton pRipple  label="Eliminar" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedClientes()" [disabled]="!selectClientes || !selectClientes.length"></button>
           
           </div>
@@ -101,7 +101,7 @@
                     <input type="text" [value]="clientes.nombre" pInputText (keyup.enter)="editarNombre(clientes)" style="border: none;" [(ngModel)]="clientes.nombre" [id]="'editarClienteNombre' + clientes.id">
                 </td>
                 <td>
-                    <input type="text" [value]="clientes.email" pInputText (keyup.enter)="editarEmail(clientes)" style="border: none;" [(ngModel)]="clientes.email" [id]="'editarClienteEmail' + clientes.id">
+                    <input type="text" [value]="clientes.usuario.email" pInputText (keyup.enter)="editarEmail(clientes)" style="border: none;" [(ngModel)]="clientes.usuario.email" [id]="'editarClienteEmail' + clientes.id">
                 </td>
                 <!--
                 <td><p-button label="Ver Teléfonos" (click)="show(clientes.id)" severity="help"></p-button></td>

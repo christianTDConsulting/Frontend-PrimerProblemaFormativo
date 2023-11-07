@@ -1,23 +1,25 @@
 
 import { Component, OnInit, Input, ViewChild,ElementRef } from '@angular/core';
-import { TelefonoService } from '../telefono.service';
-import { Telefono } from '../telefono';
-
+import { TelefonoService } from '../../services/telefono.service';
+import { Telefono } from '../../models/telefono';
+import { Usuario } from 'src/app/models/cliente';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { Consumo } from './consumo';
-import { ConsumoService } from './consumo.service';
+import { Consumo } from '../../models/consumo';
+import { ConsumoService } from '../../services/consumo.service';
 import { format } from 'date-fns';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import {jsPDF, TableConfig} from 'jspdf';
 import html2canvas from 'html2canvas';
-import {MailerService} from './mailer.service';
+import {MailerService} from '../../services/mailer.service';
 import { Buffer } from 'buffer';
+import { ClienteService } from 'src/app/services/cliente.service';
 
-
+import { switchMap, catchError } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-consumo',
@@ -36,7 +38,7 @@ export class ConsumoComponent implements OnInit {
    //PDF
   
    doc = new jsPDF();
-  
+ 
    
  
    // CONSUMOS Y CHART
@@ -103,6 +105,7 @@ export class ConsumoComponent implements OnInit {
     private telefonoService: TelefonoService,
     private consumoService: ConsumoService,
     private mailerService: MailerService,
+    private clienteService: ClienteService,
     public dialogConfig: DynamicDialogConfig,
     public messageService: MessageService,
 
@@ -407,50 +410,62 @@ export class ConsumoComponent implements OnInit {
   //////////////////////////////////////////////////////////////
   //------------------MÉTODOS CORREO--------------------------//
   //////////////////////////////////////////////////////////////
-
+ 
   generarCorreo(telefono: Telefono) {
-    // Obtener información del cliente a partir del ID del teléfono
     this.telefonoService.getClienteFromTlf(telefono.id).pipe(takeUntil(this.destroy$)).subscribe(
-      response => {
-        // Imprimir el correo del cliente en la consola
-        console.log(response.email);
-  
-        // Generar un PDF con los datos del consumo del teléfono
-        
-  
-        // Obtener el contenido binario del PDF como un ArrayBuffer
-        const binary = this.doc.output('arraybuffer');
-  
-        // Convertir el contenido binario del PDF a una cadena base64
-        const pdfOutput = binary ? Buffer.from(binary).toString('base64') : '';
-  
-        // Enviar el correo con el PDF adjunto
-        this.mailerService.sendMail(response.email, pdfOutput).pipe(takeUntil(this.destroy$)).subscribe(
-          res => {
-            // Imprimir la respuesta del servicio de correo en la consola
-            console.log(res);
-            // Mostrar un mensaje de éxito en la interfaz de usuario
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Operación exitosa',
-              detail: 'Correo enviado correctamente, mire su bandeja de entrada.',
-              key: 'tlf',
+      response => { //Obtengo el cliente del tele
+         this.clienteService.getUsuarioPorId(response.id_usuario).pipe(takeUntil(this.destroy$)).subscribe(
+           usuario => {
+              this.enviarCorreo(usuario.email);
             });
-          },
-          (error) => {
-            // Manejar errores de envío de correo
-            console.log(error);
-            // Mostrar un mensaje de error en la interfaz de usuario
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Operación fallada',
-              detail: 'El correo no ha sido enviado.',
-              key: 'tlf',
-            });
-          }
-        );
+      });
+
+  }
+  
+  enviarCorreo(email: string) {
+    // Obtener el correo  a partir del ID del teléfono
+
+               
+    console.log(email);
+
+    // Generar un PDF con los datos del consumo del teléfono
+    
+
+    // Obtener el contenido binario del PDF como un ArrayBuffer
+    const binary = this.doc.output('arraybuffer');
+
+    // Convertir el contenido binario del PDF a una cadena base64
+    const pdfOutput = binary ? Buffer.from(binary).toString('base64') : '';
+
+    // Enviar el correo con el PDF adjunto
+    this.mailerService.sendMail(email, pdfOutput).pipe(takeUntil(this.destroy$)).subscribe(
+      res => {
+        // Imprimir la respuesta del servicio de correo en la consola
+        console.log(res);
+        // Mostrar un mensaje de éxito en la interfaz de usuario
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Operación exitosa',
+          detail: 'Correo enviado correctamente, mire su bandeja de entrada.',
+          key: 'tlf',
+        });
+      },
+      (error) => {
+        // Manejar errores de envío de correo
+        console.log(error);
+        // Mostrar un mensaje de error en la interfaz de usuario
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Operación fallada',
+          detail: 'El correo no ha sido enviado.',
+          key: 'tlf',
+        });
       }
+
     );
+  
+      
+     
   }
   
 

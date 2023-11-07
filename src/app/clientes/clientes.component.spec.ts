@@ -7,8 +7,8 @@ import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { of } from 'rxjs';
 import { ClientesComponent } from './clientes.component';
-import { ClienteService } from './cliente.service';
-import { Cliente } from './cliente';
+import { ClienteService } from '../services/cliente.service';
+import { Cliente } from '../models/cliente';
 
 describe('ClientesComponent', () => {
   let component: ClientesComponent;

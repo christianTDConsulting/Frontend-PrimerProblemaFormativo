@@ -1,12 +1,12 @@
-import { Component, OnDestroy } from '@angular/core';
-import { ClienteService } from './cliente.service';
-import { Router } from '@angular/router';
-import { Cliente } from './cliente';
+import { Component } from '@angular/core';
+import { ClienteService } from '../services/cliente.service';
+import { Cliente } from '../models/cliente';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { TelefonosComponent } from '../telefonos/telefonos.component';
 import { DataClienteComponent } from '../data-cliente/data-cliente.component';
 import { Table } from 'primeng/table';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-clientes',
@@ -54,13 +54,38 @@ export class ClientesComponent {
   //------------------MÉTOFOD CLIENTES------------------------//
   //////////////////////////////////////////////////////////////
   getClientesList() {
-    this.clienteService.getClientesVisible(true).subscribe(
+    this.clienteService.getClientesVisible(true).subscribe(response => {
+      this.obtenerUsuarios(response); // Llama a la función asincrónica pasando el parámetro response
+    });
+  }
+  getListEliminados(){
+    this.clienteService.getClientesVisible(false).subscribe(
       response => {
-        console.log(response);
-        this.clientes = response;
+        this.obtenerUsuarios(response);
+        
       } //control de error
     )
   }
+  
+  async obtenerUsuarios(clientes: any[]) {
+    let clientesConUsuarios: Cliente[] = [];
+    for (const cliente of clientes) { //Por cada cliente de la lista de clientes
+      if (cliente.id_usuario !== null) { //si no tiene usuario, lo obtenemos
+       this.clienteService.getUsuarioPorId(cliente.id_usuario).subscribe(
+
+        usuario => {
+          cliente.usuario = usuario;
+          clientesConUsuarios.push(cliente);
+        });
+        
+      }
+     
+    }
+  
+    this.clientes = clientesConUsuarios; //actualizamos la lista de clientes
+    console.log(this.clientes);
+  }
+
   //Clear filtros
   clear(table: Table) {
     this.selectClientes = [];
@@ -185,9 +210,10 @@ export class ClientesComponent {
     return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
   }
   editarEmail(cliente:Cliente){
-    if (this.isValidEmail(cliente.email)){
-      console.log(cliente.email)
-      this.clienteService.editCliente(cliente).subscribe(
+
+    if (this.isValidEmail(cliente.usuario?.email!)){
+      console.log(cliente.usuario?.email!)
+      this.clienteService.editCredentialsUsuario(cliente.usuario!).subscribe(
         response =>{
           console.log(response);
           //refresh
@@ -347,15 +373,7 @@ createActions(clientesId: number) {
   ];
 }
 
-getListEliminados(){
-  this.clienteService.getClientesVisible(false).subscribe(
-    response => {
-      console.log(response);
-      this.clientes = response;
-      
-    } //control de error
-  )
-}
+
 onClickSpeedDial(clientesId: number) {
   this.createActions(clientesId);
 }

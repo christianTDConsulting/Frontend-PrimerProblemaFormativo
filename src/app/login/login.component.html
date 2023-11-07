@@ -1,0 +1,49 @@
+<p-toast></p-toast>
+<form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+  <p-card header="Login" [style]="{ width: '360px' }">
+    <div class="field">
+      <label for="email">Email</label>
+      <input
+        type="text"
+        pInputText
+        formControlName="email"
+        class="w-full"
+        name="email"
+        placeholder="Type your email"
+      />
+      <small
+        *ngIf="email.invalid && (email.dirty || email.touched)"
+        class="block p-error"
+      >
+        <div *ngIf="email.errors?.['required']">Email es requerido.</div>
+        <div *ngIf="email.errors?.['email']">Email debería ser válido</div>
+      </small>
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        pInputText
+        formControlName="password"
+        class="w-full"
+        name="password"
+        placeholder="Type your password"
+       
+      />
+      <!-- (keyup.enter)="loginUser()" -->
+      <small
+        *ngIf="password.invalid && (password.dirty || password.touched)"
+        class="block p-error"
+      >
+        <div *ngIf="password.errors?.['required']">La contraseña es requerida.</div>
+      </small>
+    </div>
+    <p-button
+      label="Iniciar sesión"
+      styleClass="w-full"
+      [disabled]="loginForm.invalid"
+      type="submit"
+    ></p-button>
+    <div class="mt-2">No eres miembro? <p-button label="Registrate" severity="plain" (onClick)="goToRegister()"></p-button> </div>
+  </p-card>
+</form>

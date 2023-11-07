@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Telefono } from './telefono';
-import { Cliente } from '../clientes/cliente';
+import { Telefono } from '../models/telefono';
+
 
 
 @Injectable({
@@ -32,9 +32,7 @@ export class TelefonoService {
   }
   
 
-  getCliente(idCliente:number):Observable <Cliente>{
-    return this.http.get<Cliente>('http://localhost:3000/clientes/' + idCliente );
-  }
+  
   deleteTelefono(id:number){
     const body = { id: id };
 
@@ -80,8 +78,8 @@ export class TelefonoService {
     return this.http.put<any>(this.url, telefono, options);
   }
 
-  getClienteFromTlf(id_telefono:number): Observable<Cliente>{
-    return this.http.get<Cliente>(this.url+ id_telefono+'/cliente');
+  getClienteFromTlf(id_telefono:number): Observable<any>{
+    return this.http.get<any>(this.url+ id_telefono+'/cliente');
   }
 
   toggleVisibiltyTelefono(id:number) {

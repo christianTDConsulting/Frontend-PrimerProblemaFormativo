@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { ClienteService } from '../clientes/cliente.service';
-import { TelefonoService } from '../telefonos/telefono.service';
-import { Cliente } from '../clientes/cliente';
+import { ClienteService } from '../services/cliente.service';
+import { TelefonoService } from '../services/telefono.service';
+import { Cliente , Usuario} from '../models/cliente';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import {DynamicDialogRef} from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
@@ -19,7 +19,11 @@ export class DataClienteComponent {
   cliente: Cliente = {
     id:undefined,
     nombre: '',
-    email: '',
+    usuario: {
+      id: undefined,
+      email: '',  
+      password: '',
+    },
     bio: '',
     nacimiento: new Date(),
   };
@@ -109,7 +113,7 @@ export class DataClienteComponent {
 
        this.profileForm.patchValue({
         nombre: this.cliente.nombre,
-        email: this.cliente.email,
+        email: this.cliente.usuario!.email,
         bio: this.cliente.bio,
         nacimiento: new Date(this.cliente.nacimiento),
       });

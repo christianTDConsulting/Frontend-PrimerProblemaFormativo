@@ -1,7 +1,8 @@
 import { Component ,  ViewChild} from '@angular/core';
-import { TelefonoService } from './telefono.service';
-import { Telefono } from './telefono';
-import { Cliente } from '../clientes/cliente';
+import { TelefonoService } from '../services/telefono.service';
+
+import { Telefono } from '../models/telefono';
+import { Cliente } from '../models/cliente';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -9,6 +10,7 @@ import { Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Table } from 'primeng/table';
+import { ClienteService } from '../services/cliente.service';
 
 @Component({
   selector: 'app-telefonos',
@@ -27,7 +29,11 @@ export class TelefonosComponent {
   cliente: Cliente = {
     id: 0,
     nombre: '',
-    email: '',
+    usuario: {
+      id: 0,
+      email: '',
+      password: ''
+    },
     bio: '',
     nacimiento: new Date()
   };
@@ -57,7 +63,8 @@ selectedTLF: Telefono[] = [];
     private telefonoService: TelefonoService,
     public dialogConfig: DynamicDialogConfig,
     public messageService: MessageService,
-    public confirmationService : ConfirmationService
+    public confirmationService : ConfirmationService,
+    private clienteService: ClienteService
   ) {}
 
  
@@ -111,7 +118,7 @@ selectedTLF: Telefono[] = [];
 
   //obtener el cliente
   getCliente(id: number) {
-    this.telefonoService.getCliente(id).subscribe(
+    this.clienteService.getCliente(id).subscribe(
       (response: Cliente) => {
         this.cliente = response;
         console.log(response);
