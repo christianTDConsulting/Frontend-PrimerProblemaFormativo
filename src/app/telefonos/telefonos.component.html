@@ -1,4 +1,11 @@
+
 <p-toast key="tlf"></p-toast>
+
+<div>
+<p *ngIf="loginService.isAuthenticated()">El usuario está autenticado.</p>
+<p *ngIf="!loginService.isAuthenticated()">El usuario no está autenticado.</p>
+</div>
+
 <p-toolbar styleClass="mb-4 gap-2">
 
     <ng-template pTemplate="left">

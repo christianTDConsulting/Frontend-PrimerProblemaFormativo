@@ -43,19 +43,22 @@ export class LoginComponent implements OnInit {
       response => {
        
         
-        if (response.message === 'Credenciales correctas') { //cambiarlo a si el response.status === 200
-          console.log(response.message);
+        if (response) { 
+          console.log(response.message, response.token);
           //CREAR LOG DE INICIO DE SESION falta completar
-
-          this.state.set('view');
+          this.loginService.setToken(response.token);
           this.messageService.add({severity:'success', summary: 'Login', detail: 'Login exitoso'});
+          this.state.set('view');
+          
          
-        }else{
-          console.log(response.message);
-          this.messageService.add({severity:'error', summary: 'Login', detail: 'Credenciales incorrectas'});
         }
        
-      },);
+      },error => {
+        console.log(error);
+        this.messageService.add({severity:'error', summary: 'Login', detail: 'Credenciales incorrectas'});
+      }
+      
+      );
     
   }
 

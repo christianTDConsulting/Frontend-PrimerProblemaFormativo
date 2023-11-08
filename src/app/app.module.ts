@@ -4,9 +4,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+
 import { TelefonosModule } from './telefonos/telefonos.module';
 import { ClientesModule } from './clientes/clientes.module';
+import { UsuarioFormModule } from './formDialog/usuarioForm/usuarioForm.module';
+
 import { PanelModule } from 'primeng/panel';
 import { CardModule } from 'primeng/card';
 
@@ -20,21 +22,25 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastModule } from 'primeng/toast';
 import { SpeedDialModule } from 'primeng/speeddial';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { CookieService } from "ngx-cookie-service";
 import { ToolbarModule } from 'primeng/toolbar';
 
 import { MessageService } from 'primeng/api';
 
+
+
+
+
 @NgModule({
-  declarations: [	
+  declarations: [		
     AppComponent,
-    RegisterComponent,
-    LoginComponent
+    LoginComponent,
     
    ],
   imports: [
+   
     PanelModule,
+
     CardModule,
     BrowserModule,
     AppRoutingModule,
@@ -48,15 +54,21 @@ import { MessageService } from 'primeng/api';
     FormsModule,
     ReactiveFormsModule,
     DynamicDialogModule,
+   
     BrowserAnimationsModule,
     TelefonosModule,
     ToastModule,
     SpeedDialModule,
-    ConfirmDialogModule,
+
     ToolbarModule,
+
+    UsuarioFormModule,
+ 
+    
+   
     
   ],
-  providers: [ MessageService, CookieService ],
+  providers: [ MessageService, CookieService,],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

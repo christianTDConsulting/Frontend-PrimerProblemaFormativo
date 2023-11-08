@@ -3,10 +3,10 @@ import { ClienteService } from '../services/cliente.service';
 import { Cliente } from '../models/cliente';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { TelefonosComponent } from '../telefonos/telefonos.component';
-import { DataClienteComponent } from '../data-cliente/data-cliente.component';
 import { Table } from 'primeng/table';
-import { Observable } from 'rxjs';
+import { UsuarioFormComponent } from '../formDialog/usuarioForm/usuarioForm.component';
+import { TelefonoDialogComponent } from '../telefonos/telefonoDialog/telefonoDialog.component';
+
 
 @Component({
   selector: 'app-clientes',
@@ -251,7 +251,7 @@ export class ClientesComponent {
   show(id:number){
     this.clienteService.getCliente(id).subscribe(
       (cliente: Cliente) => {
-        this.ref = this.dialogService.open(TelefonosComponent, {
+        this.ref = this.dialogService.open(TelefonoDialogComponent, {
           header: 'Teléfonos de ' + cliente.nombre,
           data: {
             id: id
@@ -278,7 +278,7 @@ export class ClientesComponent {
 //abrir dynamic dialog de Creacion
 showCreation(){
 
-  this.ref = this.dialogService.open(DataClienteComponent, {
+  this.ref = this.dialogService.open(UsuarioFormComponent, {
         header: 'Crear nuevo cliente',
         data: {
           
@@ -302,7 +302,7 @@ showCreation(){
 showEdition(id:number){
   this.clienteService.getCliente(id).subscribe(
     (cliente: Cliente) => {
-      this.ref = this.dialogService.open(DataClienteComponent, {
+      this.ref = this.dialogService.open(UsuarioFormComponent, {
         header: 'Datos de  ' + cliente.nombre,
         data: {
           id: id

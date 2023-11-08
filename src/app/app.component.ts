@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-
+// Reemplaza con tu servicio de autenticación
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,5 +12,6 @@ export class AppComponent {
   constructor() {
     
   }
+  
   
 }

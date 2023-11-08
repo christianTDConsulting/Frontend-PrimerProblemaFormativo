@@ -10,13 +10,14 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ClientesComponent } from './clientes.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TelefonosModule } from '../telefonos/telefonos.module';
-import { DataClienteModule } from '../data-cliente/data-cliente.module';
+import { DataClienteModule } from '../formDialog/data-cliente/data-cliente.module';
 import { ToastModule } from 'primeng/toast';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { ToolbarModule } from 'primeng/toolbar';
 import { DropdownModule } from 'primeng/dropdown';
+import { TelefonoDialogModule } from '../telefonos/telefonoDialog/telefonoDialog.module';
 @NgModule({
   declarations: [
     ClientesComponent
@@ -37,7 +38,7 @@ import { DropdownModule } from 'primeng/dropdown';
     SpeedDialModule,
     ConfirmDialogModule,
     ToolbarModule,
-
+    TelefonoDialogModule,
     DropdownModule
  
     ],

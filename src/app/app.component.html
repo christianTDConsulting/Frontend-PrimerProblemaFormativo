@@ -5,7 +5,8 @@
 <div>
  
     <ng-container *ngIf="state() === 'register'">
-     <app-register></app-register>
+    <app-usuarioForm [state] ="state"  ></app-usuarioForm>
+    
     </ng-container>
 
     <ng-container *ngIf="state() === 'login'">
@@ -13,7 +14,7 @@
     </ng-container>
 
     <ng-container *ngIf="state() === 'view'">
-    
+    <app-telefonos [state] = "state"></app-telefonos>
     </ng-container>
 
     <ng-container *ngIf="state() === 'viewAdmin'">

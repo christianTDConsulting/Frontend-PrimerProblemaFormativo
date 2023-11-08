@@ -1,9 +1,8 @@
-import { Component ,  ViewChild} from '@angular/core';
+import { Component ,  Input} from '@angular/core';
 import { TelefonoService } from '../services/telefono.service';
 
 import { Telefono } from '../models/telefono';
 import { Cliente } from '../models/cliente';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
@@ -11,6 +10,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Table } from 'primeng/table';
 import { ClienteService } from '../services/cliente.service';
+import { LoginService } from '../services/login.service';
+
 
 @Component({
   selector: 'app-telefonos',
@@ -23,9 +24,14 @@ export class TelefonosComponent {
   //------------------CONSTANTES GLOBALES---------------------//
   //////////////////////////////////////////////////////////////
 
+  @Input() clienteId: number | undefined; //si viene de la vista adminView
+  @Input () state:any  
+
   telefonos: Telefono[] = [];
   private destroy$: Subject<void> = new Subject<void>();
+
  
+
   cliente: Cliente = {
     id: 0,
     nombre: '',
@@ -61,17 +67,17 @@ selectedTLF: Telefono[] = [];
   //////////////////////////////////////////////////////////////
   constructor(
     private telefonoService: TelefonoService,
-    public dialogConfig: DynamicDialogConfig,
     public messageService: MessageService,
     public confirmationService : ConfirmationService,
-    private clienteService: ClienteService
+    private clienteService: ClienteService,
+    public loginService: LoginService
   ) {}
 
- 
-  //////////////////////////////////////////////////////////////
-  //------------------MÉTODOS TELEFONO------------------------//
-  //////////////////////////////////////////////////////////////
   ngOnInit(): void {
+    //check token
+   
+
+    //init params
     const clienteId: number = this.getParam();
     console.log(clienteId);
     if (clienteId !== null) {
@@ -80,16 +86,34 @@ selectedTLF: Telefono[] = [];
 
     }
   }
+  goToLogin(){
+    this.state.set('login');
+  }
+
+  getParam(): number {
+    if (this.state('view')) { // si es view y no viewAdmin, siempre se manda un clienteId
+      return this.clienteId!;
+    } else {
+      //console.log(this.loginService.decodeToken());
+      return 1;
+    }
+  }
+ 
+  //////////////////////////////////////////////////////////////
+  //------------------MÉTODOS TELEFONO------------------------//
+  //////////////////////////////////////////////////////////////
+
   //Limpia los filtros
   clear(table: Table) {
     this.selectedTLF = [];
     table.clear();
 }
 
+
+
+
 //obtiene el id del cliente pasado en el dialog
-  getParam(): number {
-    return this.dialogConfig.data.id;
-  }
+ 
   
   //Lista de todos los telefonos visibles
   getTelefonosList(id: number) {
@@ -386,4 +410,5 @@ updateList(){
   }
 }
  
+
 }
