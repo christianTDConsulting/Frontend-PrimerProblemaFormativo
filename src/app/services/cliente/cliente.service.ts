@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Cliente, Usuario } from '../models/cliente';
+import { Cliente, Usuario } from '../../models/cliente';
 import { forkJoin } from 'rxjs';
 
 @Injectable({

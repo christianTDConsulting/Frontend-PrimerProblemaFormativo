@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Telefono } from '../models/telefono';
+import { Telefono } from '../../models/telefono';
 
 
 

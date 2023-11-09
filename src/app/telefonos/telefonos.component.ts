@@ -1,5 +1,5 @@
 import { Component ,  Input} from '@angular/core';
-import { TelefonoService } from '../services/telefono.service';
+import { TelefonoService } from '../services/telefono/telefono.service';
 
 import { Telefono } from '../models/telefono';
 import { Cliente } from '../models/cliente';
@@ -9,8 +9,8 @@ import { Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Table } from 'primeng/table';
-import { ClienteService } from '../services/cliente.service';
-import { LoginService } from '../services/login.service';
+import { ClienteService } from '../services/cliente/cliente.service';
+import { LoginService } from '../services/login/login.service';
 
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ClienteService } from 'src/app/services/cliente.service';
+import { ClienteService } from 'src/app/services/cliente/cliente.service';
 import { Cliente } from 'src/app/models/cliente';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';

@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Cliente } from '../../models/cliente';
-import { ClienteService } from '../../services/cliente.service';
+import { ClienteService } from '../../services/cliente/cliente.service';
 import { MessageService } from 'primeng/api';
-import {TelefonoService} from '../../services/telefono.service';
-import { LoginService } from 'src/app/services/login.service';
+import {TelefonoService} from '../../services/telefono/telefono.service';
+import { LoginService } from 'src/app/services/login/login.service';
 
 @Component({
   selector: 'app-usuarioForm',

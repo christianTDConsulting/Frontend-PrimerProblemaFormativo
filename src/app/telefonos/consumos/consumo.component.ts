@@ -1,6 +1,6 @@
 
 import { Component, OnInit, Input, ViewChild,ElementRef } from '@angular/core';
-import { TelefonoService } from '../../services/telefono.service';
+import { TelefonoService } from '../../services/telefono/telefono.service';
 import { Telefono } from '../../models/telefono';
 import { Usuario } from 'src/app/models/cliente';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
@@ -8,15 +8,15 @@ import { MessageService } from 'primeng/api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Consumo } from '../../models/consumo';
-import { ConsumoService } from '../../services/consumo.service';
+import { ConsumoService } from '../../services/consumo/consumo.service';
 import { format } from 'date-fns';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import {jsPDF, TableConfig} from 'jspdf';
 import html2canvas from 'html2canvas';
-import {MailerService} from '../../services/mailer.service';
+import {MailerService} from '../../services/mailer/mailer.service';
 import { Buffer } from 'buffer';
-import { ClienteService } from 'src/app/services/cliente.service';
+import { ClienteService } from 'src/app/services/cliente/cliente.service';
 
 import { switchMap, catchError } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie-service";
-import { Cliente } from '../models/cliente';
+import { Cliente } from '../../models/cliente';
 
 @Injectable({
   providedIn: 'root'
@@ -82,6 +82,9 @@ decodeToken(): Observable<Cliente> {
   
   return  this.http.get<Cliente>('http://localhost:3000/token/' + token);
 
+}
+deleteToken() {
+  this.cookies.delete("token"); // Elimina el token de las cookies
 }
 
 

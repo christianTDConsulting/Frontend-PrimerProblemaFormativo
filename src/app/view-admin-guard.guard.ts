@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { LoginService } from './services/login.service'; // Importa el servicio de autenticación { LoginService } 
+import { LoginService } from './services/login/login.service'; // Importa el servicio de autenticación { LoginService } 
 import { Cliente } from './models/cliente';
 import { map } from 'rxjs/operators';
 

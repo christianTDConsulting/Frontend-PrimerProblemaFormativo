@@ -1,7 +1,7 @@
 import { Component, OnInit, Input  } from '@angular/core';
 import { Validators,FormControl,FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { LoginService } from '../../../../services/login.service';
+import { LoginService } from '../../../../services/login/login.service';
 import {Log} from '../../../../models/log';
 import { Router } from '@angular/router';
 @Component({
