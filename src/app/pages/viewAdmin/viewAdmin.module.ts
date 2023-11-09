@@ -6,22 +6,22 @@ import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
-import { ClientesComponent } from './clientes.component';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TelefonosModule } from '../telefonos/telefonos.module';
-import { DataClienteModule } from '../formDialog/data-cliente/data-cliente.module';
+
+
 import { ToastModule } from 'primeng/toast';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { ToolbarModule } from 'primeng/toolbar';
 import { DropdownModule } from 'primeng/dropdown';
-import { TelefonoDialogModule } from '../telefonos/telefonoDialog/telefonoDialog.module';
+import { TelefonoDialogModule } from 'src/app/telefonos/telefonoDialog/telefonoDialog.module';
+import { DataClienteModule } from 'src/app/formDialog/data-cliente/data-cliente.module';
+import { ViewAdminComponent } from './viewAdmin.component';
+
 @NgModule({
-  declarations: [
-    ClientesComponent
-  ],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -32,7 +32,7 @@ import { TelefonoDialogModule } from '../telefonos/telefonoDialog/telefonoDialog
     FormsModule,
     DynamicDialogModule,
     BrowserAnimationsModule,
-    TelefonosModule,
+
     ToastModule,
     DataClienteModule,
     SpeedDialModule,
@@ -40,12 +40,9 @@ import { TelefonoDialogModule } from '../telefonos/telefonoDialog/telefonoDialog
     ToolbarModule,
     TelefonoDialogModule,
     DropdownModule
- 
-    ],
-  providers: [ConfirmationService],
-  exports: [
-    ClientesComponent,
-   
-  ]
+  ],
+  declarations: [ViewAdminComponent],
+  exports: [ViewAdminComponent],
+  providers: [ConfirmationService, DialogService]
 })
-export class ClientesModule { }
+export class ViewAdminModule { }

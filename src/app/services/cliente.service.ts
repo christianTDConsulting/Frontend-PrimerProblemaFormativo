@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Cliente, Usuario } from '../models/cliente';
-
+import { forkJoin } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -77,17 +77,36 @@ export class ClienteService {
     return this.http.post<any>(this.url, cliente, options);
   }
 
-  editCliente(cliente:Cliente){
- 
-    // Define las cabeceras de la solicitud, si es necesario
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-  
-    const options = { headers: headers };
-      //especificar tipo de datos
-    return this.http.put<any>(this.url, cliente, options);
+
+    editCliente(data: any) {
+      // Define las cabeceras de la solicitud, si es necesario
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+      });
+    
+      const options = { headers: headers };
+    
+      const cliente = {
+        id: data.id,
+        nombre: data.nombre,
+        email: data.email,
+        bio: data.bio,
+        nacimiento: data.nacimiento,
+      };
+    
+      const usuario = {
+        id: data.usuario.id,
+        email: data.usuario.email,
+        password: data.usuario.password,
+      };
+    
+      // Combina ambas solicitudes en una sola
+      return forkJoin([
+        this.http.put<any>(this.url, cliente, options),
+        this.http.put<any>(this.urlUser, usuario, options),
+      ]);
   }
+  
   getCliente(id:number): Observable<Cliente>{
     return this.http.get<Cliente>(this.url + id);
   }

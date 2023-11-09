@@ -7,7 +7,7 @@ import { Component, signal } from '@angular/core';
 })
 export class AppComponent {
   title = 'application';
-  state = signal<'register' | 'login' | 'view' | 'viewAdmin'>('login');
+
 
   constructor() {
     

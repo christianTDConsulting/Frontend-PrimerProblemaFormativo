@@ -20,7 +20,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { CardModule } from 'primeng/card';
 
 import { SelectButtonModule } from 'primeng/selectbutton';
-
+import {DynamicDialogConfig} from 'primeng/dynamicdialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CalendarModule } from 'primeng/calendar';
 import { ConsumoComponent } from './consumos/consumo.component';
@@ -60,7 +60,7 @@ import { DropdownModule } from 'primeng/dropdown';
     DropdownModule
     
   ], 
-  providers: [ConfirmationService],
+  providers: [ConfirmationService, DynamicDialogConfig],
   exports: [
     TelefonosComponent
   ]

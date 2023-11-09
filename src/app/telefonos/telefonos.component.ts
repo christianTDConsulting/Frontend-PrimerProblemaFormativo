@@ -24,8 +24,8 @@ export class TelefonosComponent {
   //------------------CONSTANTES GLOBALES---------------------//
   //////////////////////////////////////////////////////////////
 
-  @Input() clienteId: number | undefined; //si viene de la vista adminView
-  @Input () state:any  
+  @Input() clienteId: any; //si viene de la vista adminView, en caso de venir de cliente se obtiene del token
+
 
   telefonos: Telefono[] = [];
   private destroy$: Subject<void> = new Subject<void>();
@@ -38,7 +38,8 @@ export class TelefonosComponent {
     usuario: {
       id: 0,
       email: '',
-      password: ''
+      password: '',
+      id_perfil: 1,
     },
     bio: '',
     nacimiento: new Date()
@@ -75,29 +76,29 @@ selectedTLF: Telefono[] = [];
 
   ngOnInit(): void {
     //check token
-   
-
     //init params
-    const clienteId: number = this.getParam();
-    console.log(clienteId);
-    if (clienteId !== null) {
-      this.getCliente(clienteId);
-      this.getTelefonosList(clienteId);
-
+    if (this.clienteId == undefined) {
+      this.getParam();
+    } else{
+      this.getCliente();
+      this.getTelefonosList();
     }
-  }
-  goToLogin(){
-    this.state.set('login');
+   
   }
 
-  getParam(): number {
-    if (this.state('view')) { // si es view y no viewAdmin, siempre se manda un clienteId
-      return this.clienteId!;
-    } else {
-      //console.log(this.loginService.decodeToken());
-      return 1;
-    }
+ 
+
+  getParam() {
+    this.loginService.decodeToken().subscribe(
+      (response: any) => {
+        this.clienteId = response.id;
+        this.getCliente();
+        this.getTelefonosList()
+      });
   }
+ 
+  
+  
  
   //////////////////////////////////////////////////////////////
   //------------------MÉTODOS TELEFONO------------------------//
@@ -116,8 +117,8 @@ selectedTLF: Telefono[] = [];
  
   
   //Lista de todos los telefonos visibles
-  getTelefonosList(id: number) {
-    this.telefonoService.getTelefonosClienteVisible(id,true).pipe(takeUntil(this.destroy$)).subscribe(
+  getTelefonosList() {
+    this.telefonoService.getTelefonosClienteVisible(this.clienteId,true).pipe(takeUntil(this.destroy$)).subscribe(
       (response: Telefono[]) => {
         console.log(response);
         this.telefonos = response;
@@ -128,8 +129,8 @@ selectedTLF: Telefono[] = [];
     );
   }
     //Lista de todos los telefonos eliminados
-  getTelefonosEliminadosList(id: number) {
-    this.telefonoService.getTelefonosClienteVisible(id,false).pipe(takeUntil(this.destroy$)).subscribe(
+  getTelefonosEliminadosList() {
+    this.telefonoService.getTelefonosClienteVisible(this.clienteId,false).pipe(takeUntil(this.destroy$)).subscribe(
       (response: Telefono[]) => {
         console.log(response);
         this.telefonos = response;
@@ -141,8 +142,8 @@ selectedTLF: Telefono[] = [];
   }
 
   //obtener el cliente
-  getCliente(id: number) {
-    this.clienteService.getCliente(id).subscribe(
+  getCliente() {
+    this.clienteService.getCliente(this.clienteId).subscribe(
       (response: Cliente) => {
         this.cliente = response;
         console.log(response);
@@ -188,11 +189,11 @@ selectedTLF: Telefono[] = [];
       response => {
         console.log(response);
 
-        const ClienteId = this.getParam();
+  
         this.selectedTLF = [];
         
         if (this.selectedList === 'Telefonos'){
-          this.getTelefonosList(ClienteId); //refresh
+          this.getTelefonosList(); //refresh
           this.messageService.add({
             severity: 'success',
             summary: 'Operación exitosa',
@@ -201,7 +202,7 @@ selectedTLF: Telefono[] = [];
           });
           this.confirmationService.close();
         } else{
-          this.getTelefonosEliminadosList(ClienteId); //refresh
+          this.getTelefonosEliminadosList(); //refresh
           this.messageService.add({
             severity: 'success',
             summary: 'Operación exitosa',
@@ -265,7 +266,7 @@ selectedTLF: Telefono[] = [];
           console.log(response);
           const ClienteId = this.getParam();
           if (ClienteId !== null) {
-            this.getTelefonosList(ClienteId);
+            this.getTelefonosList();
             this.messageService.add({
               severity: 'success',
               summary: 'Operación exitosa',
@@ -331,8 +332,8 @@ selectedTLF: Telefono[] = [];
         detail: 'Teléfono no editado: Asegúrese de que el teléfono introducido es válido.',
         key: 'tlf',
       });
-      const ClienteId = this.getParam();
-      this.getTelefonosList(ClienteId);
+      
+      this.getTelefonosList();
     }
     this.changeInputBool(index); //SpeedDial
   }
@@ -352,8 +353,8 @@ changeInputBool(index:number) {
 
 closeEdit(index:number){
 
-  const ClienteId = this.getParam();
-  this.getTelefonosList(ClienteId);
+
+  this.getTelefonosList();
   this.messageService.add({
     severity: 'info',
     summary: 'Atención',
@@ -404,9 +405,9 @@ onClickSpeedDial(telefonoId: number, index:number) {
 updateList(){
   this.selectedTLF = [];
   if (this.selectedList === 'Telefonos'){
-    this.getTelefonosList(this.cliente.id!);
+    this.getTelefonosList();
   } else{
-    this.getTelefonosEliminadosList(this.cliente.id!);
+    this.getTelefonosEliminadosList();
   }
 }
  

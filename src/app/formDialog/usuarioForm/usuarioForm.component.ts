@@ -1,17 +1,19 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Cliente } from '../../models/cliente';
 import { ClienteService } from '../../services/cliente.service';
 import { MessageService } from 'primeng/api';
 import {TelefonoService} from '../../services/telefono.service';
+import { LoginService } from 'src/app/services/login.service';
+
 @Component({
   selector: 'app-usuarioForm',
   templateUrl: './usuarioForm.component.html',
   styleUrls: ['./usuarioForm.component.css']
 })
 export class UsuarioFormComponent implements OnInit {
-  @Input() clienteId: number | undefined;
-  @Input () state:any  
+  @Input() clienteId: any; // si me pasan un clienteId tengo token
+  @Input () state:any  // si me pasan el estado, no tengo token
   //@Output() guardar = new EventEmitter<Cliente>();
 
   cliente: Cliente = {
@@ -21,9 +23,11 @@ export class UsuarioFormComponent implements OnInit {
       id: undefined,
       email: '',  
       password: '',
+      id_perfil: 1,
     },
     bio: '',
     nacimiento: new Date(),
+    
   };
   nuevoTelefono="";
 
@@ -38,7 +42,7 @@ export class UsuarioFormComponent implements OnInit {
     telefono: new FormControl('',[ Validators.pattern("^[0-9]{3}-[0-9]{3}-[0-9]{3}$")] ),
     password: new FormControl('', [
       Validators.required,
-      Validators.minLength(8), //  longitud mínima
+      //Validators.minLength(8),   longitud mínima
      // Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&!])[A-Za-z\d@#$%^&!]*$/), // Exige diversidad de caracteres
       //Validators.pattern(/^(?![\d]+$)(?![a-zA-Z]+$)(?![^a-zA-Z\d]+$).{8,}$/) // Evita palabras comunes y datos personales
     ]),
@@ -52,16 +56,17 @@ export class UsuarioFormComponent implements OnInit {
   constructor(
    
     private clienteService: ClienteService,
-
+    private loginService: LoginService,
     public messageService : MessageService,
     public telefonoService: TelefonoService,
-    
+  
    
   ) { }
 
   
   ngOnInit(): void {
   
+    
     if (this.clienteId !== undefined) {
       
       console.log("edit");
@@ -125,7 +130,7 @@ export class UsuarioFormComponent implements OnInit {
 
        this.profileForm.patchValue({
         nombre: this.cliente.nombre,
-        email: this.cliente.usuario!.email,
+        email: this.cliente.usuario.email,
         bio: this.cliente.bio,
         nacimiento: new Date(this.cliente.nacimiento),
       });
@@ -139,7 +144,16 @@ export class UsuarioFormComponent implements OnInit {
       this.updateCliente();
 
       console.log(this.cliente.nacimiento);
-      this.clienteService.addCliente(this.cliente).subscribe(
+      const cliente = {
+        bio: this.cliente.bio,
+        nacimiento: this.cliente.nacimiento,
+        nombre: this.cliente.nombre,
+      }
+      const usuario = {
+        email: this.cliente.usuario.email,
+        password: this.cliente.usuario.password
+      }
+      this.loginService.crearUsuarioYCliente(usuario, cliente).subscribe(
         response =>{
           console.log(response);
           if (this.nuevoTelefono != ""){
@@ -149,35 +163,33 @@ export class UsuarioFormComponent implements OnInit {
               }
             )
            }
-
-          this.messageService.add({
-              severity: 'success',
-              summary: 'Operación exitosa',
-              detail: 'El usuario ha sido creado  correctamente.',
-             
-          });
-          
-     
-          
-          //this.ref.close(); //close pop up
-        }, (error) => {
+           this.messageService.add({
+            severity: 'success',
+            summary: 'Operación exitosa',
+            detail: 'El usuario ha sido creado  correctamente.',
+           
+        }) }, (error) => {
+          console.log(error);
           this.messageService.add({
             severity: 'error',
             summary: 'Operación fallada',
             detail: 'El usuario no ha sido creado.',
             key: 'data',
         });
-        }
-      )
-     } else{
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Atención',
-        detail: 'Asegurese de que los datos son correctos.',
-        key: 'data',
-    });
+        } 
+      );
+
+     }else{
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Atención',
+          detail: 'Asegurese de que los datos son correctos.',
+          key: 'data',
+      });
      }
+
     }
+    
 
    
     editarUsuario(){
@@ -186,37 +198,48 @@ export class UsuarioFormComponent implements OnInit {
       this.updateCliente();
        console.log(this.cliente);
 
-        this.clienteService.editCliente(this.cliente).subscribe(
+       const usuario = {
+        id: this.cliente.usuario.id,
+        email: this.cliente.usuario.email,
+        password: this.cliente.usuario.password
+      }
+
+      const cliente = {
+        id: this.clienteId,
+        usuario: usuario,
+        bio: this.cliente.bio,
+        nacimiento: this.cliente.nacimiento,
+        nombre: this.cliente.nombre,
+        
+      }
+      
+
+        this.clienteService.editCliente(cliente).subscribe(
           response =>{
-            console.log(response);  
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Operación exitosa',
-              detail: 'El cliente ha sido editado  correctamente.',
-           
+           console.log(response);
+           //cerrar pop up
+           this.messageService.add({
+            severity: 'success',
+            summary: 'Operación exitosa',
+            detail: 'El usuario ha sido editado  correctamente.',
+            key: 'data',
           });
-          //this.ref.close(); //close pop up
-          }, (error) => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Operación fallada',
-              detail: 'El cliente no ha sido editado.',
-              key: 'data',
-          });
-          }
-        )
-       }else{
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Atención',
-          detail: 'Asegurese de que los datos son correctos.',
-          key: 'data',
-      });
-       }
-    }
+        }, (error) => {
+          console.log(error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Operación fallada',
+            detail: 'El usuario no ha sido editado.',
+            key: 'data',
+        });
+        
+    });
+  }
+}
 
     goToLogin(){
       this.state.set('login');
     }
+
 
 }

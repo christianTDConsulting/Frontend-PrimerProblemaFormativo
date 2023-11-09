@@ -1,21 +1,21 @@
 import { Component } from '@angular/core';
-import { ClienteService } from '../services/cliente.service';
-import { Cliente } from '../models/cliente';
+import { ClienteService } from 'src/app/services/cliente.service';
+import { Cliente } from 'src/app/models/cliente';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { UsuarioFormComponent } from '../formDialog/usuarioForm/usuarioForm.component';
-import { TelefonoDialogComponent } from '../telefonos/telefonoDialog/telefonoDialog.component';
+import { TelefonoDialogComponent } from 'src/app/telefonos/telefonoDialog/telefonoDialog.component';
+import { DataClienteComponent } from 'src/app/formDialog/data-cliente/data-cliente.component';
 
 
 @Component({
-  selector: 'app-clientes',
-  templateUrl: './clientes.component.html',
-  styleUrls: ['./clientes.component.scss'],
-  providers: [DialogService, MessageService]
+  selector: 'app-viewAdmin',
+  templateUrl: './viewAdmin.component.html',
+  styleUrls: ['./viewAdmin.component.css']
 })
-export class ClientesComponent {
+export class ViewAdminComponent  {
 
+ 
   //////////////////////////////////////////////////////////////
   //------------------VARIABLES GLOBALES----------------------//
   //////////////////////////////////////////////////////////////
@@ -55,36 +55,19 @@ export class ClientesComponent {
   //////////////////////////////////////////////////////////////
   getClientesList() {
     this.clienteService.getClientesVisible(true).subscribe(response => {
-      this.obtenerUsuarios(response); // Llama a la función asincrónica pasando el parámetro response
+      this.clientes = response; // Llama a la función asincrónica pasando el parámetro response
     });
   }
   getListEliminados(){
     this.clienteService.getClientesVisible(false).subscribe(
       response => {
-        this.obtenerUsuarios(response);
+        this.clientes = response;
         
       } //control de error
     )
   }
   
-  async obtenerUsuarios(clientes: any[]) {
-    let clientesConUsuarios: Cliente[] = [];
-    for (const cliente of clientes) { //Por cada cliente de la lista de clientes
-      if (cliente.id_usuario !== null) { //si no tiene usuario, lo obtenemos
-       this.clienteService.getUsuarioPorId(cliente.id_usuario).subscribe(
 
-        usuario => {
-          cliente.usuario = usuario;
-          clientesConUsuarios.push(cliente);
-        });
-        
-      }
-     
-    }
-  
-    this.clientes = clientesConUsuarios; //actualizamos la lista de clientes
-    console.log(this.clientes);
-  }
 
   //Clear filtros
   clear(table: Table) {
@@ -264,6 +247,10 @@ export class ClientesComponent {
           this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
       });
       
+      this.ref.onClose.subscribe(() => {
+        this.getClientesList();
+      });
+      
       });
 
 
@@ -278,7 +265,7 @@ export class ClientesComponent {
 //abrir dynamic dialog de Creacion
 showCreation(){
 
-  this.ref = this.dialogService.open(UsuarioFormComponent, {
+  this.ref = this.dialogService.open(DataClienteComponent, {
         header: 'Crear nuevo cliente',
         data: {
           
@@ -302,7 +289,7 @@ showCreation(){
 showEdition(id:number){
   this.clienteService.getCliente(id).subscribe(
     (cliente: Cliente) => {
-      this.ref = this.dialogService.open(UsuarioFormComponent, {
+      this.ref = this.dialogService.open(DataClienteComponent, {
         header: 'Datos de  ' + cliente.nombre,
         data: {
           id: id
@@ -393,9 +380,4 @@ updateList(){
 }
 
 
-
-} 
-
-
-
-
+}

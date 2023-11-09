@@ -13,7 +13,7 @@ export class DataClienteComponent {
  
 
  
-  clienteId: any;
+  clienteId: number = this.dialogConfig.data.id;
  
 
 
@@ -27,24 +27,8 @@ export class DataClienteComponent {
 
   
   ngOnInit(): void {
-   this.clienteId =  this.getParam();
-   
-  }
-  //PRIVADOS
-
-  private getParam(){
-    return this.dialogConfig.data.id;
-  }
-   
-   //El componente de calendario de primeNG, devuelve la hora del navegador en este caso Europa, por lo tanto, hago esta función para cambiar a GMT que es la fecha de la bbdd
   
-
-
-
+   
+  }
  
-  
-
-   
-   
-     
 }

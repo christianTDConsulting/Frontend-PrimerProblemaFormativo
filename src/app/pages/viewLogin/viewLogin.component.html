@@ -1,0 +1,10 @@
+<div>
+  <ng-container *ngIf="state() === 'register'">
+    <app-usuarioForm [state] ="state"  ></app-usuarioForm>
+    
+    </ng-container>
+
+    <ng-container *ngIf="state() === 'login'">
+      <app-login [state]="state"></app-login>
+    </ng-container>
+</div>

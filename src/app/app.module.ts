@@ -3,30 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
+import { CookieService } from 'ngx-cookie-service';
 
+import { ViewAdminModule } from './pages/viewAdmin/viewAdmin.module';
+import { ViewLoginModule } from './pages/viewLogin/viewLogin.module';
 import { TelefonosModule } from './telefonos/telefonos.module';
-import { ClientesModule } from './clientes/clientes.module';
-import { UsuarioFormModule } from './formDialog/usuarioForm/usuarioForm.module';
-
-import { PanelModule } from 'primeng/panel';
-import { CardModule } from 'primeng/card';
-
-import { HttpClientModule } from '@angular/common/http'
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
-import { RouterModule } from '@angular/router';
-import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToastModule } from 'primeng/toast';
-import { SpeedDialModule } from 'primeng/speeddial';
-import { CookieService } from "ngx-cookie-service";
-import { ToolbarModule } from 'primeng/toolbar';
-
-import { MessageService } from 'primeng/api';
-
 
 
 
@@ -34,41 +15,20 @@ import { MessageService } from 'primeng/api';
 @NgModule({
   declarations: [		
     AppComponent,
-    LoginComponent,
+
     
    ],
   imports: [
-   
-    PanelModule,
-
-    CardModule,
+  
     BrowserModule,
     AppRoutingModule,
-    ClientesModule,
-    TelefonosModule,
-    HttpClientModule,
-    TableModule,
-    ButtonModule,
-    RouterModule,
-    InputTextModule,
-    FormsModule,
-    ReactiveFormsModule,
-    DynamicDialogModule,
-   
-    BrowserAnimationsModule,
-    TelefonosModule,
-    ToastModule,
-    SpeedDialModule,
-
-    ToolbarModule,
-
-    UsuarioFormModule,
- 
-    
+    ViewAdminModule,
+    ViewLoginModule,
+    TelefonosModule
    
     
   ],
-  providers: [ MessageService, CookieService,],
+  providers: [CookieService,],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

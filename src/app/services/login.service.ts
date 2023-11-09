@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie-service";
-import * as jwt from "jsonwebtoken";
-
+import { Cliente } from '../models/cliente';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +16,23 @@ constructor(private http: HttpClient, private cookies: CookieService) { }
 crearUsuario(usuario: any): Observable<any> {
   return this.http.post<any>(this.usuarioUrl, usuario);
 }
+
+crearUsuarioYCliente(usuario: any, cliente: any): Observable<any> {
+
+  const usuarioData = { email: usuario.email, plainPassword: usuario.password };
+  const clienteData = {
+    nombre: cliente.nombre,
+    bio: cliente.bio,
+    nacimiento: cliente.nacimiento,
+  };
+
+  return this.http.post<any>('http://localhost:3000/usuarioCliente', {
+    usuarioData,
+    clienteData,
+  });
+
+}
+
 
 editarUsuario(usuario: any): Observable<any> {
   return this.http.put<any>(this.usuarioUrl, usuario);
@@ -60,45 +76,13 @@ getToken() {
   return this.cookies.get("token");
 }
 
-isAuthenticated(): boolean {
-  // Verifica si el usuario está autenticado 
-  const token = this.getToken();
-  if (token) {
-    const isTokenValid = this.checkTokenExpirationAndRemove(); // Llama a checkTokenExpirationAndRemove si hay un token
-    return isTokenValid;
-  }
-  return false; // Devuelve true si el token existe
-}
-
-removeToken(): void {
-  // Elimina el token de las cookies
-  this.cookies.delete('token');
-}
-
-decodeToken(): any {
+decodeToken(): Observable<Cliente> {
   const token = this.getToken(); // Obtén el token de las cookies o de donde lo almacenes
 
-  try {
-    return jwt.decode(token);
-  } catch(Error) {
-    return null;
-  }
+  
+  return  this.http.get<Cliente>('http://localhost:3000/token/' + token);
+
 }
-checkTokenExpirationAndRemove(): boolean {
-  const token = this.getToken();
-  if (token) {
-    const decodedToken = this.decodeToken();
-    if (decodedToken && decodedToken.exp) {
-      const currentTimestamp = Math.floor(Date.now() / 1000); // Obtén el tiempo actual en segundos
-      if (decodedToken.exp < currentTimestamp) {
-        // El token ha expirado, elimínalo de las cookies
-        this.removeToken();
-        return false; // El token ha expirado y se ha eliminado
-      }
-    }
-    return true; // El token es válido
-  }
-  return false; // No se encontró un token
-}
+
 
 }

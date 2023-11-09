@@ -19,9 +19,6 @@ export class TelefonoDialogComponent implements OnInit {
   id_cliente: number = 0;
 
   ngOnInit() {
-    this.id_cliente =  this.getParam();
-  }
-  getParam(): number {
-    return this.dialogConfig.data.id;
+    this.id_cliente =  this.dialogConfig.data.id;
   }
 }
