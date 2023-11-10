@@ -30,5 +30,7 @@ export class DataClienteComponent {
   
    
   }
- 
+  cerrarDialog(event: any){
+    this.ref.close();
+  }
 }

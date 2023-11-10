@@ -2,16 +2,21 @@
 
 <form [formGroup]="profileForm">
   <!--si el estado es indefinido estamos en el rol de admin, en caso de que el clienteId sea distinto de indefinido, queremos editar-->
-  <div  *ngIf="state !== undefined || (state ===  undefined && clienteId === undefined) ; else editar">
-    <p-card header="Registro" [style]="{ width: '600px' }">
+  
+    <p-card [header]="!editar ? 'Registro' : 'Editar'" [style]="{ width: '600px' }">
       <div class="p-grid">
           <div class="p-col">
             <div class="box mu-5 my-5">
             
               <span class="p-float-label">
-                <input type="text"  pInputText formControlName = "nombre" [id]="'nombre'">
+                <input type="text"  pInputText formControlName = "nombre" class="w-full" [id]="'nombre'">
                 <label>Nombre *</label>
               </span>
+              <small *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="block p-error">
+                <div *ngIf="nombre.errors?.['required']">El nombre es requerido.</div>
+                <div *ngIf="nombre.errors?.['maxlength']">El nombre debe tener como máximo 50 caracteres.</div>
+              </small>
+              
               
               
             </div>
@@ -20,36 +25,71 @@
           <div class="p-col">
             <div class="box mb-5">
               <span class="p-float-label">
-                <input type="text"  pInputText  formControlName = "email" [id]="'email'">
+                <input type="text"  pInputText  class="w-full"formControlName = "email" [id]="'email'">
                 <label >Email *</label>
               </span>
-            </div>
-  
-            <div class="p-col">
-              <div class="box mb-5">
-                <span class="p-float-label"> <!-- Faltan form de contraseñas-->
-                  <input type="text"  pInputText   [id]="'email'">
-                  <label >Contraseña *</label>
-                </span>
-              </div>
-            </div>
-  
-            <div class="p-col">
-              <div class="box mb-5">
-                  <span class="p-float-label">
-                    <input type="text"  pInputText  [id]="'email'">
-                    <label >Confirma contraseña *</label>
-                  </span>
-              </div>
+              <small *ngIf="email.invalid && (email.dirty || email.touched)" class="block p-error">
+                <div *ngIf="email.errors?.['required']">El email es requerido.</div>
+                <div *ngIf="email.errors?.['pattern']">El email debe ser valido.</div>
+              </small>
             </div>
             
+            <!-- crear -->
+            <div *ngIf="!editar">
+                <div class="p-col">
+                    <div class="box mb-5">
+                      <label for="password">Contraseña</label>
+                      <span class="p-float-label"> <!-- Faltan form de contraseñas-->
+                        <input
+                          type="password"
+                          pInputText
+                          formControlName="password"
+                          class="w-full"
+                          name="password"
+                          placeholder="Escribe tu contraseña"
+                        
+                        />
+                      </span>
+                      <small *ngIf="password.invalid && (password.dirty || password.touched)" class="block p-error">
+                        <div *ngIf="password.errors?.['required']">La contraseña es requerida.</div>
+                        <div *ngIf="password.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres.</div>
+                        <div *ngIf="password.errors?.['pattern']">La contraseña debe incluir al menos una letra mayúscula, mínuscula y un número.</div>
+                      </small>
+                    </div>
+
+                  </div>
+                  <label for="password">Repite la contraseña</label>
+                  <div class="p-col">
+                    <div class="box mb-5">
+                        <span class="p-float-label">
+                          <input
+                            type="password"
+                            pInputText
+                            formControlName="password2"
+                            class="w-full"
+                            name="password"
+                            placeholder="Escribe tu contraseña"
+                          
+                          />
+                        </span>
+                        <small *ngIf="password2.invalid && (password2.dirty || password2.touched)" class="block p-error">
+                          <div *ngIf="password2.errors?.['required']">Confirmar la contraseña.</div>
+                          <div *ngIf="password2.errors?.['notEqual']">Las contraseñas no coinciden.</div>
+                        </small>
+                    </div>
+                  </div>
+            
+            </div>
           </div>
           <div class="p-col">
             <div class="box mb-3">
   
               <span class="p-float-label">
-                <textarea id="float-input" rows="5" cols="30" pInputTextarea  formControlName = "bio"  ></textarea>
+                <textarea id="float-input" class="w-full" rows="5" cols="30" pInputTextarea  formControlName = "bio"  ></textarea>
                 <label >Biografía</label>
+                <small *ngIf="bio.invalid && (bio.dirty || bio.touched)" class="block p-error">
+                  <div *ngIf="bio.errors?.['maxlength']">La bio debe tener como máximo 200 caracteres.</div>
+                </small>
               </span>
   
   
@@ -61,37 +101,90 @@
             Fecha de nacimiento *
             <div class="box mb-5">
               
-              <p-calendar [showIcon]="true" [inline]="true" view="date" [showWeek]="true" formControlName="nacimiento"></p-calendar>
-  
+              <p-calendar [showIcon]="true" [inline]="true"  view="date" [showWeek]="true" formControlName="nacimiento"></p-calendar>
+              <small *ngIf="nacimiento.invalid && (nacimiento.dirty || nacimiento.touched)" class="block p-error">
+                <div *ngIf="nacimiento.errors?.['required']">La fecha de nacimiento es requerida.</div>
+              </small>
             <!--  (onSelect)="updateDate()" -->
             </div>
           </div>
-  
-        
-  
-         
-            
-          
-            
-          <div class="p-col">
-            <div class="box mb-5">
+ 
+          <div class="p-col" *ngIf = "!editar">
+            <div class="box mb-3">
             <span class="p-float-label">
               <p-inputMask mask="999-999-999" placeholder="999-999-999" type="text" pKeyFilter="int "    formControlName="telefono"  [id]="'nuevoTelefono'"/> 
               <label >Añade un teléfono</label>
             </span>
+            <small *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="block p-error">
+              <div *ngIf="telefono.errors?.['pattern']">El formato del teléfono no es válido.</div>
+            </small>
+            </div>
+          </div>
+                <!-- editar -->
+          <div class="p-col" *ngIf="editar">
+            <div class="box mb-3">
+              <p-accordion [activeIndex]="0">   
+                <p-accordionTab header="Cambiar contraseña">
+                  <div class="p-col">
+                    <div class="box mb-5">
+                      <label for="password">Nueva contraseña </label>
+                      <span class="p-float-label">
+                        <input
+                          type="password"
+                          pInputText
+                          formControlName="password"
+                          class="w-full"
+                          name="password"
+                          placeholder="Escribe tu contraseña"
+                        
+                        />
+                      </span>
+                      <small *ngIf="password.invalid && (password.dirty || password.touched)" class="block p-error">
+                        <div *ngIf="password.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres.</div>
+                        <div *ngIf="password.errors?.['pattern']">La contraseña debe incluir al menos una letra mayúscula, mínuscula y un número.</div>
+                      </small>
+                    </div>
+
+                  </div>
+                  <label for="password">Repite la contraseña</label>
+                  <div class="p-col">
+                    <div class="box mb-5">
+                        <span class="p-float-label">
+                          <input
+                            type="password"
+                            pInputText
+                            formControlName="password2"
+                            class="w-full"
+                            name="password"
+                            placeholder="Escribe tu contraseña"
+                          
+                          />
+                        </span>
+                        <small *ngIf="password2.invalid && (password2.dirty || password2.touched)" class="block p-error">
+                          <div *ngIf="password2.errors?.['notEqual']">Las contraseñas no coinciden.</div>
+                        </small>
+
+                    </div>
+                  </div>
+                </p-accordionTab>
+              </p-accordion>
+               
             </div>
           </div>
 
-            <div>
+            <div *ngIf="!editar">
               <p-button label="Crear " (click)="crearUsuario()" severity="success"></p-button>
             </div>
-            
+            <div *ngIf="editar">
+              <p-button label="Editar " (click)="editarUsuario()" severity="success"></p-button>
+            </div>
           </div>
 
-          <ng-template ngIf="clienteId === undefined" >
+          <ng-template ngIf= "state === undefined" >
             
-            <div class="mt-2" >Tienes cuenta? 
-              <p-button label="Iniciar Sesión" severity="plain" (onClick)="goToLogin()"></p-button> 
+            <div class="mt-2" *ngIf="!editar" >Tienes cuenta? 
+              <!--<p-button label="Iniciar Sesión" severity="plain" (onClick)="goToLogin()"></p-button> -->
+              <span (click)="goToLogin()"  style="color: blue; cursor: pointer;" >Iniciar sesión aquí</span>
             </div>
           </ng-template>
   
@@ -102,63 +195,7 @@
         
     </p-card>
     
-  </div>
-    
-    <ng-template #editar>
-      <p-card header="Editar" [style]="{ width: '600px' }">
-        <div class="p-grid">
-            <div class="p-col">
-                <div class="box mu-5 my-5">
-                
-                  <span class="p-float-label">
-                    <input type="text"  pInputText formControlName = "nombre" [id]="'nombre'">
-                    <label>Nombre *</label>
-                  </span>
-                  
-                  
-                </div>
-              </div>
-      
-              <div class="p-col">
-                <div class="box mb-5">
-                  <span class="p-float-label">
-                    <input type="text"  pInputText  formControlName = "email" [id]="'email'">
-                    <label >Email *</label>
-                  </span>
-                </div>
-              </div>
 
-              <div class="p-col">
-                <div class="box mb-3">
-      
-                  <span class="p-float-label">
-                    <textarea id="float-input" rows="5" cols="30" pInputTextarea  formControlName = "bio"  ></textarea>
-                    <label >Biografía</label>
-                  </span>
-      
-      
-                </div>
-      
-              </div>
-              <div class="p-col">
-                
-                Fecha de nacimiento *
-                <div class="box mb-5">
-                  
-                  <p-calendar [showIcon]="true" [inline]="true" view="date" [showWeek]="true" formControlName="nacimiento"></p-calendar>
-      
-                <!--  (onSelect)="updateDate()" -->
-                </div>
-              </div>
-      
-              <div>
-                  
-                <p-button label="Editar" (click)="editarUsuario()" severity="success"></p-button>
-                
-              </div> 
-            </div>
-        
-      </p-card>
-    </ng-template>
   
-</form>
+  
+

@@ -23,7 +23,8 @@
             <div className="flex-1 h-4rem bg-primary font-bold text-center p-4 border-round">
                  <p-dropdown  label="Opciones" [options]="itemsDropdown"  [(ngModel)]="selectedList" (onChange)="updateList()"  styleClass="p-button-help mr-2 mb-2"></p-dropdown >
             </div>
-           
+          
+
             <div className="flex-1 h-4rem bg-primary font-bold text-center p-4 border-round"> 
                 <p-button  label="Cerrar sesión" (onClick)="cerrarSesion()"></p-button> <!--Se mostrará el botón si no es admin-->
             </div>

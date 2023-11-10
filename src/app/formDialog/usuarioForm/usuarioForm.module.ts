@@ -10,7 +10,9 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { AccordionModule } from 'primeng/accordion';
 import { CardModule } from 'primeng/card';
+
 @NgModule({
   declarations: [
     UsuarioFormComponent
@@ -26,7 +28,8 @@ import { CardModule } from 'primeng/card';
     InputMaskModule,
     FormsModule,
     ReactiveFormsModule,
-    CardModule
+    CardModule,
+    AccordionModule,
   ],
  exports: [
    UsuarioFormComponent

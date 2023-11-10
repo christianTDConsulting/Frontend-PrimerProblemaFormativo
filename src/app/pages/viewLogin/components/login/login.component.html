@@ -16,11 +16,11 @@
         class="block p-error"
       >
         <div *ngIf="email.errors?.['required']">Email es requerido.</div>
-        <div *ngIf="email.errors?.['email']">Email debería ser válido</div>
+        <div *ngIf="email.errors?.['email']">Email debe de  ser válido</div>
       </small>
     </div>
     <div class="field">
-      <label for="password">Password</label>
+      <label for="password">Contraseña</label>
       <input
         type="password"
         pInputText
@@ -44,6 +44,6 @@
       [disabled]="loginForm.invalid"
       type="submit"
     ></p-button>
-    <div class="mt-2">No eres miembro? <p-button label="Registrate" severity="plain" (onClick)="goToRegister()"></p-button> </div>
+    <div class="mt-2">No eres miembro? <span (click)="goToRegister()"  style="color: blue; cursor: pointer;" > Regístrate </span> </div>
   </p-card>
 </form>

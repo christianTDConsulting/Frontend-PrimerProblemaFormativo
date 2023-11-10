@@ -8,6 +8,7 @@ import { ToastModule } from 'primeng/toast';
 import { CardModule } from 'primeng/card';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { InputTextModule } from 'primeng/inputtext';
 @NgModule({
   imports: [
     CommonModule,
@@ -17,6 +18,7 @@ import { MessageService } from 'primeng/api';
     CardModule,
     FormsModule,
     ReactiveFormsModule,
+    InputTextModule
         
   ],
   declarations: [ViewLoginComponent, LoginComponent],

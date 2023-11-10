@@ -8,6 +8,7 @@ import { TelefonoDialogComponent } from 'src/app/telefonos/telefonoDialog/telefo
 import { DataClienteComponent } from 'src/app/formDialog/data-cliente/data-cliente.component';
 import { TokenService } from 'src/app/services/token/token.service';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-viewAdmin',
   templateUrl: './viewAdmin.component.html',
@@ -29,7 +30,8 @@ export class ViewAdminComponent  {
   selectedList: 'Clientes' | 'Eliminados' = 'Clientes';
   itemsDropdown = [
     { label: 'Clientes', value: 'Clientes' },
-    { label: 'Eliminados', value: 'Eliminados' }
+    { label: 'Eliminados', value: 'Eliminados' },
+    {label: 'Logs', value: 'Logs'},
   ];
   
 
@@ -113,8 +115,6 @@ export class ViewAdminComponent  {
       })
     }
     deleteSelectedClientes() {
-     
-        
         this.confirmationService.confirm({
           message: '¿Estás seguro que quieres eliminar los clientes?',
           header: 'Confirmación',
@@ -315,13 +315,16 @@ showEdition(id:number){
     });
   });
 
+}
 
-
+showLogs(){
+  alert("show logs");
+  
 }
 
 
   //////////////////////////////////////////////////////////////
-  //------------------SPEED DIAL Y ELIMINADOS-----------------//
+  //------------------SPEED DIAL Y DROPDOWN-------------------//
   //////////////////////////////////////////////////////////////
 
 
@@ -380,9 +383,12 @@ updateList(){
   if(this.selectedList === 'Clientes'){
    
     this.getClientesList();
-  }else {
+  }else if (this.selectedList === 'Eliminados'){
    
     this.getListEliminados();
+  }else if (this.selectedList === 'Logs'){ //logs
+    this.showLogs();
+   
   }
 }
 

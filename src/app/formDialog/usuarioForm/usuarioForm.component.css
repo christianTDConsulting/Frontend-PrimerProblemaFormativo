@@ -1,0 +1,8 @@
+#miOverlayPanel .ui-overlaypanel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000; /* Ajusta el valor de z-index según sea necesario */
+  }
