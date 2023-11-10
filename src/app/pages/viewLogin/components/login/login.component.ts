@@ -1,7 +1,7 @@
 import { Component, OnInit, Input  } from '@angular/core';
 import { Validators,FormControl,FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { LoginService } from '../../../../services/login/login.service';
+import { TokenService } from 'src/app/services/token/token.service'; 
 import {Log} from '../../../../models/log';
 import { Router } from '@angular/router';
 @Component({
@@ -27,8 +27,9 @@ export class LoginComponent implements OnInit {
     
 
   constructor(
-     private loginService: LoginService,
+     private loginService: TokenService,
      private messageService: MessageService,
+     private tokenService: TokenService,
      private router: Router
      ) { }
 
@@ -41,7 +42,7 @@ export class LoginComponent implements OnInit {
   }
 
   loginUser() { 
-    this.loginService.verificarUsuario(this.email.value, this.password.value).subscribe(
+    this.tokenService.verificarUsuario(this.email.value, this.password.value).subscribe(
       response => {
        
         

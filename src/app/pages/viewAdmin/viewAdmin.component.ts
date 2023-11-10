@@ -6,8 +6,8 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { TelefonoDialogComponent } from 'src/app/telefonos/telefonoDialog/telefonoDialog.component';
 import { DataClienteComponent } from 'src/app/formDialog/data-cliente/data-cliente.component';
-
-
+import { TokenService } from 'src/app/services/token/token.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-viewAdmin',
   templateUrl: './viewAdmin.component.html',
@@ -40,7 +40,9 @@ export class ViewAdminComponent  {
     private clienteService: ClienteService,
     public dialogService: DialogService,  
     public messageService : MessageService,
-    public confirmationService : ConfirmationService
+    public confirmationService : ConfirmationService,
+    private router: Router,
+    private tokenService: TokenService
   
   ){}
 
@@ -51,7 +53,7 @@ export class ViewAdminComponent  {
   //Inicializar lista de clientes
 
   //////////////////////////////////////////////////////////////
-  //------------------MÉTOFOD CLIENTES------------------------//
+  //------------------MÉTODOS CLIENTES------------------------//
   //////////////////////////////////////////////////////////////
   getClientesList() {
     this.clienteService.getClientesVisible(true).subscribe(response => {
@@ -75,6 +77,11 @@ export class ViewAdminComponent  {
     table.clear();
 }
 
+ //Cerrar sesion
+ cerrarSesion(){
+  this.tokenService.deleteToken();
+  this.router.navigate(['/viewLogin']);
+}
 
   //borrar Cliente
   /*

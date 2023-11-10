@@ -1,9 +1,9 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async, inject } from '@angular/core/testing';
-import { LoginService } from './login.service';
+import { TokenService } from './token.service';
 
-describe('Service: Login', () => {
+describe('Service: Token', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [LoginService]

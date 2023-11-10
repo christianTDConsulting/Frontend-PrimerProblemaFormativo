@@ -4,7 +4,7 @@ import { Cliente } from '../../models/cliente';
 import { ClienteService } from '../../services/cliente/cliente.service';
 import { MessageService } from 'primeng/api';
 import {TelefonoService} from '../../services/telefono/telefono.service';
-import { LoginService } from 'src/app/services/login/login.service';
+import { UsuarioService } from 'src/app/services/usuario/usuario.service';
 
 @Component({
   selector: 'app-usuarioForm',
@@ -56,7 +56,7 @@ export class UsuarioFormComponent implements OnInit {
   constructor(
    
     private clienteService: ClienteService,
-    private loginService: LoginService,
+    private usuarioService: UsuarioService,
     public messageService : MessageService,
     public telefonoService: TelefonoService,
   
@@ -153,7 +153,7 @@ export class UsuarioFormComponent implements OnInit {
         email: this.cliente.usuario.email,
         password: this.cliente.usuario.password
       }
-      this.loginService.crearUsuarioYCliente(usuario, cliente).subscribe(
+      this.usuarioService.crearUsuarioYCliente(usuario, cliente).subscribe(
         response =>{
           console.log(response);
           if (this.nuevoTelefono != ""){

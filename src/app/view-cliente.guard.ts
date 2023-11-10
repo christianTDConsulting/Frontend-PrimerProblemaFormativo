@@ -1,23 +1,22 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { LoginService } from './services/login/login.service'; // Importa el servicio de autenticación { LoginService } 
-import { Cliente } from './models/cliente';
+import { TokenService } from './services/token/token.service'; // Importa el servicio de autenticación { LoginService } 
 import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ViewClienteGuard implements CanActivate {
-  constructor(private loginService: LoginService, private router: Router) {}
+  constructor(private tokenService: TokenService, private router: Router) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const token = this.loginService.getToken(); // Obtén el token del servicio de autenticación
+    const token = this.tokenService.getToken(); // Obtén el token del servicio de autenticación
 
-    return this.loginService.decodeToken().pipe(
+    return this.tokenService.decodeToken().pipe(
       map((response: any) => {
         const perfil = response.usuario.id_perfil;
         if (token && perfil === 1) {

@@ -10,8 +10,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Table } from 'primeng/table';
 import { ClienteService } from '../services/cliente/cliente.service';
-import { LoginService } from '../services/login/login.service';
-
+import { TokenService } from '../services/token/token.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-telefonos',
@@ -25,7 +25,7 @@ export class TelefonosComponent {
   //////////////////////////////////////////////////////////////
 
   @Input() clienteId: any; //si viene de la vista adminView, en caso de venir de cliente se obtiene del token
-
+  admin: boolean = false; //Si viene de la vista adminView o si viene de clienteView
 
   telefonos: Telefono[] = [];
   private destroy$: Subject<void> = new Subject<void>();
@@ -71,15 +71,17 @@ selectedTLF: Telefono[] = [];
     public messageService: MessageService,
     public confirmationService : ConfirmationService,
     private clienteService: ClienteService,
-    public loginService: LoginService
+    public tokenService: TokenService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    //check token
-    //init params
+   
     if (this.clienteId == undefined) {
       this.getParam();
+
     } else{
+      this.admin = true;
       this.getCliente();
       this.getTelefonosList();
     }
@@ -89,9 +91,10 @@ selectedTLF: Telefono[] = [];
  
 
   getParam() {
-    this.loginService.decodeToken().subscribe(
+    this.tokenService.decodeToken().subscribe(
       (response: any) => {
         this.clienteId = response.id;
+        this.admin = false;
         this.getCliente();
         this.getTelefonosList()
       });
@@ -110,7 +113,11 @@ selectedTLF: Telefono[] = [];
     table.clear();
 }
 
-
+  //cerrar sesión
+  cerrarSesion(){
+    this.tokenService.deleteToken();
+    this.router.navigate(['/viewLogin']);
+  }
 
 
 //obtiene el id del cliente pasado en el dialog
