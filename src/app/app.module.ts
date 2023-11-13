@@ -7,7 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { ViewAdminModule } from './pages/viewAdmin/viewAdmin.module';
 import { ViewLoginModule } from './pages/viewLogin/viewLogin.module';
-import { TelefonosModule } from './telefonos/telefonos.module';
+import { TelefonosModule } from './pages/viewClientes/telefonos.module';
 
 
 

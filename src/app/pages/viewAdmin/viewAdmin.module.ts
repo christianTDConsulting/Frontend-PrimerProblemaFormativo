@@ -17,9 +17,11 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { ToolbarModule } from 'primeng/toolbar';
 import { DropdownModule } from 'primeng/dropdown';
-import { TelefonoDialogModule } from 'src/app/telefonos/telefonoDialog/telefonoDialog.module';
+import { TelefonoDialogModule } from 'src/app/pages/viewClientes/telefonoDialog/telefonoDialog.module';
 import { DataClienteModule } from 'src/app/formDialog/data-cliente/data-cliente.module';
 import { ViewAdminComponent } from './viewAdmin.component';
+
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 
 @NgModule({
   imports: [
@@ -43,6 +45,6 @@ import { ViewAdminComponent } from './viewAdmin.component';
   ],
   declarations: [ViewAdminComponent],
   exports: [ViewAdminComponent],
-  providers: [ConfirmationService, DialogService]
+  providers: [ConfirmationService, DialogService, DynamicDialogConfig]
 })
 export class ViewAdminModule { }

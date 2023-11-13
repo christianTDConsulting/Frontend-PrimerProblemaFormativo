@@ -10,8 +10,8 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { of } from 'rxjs';
-import { ConsumoService } from '../../services/consumo/consumo.service';
-import { Consumo } from '../../models/consumo';
+import { ConsumoService } from '../../../services/consumo/consumo.service';
+import { Consumo } from '../../../models/consumo';
 
 describe('ConsumoComponent', () => {
   let component: ConsumoComponent;

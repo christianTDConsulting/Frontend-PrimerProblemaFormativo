@@ -5,7 +5,7 @@ import { ViewAdminGuard } from './view-admin-guard.guard';
 import { ViewAdminComponent } from './pages/viewAdmin/viewAdmin.component';
 import { ViewLoginComponent } from './pages/viewLogin/viewLogin.component'; // Assuming this is your login component
 import { ViewClienteGuard } from './view-cliente.guard';
-import { TelefonosComponent } from './telefonos/telefonos.component';
+import { TelefonosComponent } from './pages/viewClientes/telefonos.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'viewLogin', pathMatch: 'full' },

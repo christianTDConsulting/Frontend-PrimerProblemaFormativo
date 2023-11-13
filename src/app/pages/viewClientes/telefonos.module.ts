@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ToastModule } from 'primeng/toast';
 import { SpeedDialModule } from 'primeng/speeddial';
 
@@ -20,7 +20,6 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { CardModule } from 'primeng/card';
 
 import { SelectButtonModule } from 'primeng/selectbutton';
-import {DynamicDialogConfig} from 'primeng/dynamicdialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CalendarModule } from 'primeng/calendar';
 import { ConsumoComponent } from './consumos/consumo.component';
@@ -29,6 +28,7 @@ import { ConfirmationService } from 'primeng/api';
 import { InputMaskModule } from 'primeng/inputmask';
 import { ToolbarModule } from 'primeng/toolbar';
 import { DropdownModule } from 'primeng/dropdown';
+
 
 @NgModule({
   declarations: [
@@ -60,7 +60,7 @@ import { DropdownModule } from 'primeng/dropdown';
     DropdownModule
     
   ], 
-  providers: [ConfirmationService, DynamicDialogConfig],
+  providers: [ConfirmationService, DialogService],
   exports: [
     TelefonosComponent
   ]

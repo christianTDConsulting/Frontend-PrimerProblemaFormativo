@@ -1,17 +1,18 @@
 import { Component ,  Input} from '@angular/core';
-import { TelefonoService } from '../services/telefono/telefono.service';
-
-import { Telefono } from '../models/telefono';
-import { Cliente } from '../models/cliente';
+import { TelefonoService } from '../../services/telefono/telefono.service';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Telefono } from '../../models/telefono';
+import { Cliente } from '../../models/cliente';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Table } from 'primeng/table';
-import { ClienteService } from '../services/cliente/cliente.service';
-import { TokenService } from '../services/token/token.service';
+import { ClienteService } from '../../services/cliente/cliente.service';
+import { TokenService } from '../../services/token/token.service';
 import { Router } from '@angular/router';
+import { DataClienteComponent } from 'src/app/formDialog/data-cliente/data-cliente.component';
 
 @Component({
   selector: 'app-telefonos',
@@ -30,7 +31,7 @@ export class TelefonosComponent {
   telefonos: Telefono[] = [];
   private destroy$: Subject<void> = new Subject<void>();
 
- 
+  ref : DynamicDialogRef | undefined;
 
   cliente: Cliente = {
     id: 0,
@@ -60,7 +61,7 @@ actions: any[] = []; //speedDial
 
  selectedList : 'Telefonos' | 'Eliminados' = 'Telefonos';
  
-selectedTLF: Telefono[] = [];
+ selectedTLF: Telefono[] = [];
 
 
   //////////////////////////////////////////////////////////////
@@ -69,6 +70,7 @@ selectedTLF: Telefono[] = [];
   constructor(
     private telefonoService: TelefonoService,
     public messageService: MessageService,
+    public dialogService: DialogService,  
     public confirmationService : ConfirmationService,
     private clienteService: ClienteService,
     public tokenService: TokenService,
@@ -345,6 +347,34 @@ selectedTLF: Telefono[] = [];
     this.changeInputBool(index); //SpeedDial
   }
 
+  //abrir dynamic dialog de Edicion
+
+  showEdition(){
+    console.log(this.clienteId);
+
+    this.clienteService.getCliente(this.clienteId).subscribe(
+      (cliente: Cliente) => {
+        this.ref = this.dialogService.open(DataClienteComponent, {
+          header: 'Datos de  ' + cliente.nombre,
+          data: {
+            id: this.clienteId
+          },
+          contentStyle: { overflow: 'auto' },
+          baseZIndex: 10000,
+          maximizable: true
+        });
+  
+      this.ref.onMaximize.subscribe((value) => {
+        this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
+      });
+      
+      this.ref.onClose.subscribe(() => {
+        this.getTelefonosList();
+      });
+    });
+   
+
+  }
   //////////////////////////////////////////////////////////////
   //------------------SPEED DIAL y DROWDOWN.------------------//
   //////////////////////////////////////////////////////////////

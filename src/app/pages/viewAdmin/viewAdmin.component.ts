@@ -4,7 +4,7 @@ import { Cliente } from 'src/app/models/cliente';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { TelefonoDialogComponent } from 'src/app/telefonos/telefonoDialog/telefonoDialog.component';
+import { TelefonoDialogComponent } from 'src/app/pages/viewClientes/telefonoDialog/telefonoDialog.component';
 import { DataClienteComponent } from 'src/app/formDialog/data-cliente/data-cliente.component';
 import { TokenService } from 'src/app/services/token/token.service';
 import { Router } from '@angular/router';

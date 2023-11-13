@@ -25,7 +25,8 @@
                 <!-- Se mostrará si la condición es falsa -->
                 <button pButton pRipple   label="Recuperar" icon="pi pi-backward" class="p-button-danger" (click)="toggleVisibleSelectedTelefonos()" [disabled]="!selectedTLF || !selectedTLF.length"></button>
             </ng-template>
-            
+
+       
         </ng-template>
 
         <ng-template pTemplate="right">
@@ -33,6 +34,11 @@
                
                 <div className="flex-1 h-4rem bg-primary font-bold text-center p-4 border-round">
                      <p-dropdown  label="Opciones" [options]="itemsDropdown"  [(ngModel)]="selectedList" (onChange)="updateList()"  styleClass="p-button-help mr-2 mb-2"></p-dropdown >
+                </div>
+
+                <!-- Solo se mostrara en la vista de cliente, no la de vista de admin-->
+                <div *ngIf="!admin" className="flex-1 h-4rem bg-primary font-bold text-center p-4 border-round"> 
+                    <button pButton pRipple label="Editar datos de perfil" icon="pi pi-pencil" (click)="showEdition()" class=" mr-2" ></button>
                 </div>
                
                 <div className="flex-1 h-4rem bg-primary font-bold text-center p-4 border-round"> 
