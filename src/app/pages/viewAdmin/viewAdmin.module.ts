@@ -22,6 +22,7 @@ import { DataClienteModule } from 'src/app/formDialog/data-cliente/data-cliente.
 import { ViewAdminComponent } from './viewAdmin.component';
 
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { LogsComponent } from './logs/logs.component';
 
 @NgModule({
   imports: [
@@ -43,7 +44,7 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
     TelefonoDialogModule,
     DropdownModule
   ],
-  declarations: [ViewAdminComponent],
+  declarations: [ViewAdminComponent, LogsComponent],
   exports: [ViewAdminComponent],
   providers: [ConfirmationService, DialogService, DynamicDialogConfig]
 })

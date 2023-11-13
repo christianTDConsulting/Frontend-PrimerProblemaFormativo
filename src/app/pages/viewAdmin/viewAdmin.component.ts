@@ -8,6 +8,7 @@ import { TelefonoDialogComponent } from 'src/app/pages/viewClientes/telefonoDial
 import { DataClienteComponent } from 'src/app/formDialog/data-cliente/data-cliente.component';
 import { TokenService } from 'src/app/services/token/token.service';
 import { Router } from '@angular/router';
+import { LogsComponent } from './logs/logs.component';
 
 @Component({
   selector: 'app-viewAdmin',
@@ -31,7 +32,7 @@ export class ViewAdminComponent  {
   itemsDropdown = [
     { label: 'Clientes', value: 'Clientes' },
     { label: 'Eliminados', value: 'Eliminados' },
-    {label: 'Logs', value: 'Logs'},
+   
   ];
   
 
@@ -62,11 +63,11 @@ export class ViewAdminComponent  {
       this.clientes = response; // Llama a la función asincrónica pasando el parámetro response
     });
   }
-  getListEliminados(){
+  getClientesEliminadosList(){
     this.clienteService.getClientesVisible(false).subscribe(
       response => {
         this.clientes = response;
-        
+        console.log(response);
       } //control de error
     )
   }
@@ -142,7 +143,7 @@ export class ViewAdminComponent  {
         this.selectClientes = [];
         //refresh
         if (this.selectedList==='Eliminados'){
-          this.getListEliminados();
+          this.getClientesEliminadosList();
           this.messageService.add({
             severity: 'success',
             summary: 'Operación exitosa',
@@ -269,7 +270,7 @@ export class ViewAdminComponent  {
     }
 }
 
-//abrir dynamic dialog de Creacion
+//abrir dynamic dialog de Creacion //falta tocar cositas
 showCreation(){
 
   this.ref = this.dialogService.open(DataClienteComponent, {
@@ -289,6 +290,28 @@ showCreation(){
   //refresh
   this.ref.onClose.subscribe(() => {
     this.getClientesList();
+  });  
+}
+
+showLogs(table:Table){
+
+  this.ref = this.dialogService.open(LogsComponent, {
+        header: 'Logs',
+        data: {
+          
+        },
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true
+  });
+
+  this.ref.onMaximize.subscribe((value) => {
+      this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
+  });
+
+  //refresh
+  this.ref.onClose.subscribe(() => {
+   this.clear(table);
   });  
 }
 
@@ -317,10 +340,7 @@ showEdition(id:number){
 
 }
 
-showLogs(){
-  alert("show logs");
-  
-}
+
 
 
   //////////////////////////////////////////////////////////////
@@ -383,12 +403,9 @@ updateList(){
   if(this.selectedList === 'Clientes'){
    
     this.getClientesList();
-  }else if (this.selectedList === 'Eliminados'){
+  }else {
    
-    this.getListEliminados();
-  }else if (this.selectedList === 'Logs'){ //logs
-    this.showLogs();
-   
+    this.getClientesEliminadosList();
   }
 }
 

@@ -1,0 +1,107 @@
+<p-toolbar styleClass="mb-4 gap-2">
+
+  <ng-template pTemplate="left">
+      <div >
+        <p-dropdown  label="Opciones" [options]="itemsDropdown"  [(ngModel)]="selectedTable" (onChange)="updateTable()"  styleClass="p-button-help mr-2 mb-2"></p-dropdown >
+      </div>
+        
+      
+  </ng-template>
+
+  <ng-template pTemplate="right">
+     
+      <div class="flex">
+             
+          
+      </div>
+          
+  </ng-template>
+
+ 
+</p-toolbar>
+
+<div class="card" *ngIf="selectedTable === 'Logs' else bloqueos" >
+  <p-table 
+  [value]="elementsTable" 
+  styleClass="p-datatable-striped" 
+  [tableStyle]="{'min-width': '50rem'}"
+  [scrollable]="true" scrollHeight="400 px"
+  
+
+  [globalFilterFields]="['fecha', 'ip_address', 'email', 'exito']"
+  >
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Fecha</th>
+            <th>Dirección Ip</th>
+            <th>Email</th>
+            <th>Log exitoso</th>
+        </tr>
+        <tr>
+
+          <th>
+            <!--<p-columnFilter type="date" field="fecha"></p-columnFilter> -->
+          </th>
+
+          <th>
+              <p-columnFilter type="text" field="ip_address"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter type="text" field="email"></p-columnFilter>
+          </th>
+
+          <th>
+            <p-columnFilter type="boolean" field="exito"></p-columnFilter>
+          </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-log>
+        <tr>
+            <td>{{ log.fecha | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+            <td>{{log.ip_address}}</td>
+            <td>{{log.email}}</td>
+            <td>
+              <i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': log.exito, 'text-red-500 pi-times-circle': !log.exito }"></i>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+</div>
+
+<ng-template #bloqueos>
+  <div class = "card">
+    <p-table [value]="elementsTable"
+     styleClass="p-datatable-striped"
+    [tableStyle]="{'min-width': '50rem'}"
+    [scrollable]="true" scrollHeight="400 px"  
+    [globalFilterFields]="['fecha', 'ip_address', 'email', 'exito']"
+      >
+      <ng-template pTemplate="header">
+          <tr>
+              <th>Bloqueo vigente hasta</th>
+              <th>Dirección Ip</th>
+             
+          </tr>
+
+          <tr>
+            <th>
+              <!--<p-columnFilter type="date" field="fecha"></p-columnFilter> -->
+            </th>
+  
+            <th>
+                <p-columnFilter type="text" field="ip_address"></p-columnFilter>
+            </th>
+
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-bloqueo>
+          <tr>
+            <td>{{ bloqueo.fecha | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+            <td>{{bloqueo.ip_address}}</td>
+              
+          </tr>
+      </ng-template>
+  </p-table>
+  </div>
+
+</ng-template>

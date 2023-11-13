@@ -47,8 +47,8 @@ export class LoginComponent implements OnInit {
        
         
         if (response) { 
-          console.log(response.message, response.token);
-          //CREAR LOG DE INICIO DE SESION falta completar
+          console.log(response.token);
+          
           this.loginService.setToken(response.token);
           this.messageService.add({severity:'success', summary: 'Login', detail: 'Login exitoso'});
           //cambiar a vista  
@@ -65,6 +65,9 @@ export class LoginComponent implements OnInit {
         }
        
       },error => {
+        if (error.status === 403) {
+          this.messageService.add({severity:'error', summary: 'Bloqueado', detail: 'Espere 5 minutos e intentelo de nuevo.'});
+        }
         console.log(error);
         this.messageService.add({severity:'error', summary: 'Login', detail: 'Credenciales incorrectas'});
       }

@@ -39,16 +39,6 @@ verUsuarios(): Observable<any[]> {
   return this.http.get<any[]>(this.usuarioUrl);
 }
 
-verLogs(): Observable<any[]> {
-  const logsUrl = 'http://localhost:3000/logs';
-  return this.http.get<any[]>(logsUrl);
-}
-
-postLogs(log: any): Observable<any> {
-  const logsUrl = 'http://localhost:3000/logs';
-  return this.http.post<any>(logsUrl, log);
-}
-
 
 
 getUsuarioById(id: number): Observable<any> {
