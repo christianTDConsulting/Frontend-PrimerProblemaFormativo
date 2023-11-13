@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { TokenService } from './services/token/token.service'; // Importa el servicio de autenticación { LoginService } 
-import { Cliente } from './models/cliente';
+import { TokenService } from '../services/token/token.service'; // Importa el servicio de autenticación { LoginService } 
 import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ViewAdminGuard implements CanActivate {
+export class ViewClienteGuard implements CanActivate {
   constructor(private tokenService: TokenService, private router: Router) {}
 
   canActivate(
@@ -20,7 +19,7 @@ export class ViewAdminGuard implements CanActivate {
     return this.tokenService.decodeToken().pipe(
       map((response: any) => {
         const perfil = response.usuario.id_perfil;
-        if (token && perfil === 2) {
+        if (token && perfil === 1) {
           return true; // El token es válido, permite el acceso a la ruta
         } else {
           // El token no es válido o no existe, redirige a la página de inicio de sesión

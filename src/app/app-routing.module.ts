@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ViewAdminGuard } from './view-admin-guard.guard';
+import { ViewAdminGuard } from './guards/view-admin-guard.guard';
 import { ViewAdminComponent } from './pages/viewAdmin/viewAdmin.component';
 import { ViewLoginComponent } from './pages/viewLogin/viewLogin.component'; // Assuming this is your login component
-import { ViewClienteGuard } from './view-cliente.guard';
+import { ViewClienteGuard } from './guards/view-cliente.guard';
 import { TelefonosComponent } from './pages/viewClientes/telefonos.component';
 
 const routes: Routes = [

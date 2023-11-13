@@ -67,9 +67,11 @@ export class LoginComponent implements OnInit {
       },error => {
         if (error.status === 403) {
           this.messageService.add({severity:'error', summary: 'Bloqueado', detail: 'Espere 5 minutos e intentelo de nuevo.'});
+        }else{
+          console.log(error);
+          this.messageService.add({severity:'error', summary: 'Login', detail: 'Credenciales incorrectas'});
         }
-        console.log(error);
-        this.messageService.add({severity:'error', summary: 'Login', detail: 'Credenciales incorrectas'});
+       
       }
       
       );
