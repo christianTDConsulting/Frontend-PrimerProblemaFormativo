@@ -1,6 +1,6 @@
 <p-toast></p-toast>
 <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
-  <p-card header="Login" [style]="{ width: '360px' }">
+  <p-card header="Login" [style]="{ 'width': '360px', 'display': 'flex', 'justify-content': 'center' }">
     <div class="field">
       <label for="email">Email</label>
       <input

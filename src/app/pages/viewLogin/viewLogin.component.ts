@@ -12,9 +12,7 @@ export class ViewLoginComponent  {
  
   state = signal<'register' | 'login' >('login');
    
-   constructor(
-     
-      ) { }
+   constructor( ) { }
  
     
    

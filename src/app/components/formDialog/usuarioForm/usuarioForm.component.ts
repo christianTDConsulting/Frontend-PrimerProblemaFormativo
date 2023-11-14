@@ -1,9 +1,9 @@
 import { Component, OnInit, Input,Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
-import { Cliente } from '../../models/cliente';
-import { ClienteService } from '../../services/cliente/cliente.service';
+import { Cliente } from '../../../models/cliente';
+import { ClienteService } from '../../../services/cliente/cliente.service';
 import { MessageService } from 'primeng/api';
-import {TelefonoService} from '../../services/telefono/telefono.service';
+import {TelefonoService} from '../../../services/telefono/telefono.service';
 import { UsuarioService } from 'src/app/services/usuario/usuario.service';
 import { TokenService } from 'src/app/services/token/token.service';
 import { Router } from '@angular/router';
@@ -40,7 +40,7 @@ export class UsuarioFormComponent implements OnInit {
     const firstControl = control.get(firstControlName);
     const secondControl = control.get(secondControlName);
 
-    if (secondControl && secondControl.value !== firstControl?.value) {
+    if (secondControl && (secondControl.value !== firstControl?.value)) {
       return { notEqual: true };
     }
 
@@ -371,10 +371,7 @@ loginUser() {
       controlName = 'password repetida';
     }
     
-    if (control?.hasError('notEqual')) {
-      return ['Las contraseñas no coinciden.'];
-    }
-
+   
     if (control?.hasError('required')) {
       return [controlName + ' es obligatorio.'];
     }
@@ -400,7 +397,10 @@ loginUser() {
       const messages = this.getErrorMessages(key);
       errorMessages.push(...messages);
     });
-  
+    if (this.profileForm.hasError('notEqual')) {
+      errorMessages.push('Las contraseñas no coinciden.');
+    }
+
     // Log, mostrar o manejar los mensajes de error según tus necesidades.
     console.log(errorMessages);
   

@@ -1,18 +1,18 @@
 import { Component ,  Input} from '@angular/core';
-import { TelefonoService } from '../../services/telefono/telefono.service';
+import { TelefonoService } from '../../../services/telefono/telefono.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Telefono } from '../../models/telefono';
-import { Cliente } from '../../models/cliente';
+import { Telefono } from '../../../models/telefono';
+import { Cliente } from '../../../models/cliente';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Table } from 'primeng/table';
-import { ClienteService } from '../../services/cliente/cliente.service';
-import { TokenService } from '../../services/token/token.service';
+import { ClienteService } from '../../../services/cliente/cliente.service';
+import { TokenService } from '../../../services/token/token.service';
 import { Router } from '@angular/router';
-import { DataClienteComponent } from 'src/app/formDialog/data-cliente/data-cliente.component';
+import { DataClienteComponent } from 'src/app/components/formDialog/data-cliente/data-cliente.component';
 
 @Component({
   selector: 'app-telefonos',

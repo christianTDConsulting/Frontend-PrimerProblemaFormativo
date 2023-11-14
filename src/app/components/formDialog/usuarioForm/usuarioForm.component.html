@@ -160,8 +160,8 @@
                           
                           />
                         </span>
-                        <small *ngIf="password2.invalid && (password2.dirty || password2.touched)" class="block p-error">
-                          <div *ngIf="password2.errors?.['notEqual']">Las contraseñas no coinciden.</div>
+                        <small *ngIf="profileForm.hasError('notEqual') && (password2.dirty || password2.touched)" class="block p-error">
+                        Las contraseñas no coinciden.
                         </small>
 
                     </div>
