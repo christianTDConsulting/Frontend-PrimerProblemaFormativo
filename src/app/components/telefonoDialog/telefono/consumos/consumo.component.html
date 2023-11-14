@@ -1,0 +1,133 @@
+<p-accordion (onOpen)="getData(telefono)" >
+                       
+  <p-accordionTab header="{{telefono.numero}}" >
+      <div class="mb-3">
+          <div class="mb-3 " >
+              
+          <form [formGroup]="consumoForm" >
+              <p-card header="Crear nuevo consumo" >
+                  
+                  <div class="card-container"> 
+                      <div class="inline-block mx-3">
+                     
+                       <p-inputNumber [showButtons]="true"  formControlName="consumo" mode="currency" currency="EUR" inputId="withoutgrouping" [useGrouping]="false"> </p-inputNumber>
+                            
+                      </div>
+                      <div class="inline-block mb-3 mx-3">
+                        <div class="flex flex-column gap-2"> 
+                            <p-calendar [showIcon]="true" view="month"   dateFormat="mm/yy" formControlName="fecha" placeholder="fecha" ></p-calendar>
+                            <small id="FechaHelp">Ponga la fecha del consumo </small>
+                        </div>
+                      </div>
+                      <div class="block  mx-3 ">
+                          <p-button label="Crear consumo"  (click)="crearConsumo(telefono)" severity="success"></p-button>
+                      </div>
+                  </div>
+              </p-card>
+                 
+             
+              
+          </form>
+          
+      
+
+          </div>
+          <div class="card-container">
+                  <div class="inline-block  mx-2">
+                     <!-- <p-toggleButton [(ngModel)]="checkedConsumo" onLabel="Tabla" offLabel="Gráfica"></p-toggleButton>  -->  
+                     <p-selectButton  [options]="opcionesSelectButton" [(ngModel)]="checkedConsumo" [hidden]="emptychart" [allowEmpty]="false"></p-selectButton>      
+              
+
+                 </div>
+
+                 <div class="inline-block  mx-2">
+                      <p-button label="Generar pdf" (click)="generatePDF(telefono, true)" icon="pi pi-file-pdf" [hidden]="emptychart" ></p-button>
+                 </div>
+
+                 <div class="inline-block  mx-2">
+                      <p-button label="Datos por correos" icon="pi pi-send" (click)="generatePDF(telefono,false)" [hidden]="emptychart"></p-button>
+                 </div>  
+                 <div class="mx-2" >
+                    <small id="consumoHelp" [hidden]="checkedConsumo">Ponga la vista de tabla para editar consumos </small>
+                 </div>
+          
+          </div>
+        
+      </div>
+      
+      
+      
+      <div *ngIf="emptychart; else mostrarConsumos"> <!-- En caso de que no haya consumos-->
+          <h3>No hay consumos apuntados</h3>
+      </div>
+  
+  <ng-template #mostrarConsumos> <!-- Si hay consumos: -->
+
+      <div *ngIf="!checkedConsumo; else mostrarTabla"> 
+          <!-- MOSTRAR GRÁFICAS-->
+          <p-progressSpinner *ngIf="loading" [style]="{ width: '50px', height: '50px' }"></p-progressSpinner>
+
+          <div style="display: block">
+            
+            <div id = "chart">
+                <p-chart type="line" [data]="chartData" [options]="chartOptions"  className="UIchart" ></p-chart>
+            
+              
+              <p-chart type="bar" [data]="chartDataPromedioMaxMin" [options]="chartOptionsPromedioMaxMin" id = "chart2" className="UIchart" ></p-chart>
+            </div>
+          </div>
+
+
+      </div>
+      
+      <ng-template #mostrarTabla> 
+          <!--MOSTRAR TABLA-->
+
+      <div>
+          <p-table [value]="consumos" [tableStyle]="{ 'min-width': '50rem' }">
+              <ng-template pTemplate="header">
+                  <tr>
+                      <th>Consumo</th>
+                      <th>Fecha</th>
+                      <th>Opciones</th>
+                      
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-consumo>
+                  <tr>
+                      
+                      <td>
+                        <div class="flex flex-column gap-2">
+                            <!-- <small id="Help">Pulsa 'enter' para editar </small> -->
+                            <p-inputNumber [showButtons]="true"  [(ngModel)]="consumo.consumo" (keyup.enter)="editarConsumo(consumo, telefono)" (onBlur)="editarConsumo(consumo, telefono)"  mode="currency" currency="EUR" inputId="withoutgrouping" [useGrouping]="false"> </p-inputNumber>
+                            
+                        </div>
+                          
+                      </td>
+                      <td>
+                         
+                          <span class="p-float-label">
+                              
+                              <p-calendar  appendTo="body"  [showIcon]="true" view="month" [showButtonBar]="true"  dateFormat="mm/yy"  [(ngModel)]="consumo.fecha" (onSelect)="editarConsumo(consumo, telefono)"></p-calendar>
+                             
+                              <label> {{  consumo.fecha | date:'MM/yyyy' }}</label>
+                          </span>
+                      </td>
+                      <td>                                           
+                          <p-button label="Borrar Consumo"  (click)="eliminarConsumo(consumo.id, telefono)" severity="danger" ></p-button>
+    
+                      </td>
+                      
+                  </tr>
+              </ng-template>
+          </p-table>
+      </div>
+
+
+
+      </ng-template>
+  </ng-template>       
+
+      
+  </p-accordionTab>
+</p-accordion>

@@ -1,0 +1,158 @@
+
+<p-toast></p-toast>
+<p-toolbar styleClass="mb-4 gap-2">
+
+    <ng-template pTemplate="left">
+        <div *ngIf="selectedList === 'Clientes'; else recuperar">
+            <button pButton pRipple label="Nuevo" icon="pi pi-plus"  class="p-button-success mr-2" (click)="showCreation()"></button> 
+            <button pButton pRipple  label="Eliminar" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedClientes()" [disabled]="!selectClientes || !selectClientes.length"></button>
+          
+          </div>
+          
+          <ng-template #recuperar>
+            <button pButton pRipple   label="Recuperar" icon="pi pi-backward" class="p-button-danger" (click)="toggleVisibleStateSelectedClientes()" [disabled]="!selectClientes || !selectClientes.length"></button>
+          </ng-template>
+            
+        
+    </ng-template>
+
+    <ng-template pTemplate="right">
+       
+        <div class="flex">
+            <!--
+                <div className="flex-1 h-4rem bg-primary font-bold text-center p-4 border-round">
+                    <p-dropdown  label="Opciones" [options]="itemsDropdown"  [(ngModel)]="selectedList" (onChange)="updateList()"  styleClass="p-button-help mr-2 mb-2"></p-dropdown >
+                </div>
+            -->
+            <div className="flex-1 h-4rem bg-primary font-bold text-center p-4 border-round">
+                <p-button  label="Ver Logs"(onClick)="showLogs(dt2)" ></p-button>
+           </div>
+
+           <span style="margin: 0 5px;"></span> 
+           
+            <div className="flex-1 h-4rem bg-primary font-bold text-center p-4 border-round"> 
+                <p-button  label="Cerrar sesión" (onClick)="cerrarSesion()"></p-button> 
+            </div>
+           
+        </div>
+            
+    </ng-template>
+
+   
+</p-toolbar>
+
+<div class ="card" >
+    <p-table 
+    [value]="clientes"
+    #dt2
+    dataKey="id"
+    [rows]="5"
+    [scrollable]="true" 
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [paginator]="true"
+    [(selection)]="selectClientes"
+    currentPageReportTemplate="Mostrando {first} hasta {last} de {totalRecords} entradas"
+    [globalFilterFields]="['id', 'nombre', 'email']"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    
+    >
+    <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+            <th></th>
+            <th  style="width:40%">
+               <h3>No existen clientes </h3> 
+            </th>
+            <th></th>
+            <th></th>
+           
+        </tr>
+        <div class="flex align-content-center flex-wrap" >
+           
+           
+        </div>
+        
+
+    </ng-template>
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between" >
+            
+           <label [hidden]="selectedList === 'Clientes'"> Clientes Eliminados</label>
+            <label [hidden]="selectClientes.length === 0"> Seleccionados: {{selectClientes.length}}</label>
+         
+        </div>
+    </ng-template>
+
+        <ng-template pTemplate="header">
+          
+            <tr>
+                <th style="width:1%"></th>
+                <th pSortableColumn="id" style="width:10%">Id <p-sortIcon field="id"></p-sortIcon></th>
+                <th pSortableColumn="nombre" style="width:30%">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+                <th pSortableColumn="nombre" style="width:30%">Email <p-sortIcon field="email"></p-sortIcon></th>
+    
+                <th>Opciones</th>
+                
+            </tr>
+            <tr>
+                <th></th>
+                <th>
+                    <p-columnFilter type="text" field="id"></p-columnFilter>
+                    
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="nombre"></p-columnFilter>
+                </th>
+
+                <th><p-columnFilter type="text" field="email"></p-columnFilter></th>
+                <th> <button pButton label="Limpiar filtros" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt2)"></button></th>
+              
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-clientes>
+            <tr>
+                <td>  <p-tableCheckbox [value]="clientes"></p-tableCheckbox> </td>
+                <td>{{ clientes.id }}</td>
+               
+                <td>
+                    <input type="text" [value]="clientes.nombre" pInputText (keyup.enter)="editarNombre(clientes)" style="border: none;" [(ngModel)]="clientes.nombre" [id]="'editarClienteNombre' + clientes.id">
+                </td>
+                <td>
+                    <input type="text" [value]="clientes.usuario.email" pInputText (keyup.enter)="editarEmail(clientes)" style="border: none;" [(ngModel)]="clientes.usuario.email" [id]="'editarClienteEmail' + clientes.id">
+                </td>
+                <!--
+                <td><p-button label="Ver Teléfonos" (click)="show(clientes.id)" severity="help"></p-button></td>
+                -->
+                <td>
+               
+                   
+                  
+                    <div *ngIf="selectedList === 'Clientes'; else recuperar">
+                        <div class="card" style="height: 80px;">
+                            <p-confirmDialog header="Confirmation" width="425"></p-confirmDialog>
+                            <div class="p-mt-3 p-mb-3">  <p-speedDial   direction="right" [model]="actionsSpeedDial" (onClick)="onClickSpeedDial(clientes.id)"></p-speedDial> </div>                 
+                                
+                        </div>
+                    </div>
+                    <ng-template #recuperar>
+                        <!-- Se mostrará si la condición es falsa -->
+                        <button pButton pRipple  label="Recuperar" icon="pi pi-backward" class="p-button-danger" (click)="ToggleVisibleStateCliente(clientes.id)" ></button>
+                    </ng-template>
+                </td>
+                
+    
+            </tr>
+        </ng-template>
+    </p-table>
+<ng-template #eliminados>
+
+    
+
+</ng-template>
+
+</div>
+
+
+
+
+   
