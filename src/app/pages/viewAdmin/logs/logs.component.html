@@ -40,7 +40,7 @@
         <tr>
 
           <th>
-            <!--<p-columnFilter type="date" field="fecha"></p-columnFilter> -->
+           <!-- <p-columnFilter type="date" field="fecha" dateFormat="dd/mm/yyyy" ></p-columnFilter> -->
           </th>
 
           <th>
@@ -74,7 +74,7 @@
      styleClass="p-datatable-striped"
     [tableStyle]="{'min-width': '50rem'}"
     [scrollable]="true" scrollHeight="400 px"  
-    [globalFilterFields]="['fecha', 'ip_address', 'email', 'exito']"
+    [globalFilterFields]="['fecha', 'ip_address']"
       >
       <ng-template pTemplate="header">
           <tr>
@@ -96,7 +96,7 @@
       </ng-template>
       <ng-template pTemplate="body" let-bloqueo>
           <tr>
-            <td>{{ bloqueo.fecha | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+            <td>{{ bloqueo.fecha_hasta | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
             <td>{{bloqueo.ip_address}}</td>
               
           </tr>

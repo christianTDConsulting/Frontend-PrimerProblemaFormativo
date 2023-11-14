@@ -23,7 +23,7 @@ import { ViewAdminComponent } from './viewAdmin.component';
 
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { LogsComponent } from './logs/logs.component';
-
+import {LinkUserDialogComponent} from './LinkUserDialog/LinkUserDialog.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -44,7 +44,7 @@ import { LogsComponent } from './logs/logs.component';
     TelefonoDialogModule,
     DropdownModule
   ],
-  declarations: [ViewAdminComponent, LogsComponent],
+  declarations: [ViewAdminComponent, LogsComponent, LinkUserDialogComponent],
   exports: [ViewAdminComponent],
   providers: [ConfirmationService, DialogService, DynamicDialogConfig]
 })

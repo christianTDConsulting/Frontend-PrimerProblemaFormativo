@@ -111,11 +111,24 @@ export class ClienteService {
     return this.http.get<Cliente>(this.url + id);
   }
 
-  toggleVisibiltyCliente(id:number) {
+  toggleVisibiltyCliente(id:number, usuario:Usuario | undefined) {
+
+    const body = {
+      id: id,
+      usuario: usuario
+    }
+    // Define las cabeceras de la solicitud, si es necesario
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    return this.http.put<any>(this.url + id.toString(), headers);
+  
+    const options = { 
+      headers: headers, 
+    };
+    //especificar tipo de datos
+    console.log(this.url);
+    return this.http.post<any>('http://localhost:3000/clienteVisible', body, options);
+  
   }
   
 

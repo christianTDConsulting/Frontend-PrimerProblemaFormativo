@@ -32,6 +32,7 @@ export class UsuarioFormComponent implements OnInit {
     
   };
   nuevoTelefono="";
+  admin: boolean = false;
 
   
  equivalentValidator = (firstControlName: string, secondControlName: string): ValidatorFn => {
@@ -99,11 +100,16 @@ export class UsuarioFormComponent implements OnInit {
     
     }else{
       this.initFormControlRegister();
-     
+
       console.log("create");
       this.editar = false;
+      
     }
    
+    if (this.state === null || this.state === undefined) {
+      console.log("admin");
+      this.admin = true;
+    }
 
   }
   //PRIVADOS
@@ -151,7 +157,7 @@ private initFormControlEdit(){
     const { telefono, nacimiento, email, password, ...restoCliente } = this.profileForm.value;
     
     // Ensure this.cliente.usuario is initialized
-    this.cliente.usuario = this.cliente.usuario || {};
+    this.cliente.usuario = this.cliente.usuario! || {};
   
     this.cliente = {
       ...restoCliente,
@@ -178,7 +184,7 @@ private initFormControlEdit(){
 
        this.profileForm.patchValue({
         nombre: this.cliente.nombre,
-        email: this.cliente.usuario.email,
+        email: this.cliente.usuario!.email,
         bio: this.cliente.bio,
         nacimiento: new Date(this.cliente.nacimiento),
       });
@@ -200,8 +206,8 @@ private initFormControlEdit(){
         nombre: this.cliente.nombre,
       }
       const usuario = {
-        email: this.cliente.usuario.email,
-        password: this.cliente.usuario.password
+        email: this.cliente.usuario!.email,
+        password: this.cliente.usuario!.password
       }
       //hacemos el post
       this.usuarioService.crearUsuarioYCliente(usuario, cliente).subscribe(
@@ -214,8 +220,14 @@ private initFormControlEdit(){
                   console.log("tlf nuevo:" + responseTlf.numero);
                 });
              }
-
-             this.loginUser();
+             //Un admin crea la cuenta
+             if (this.admin){
+              this.cerrarDialog.emit();
+              //Estamos creandonos una cuenta en el registro
+             }else{ 
+              this.loginUser(); 
+             }
+             
 
              this.messageService.add({
               severity: 'success',
@@ -261,9 +273,9 @@ private initFormControlEdit(){
       console.log(this.cliente);
 
        const usuario = {
-        id: this.cliente.usuario.id,
-        email: this.cliente.usuario.email,
-        password: this.cliente.usuario.password
+        id: this.cliente.usuario!.id,
+        email: this.cliente.usuario!.email,
+        password: this.cliente.usuario!.password
       }
 
       const cliente = {
@@ -276,28 +288,41 @@ private initFormControlEdit(){
       }
       
 
-        this.clienteService.editCliente(cliente).subscribe(
-          response =>{
-           console.log(response);
-           
-           this.messageService.add({
+      this.clienteService.editCliente(cliente).subscribe(
+        response =>{
+          console.log(response);
+          //MENSAJE DE EXITO
+          if (this.admin){ 
+          this.messageService.add({
             severity: 'success',
             summary: 'Operación exitosa',
             detail: 'El usuario ha sido editado  correctamente.',
-           
           });
-          //cerrar pop up
-          this.cerrarDialog.emit();
-        }, (error) => {
-          console.log(error);
+
+          }else{
+
           this.messageService.add({
-            severity: 'error',
-            summary: 'Operación fallada',
-            detail: 'El usuario no ha sido editado.',
-            key: 'data',
-        });
+            severity: 'success',
+            summary: 'Operación exitosa',
+            detail: 'El usuario ha sido editado  correctamente.',
+            key: 'tlf',
+          });
+
+          }
+
+        //CERRAR DIALOG
+        this.cerrarDialog.emit();
+      }, (error) => {
+        console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Operación fallada',
+          detail: 'El usuario no ha sido editado.',
+          key: 'data',
+      });
         
     });
+
   } else {
     this.sendError();
   }
@@ -305,7 +330,7 @@ private initFormControlEdit(){
     
 
 loginUser() { 
-  this.tokenService.verificarUsuario(this.cliente.usuario.email, this.cliente.usuario.password).subscribe(
+  this.tokenService.verificarUsuario(this.cliente.usuario!.email, this.cliente.usuario!.password).subscribe(
     response => {
 
       if (response) { 
@@ -316,7 +341,7 @@ loginUser() {
         //cambiar a vista  
         this.tokenService.decodeToken().subscribe(
           response => {
-            const perfil = response.usuario.id_perfil;
+            const perfil = response.usuario!.id_perfil;
             if (perfil === 1){
               this.router.navigate(['/viewClient']);
             }else if (perfil === 2){

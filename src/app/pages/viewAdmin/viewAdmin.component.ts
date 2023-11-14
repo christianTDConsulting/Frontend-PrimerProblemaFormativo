@@ -9,6 +9,7 @@ import { DataClienteComponent } from 'src/app/formDialog/data-cliente/data-clien
 import { TokenService } from 'src/app/services/token/token.service';
 import { Router } from '@angular/router';
 import { LogsComponent } from './logs/logs.component';
+import { LinkUserDialogComponent } from './LinkUserDialog/LinkUserDialog.component';
 
 @Component({
   selector: 'app-viewAdmin',
@@ -137,37 +138,27 @@ export class ViewAdminComponent  {
     
     
    ToggleVisibleStateCliente(id:number){
-    this.clienteService.toggleVisibiltyCliente(id).subscribe(
-      response => {
-        console.log(response);
-        this.selectClientes = [];
-        //refresh
-        if (this.selectedList==='Eliminados'){
-          this.getClientesEliminadosList();
+    if (this.selectedList==='Eliminados'){
+      this.showLinkUser(id);
+    }else{
+      this.clienteService.toggleVisibiltyCliente(id, undefined).subscribe(
+        response => {
+          console.log(response);
+          //refresh
+          this.selectClientes = [];
+          this.getClientesList();
+          this.ref?.close()
+          //toast
           this.messageService.add({
             severity: 'success',
             summary: 'Operación exitosa',
             detail: 'El usuario ha sido recuperado correctamente.'
         });
-        }else{
-          this.getClientesList();
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Operación exitosa',
-            detail: 'El usuario ha sido borrado correctamente.'
-        });
-        }
-       
-      }, (error) => {
-        console.log(error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Operación fallada',
-          detail: 'El usuario no ha sido borrado/recuperado.'
+        this.confirmationService.close();
       });
-      }
-    )
   }
+}
+  
 
   //editar nombre
   editarNombre(cliente:Cliente){
@@ -262,6 +253,29 @@ export class ViewAdminComponent  {
       });
 
 
+  }
+
+  showLinkUser(id:number){
+    this.clienteService.getCliente(id).subscribe(
+      (cliente: Cliente) => {
+        this.ref = this.dialogService.open(LinkUserDialogComponent, {
+          header: 'Crea credenciales para el cliente ' + cliente.nombre ,
+          data: {
+            id: id
+          },
+          contentStyle: { overflow: 'auto' },
+          baseZIndex: 10000,
+          maximizable: true
+        });
+        this.ref.onMaximize.subscribe((value) => {
+          this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
+      });
+      
+      this.ref.onClose.subscribe(() => {
+        this.getClientesList();
+      });
+      
+      });
   }
   ngOnDestroy() {
     if (this.ref) {

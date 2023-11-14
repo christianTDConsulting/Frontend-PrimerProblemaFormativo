@@ -4,26 +4,26 @@
 
     <ng-template pTemplate="left">
         <div *ngIf="selectedList === 'Clientes'; else recuperar">
-           <!-- <button pButton pRipple label="Nuevo" icon="pi pi-plus"  class="p-button-success mr-2" (click)="showCreation()"></button> -->
+            <button pButton pRipple label="Nuevo" icon="pi pi-plus"  class="p-button-success mr-2" (click)="showCreation()"></button> 
             <button pButton pRipple  label="Eliminar" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedClientes()" [disabled]="!selectClientes || !selectClientes.length"></button>
           
           </div>
           
           <ng-template #recuperar>
-            <!-- Se mostrará si la condición es falsa -->
             <button pButton pRipple   label="Recuperar" icon="pi pi-backward" class="p-button-danger" (click)="toggleVisibleStateSelectedClientes()" [disabled]="!selectClientes || !selectClientes.length"></button>
           </ng-template>
+            
         
     </ng-template>
 
     <ng-template pTemplate="right">
        
         <div class="flex">
-               
-            <div className="flex-1 h-4rem bg-primary font-bold text-center p-4 border-round">
-                 <p-dropdown  label="Opciones" [options]="itemsDropdown"  [(ngModel)]="selectedList" (onChange)="updateList()"  styleClass="p-button-help mr-2 mb-2"></p-dropdown >
-            </div>
-    
+            <!--
+                <div className="flex-1 h-4rem bg-primary font-bold text-center p-4 border-round">
+                    <p-dropdown  label="Opciones" [options]="itemsDropdown"  [(ngModel)]="selectedList" (onChange)="updateList()"  styleClass="p-button-help mr-2 mb-2"></p-dropdown >
+                </div>
+            -->
             <div className="flex-1 h-4rem bg-primary font-bold text-center p-4 border-round">
                 <p-button  label="Ver Logs"(onClick)="showLogs(dt2)" ></p-button>
            </div>
@@ -41,7 +41,7 @@
    
 </p-toolbar>
 
-<div class ="card">
+<div class ="card" >
     <p-table 
     [value]="clientes"
     #dt2
@@ -76,8 +76,8 @@
     </ng-template>
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between" >
-            <label [hidden]="selectedList === 'Eliminados'"> Clientes</label>
-            <label [hidden]="selectedList === 'Clientes'"> Clientes Eliminados</label>
+            
+           <label [hidden]="selectedList === 'Clientes'"> Clientes Eliminados</label>
             <label [hidden]="selectClientes.length === 0"> Seleccionados: {{selectClientes.length}}</label>
          
         </div>
@@ -126,16 +126,7 @@
                 <td>
                
                    
-                    <!--
-                    <div class = "card">
-                        <div class=" flex align-items-center justify-content-center  m-2"> 
-                            <p-button label="Editar" (click)="showEdition(clientes.id)" severity="success" ></p-button> 
-                        </div>
-                        <div class=" flex align-items-center justify-content-center  m-2"> 
-                            <p-button label="Borrar" (click)="borrarUsuario(clientes.id)" severity="danger" ></p-button> 
-                        </div>
-                    </div>
-                    -->
+                  
                     <div *ngIf="selectedList === 'Clientes'; else recuperar">
                         <div class="card" style="height: 80px;">
                             <p-confirmDialog header="Confirmation" width="425"></p-confirmDialog>
@@ -146,14 +137,18 @@
                     <ng-template #recuperar>
                         <!-- Se mostrará si la condición es falsa -->
                         <button pButton pRipple  label="Recuperar" icon="pi pi-backward" class="p-button-danger" (click)="ToggleVisibleStateCliente(clientes.id)" ></button>
-                      </ng-template>
+                    </ng-template>
                 </td>
                 
     
             </tr>
         </ng-template>
     </p-table>
+<ng-template #eliminados>
+
     
+
+</ng-template>
 
 </div>
 

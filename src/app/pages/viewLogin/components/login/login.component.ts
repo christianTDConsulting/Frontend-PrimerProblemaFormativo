@@ -54,12 +54,17 @@ export class LoginComponent implements OnInit {
           //cambiar a vista  
           this.loginService.decodeToken().subscribe(
             response => {
-              const perfil = response.usuario.id_perfil;
-              if (perfil === 1){
-                this.router.navigate(['/viewClient']);
-              }else if (perfil === 2){
-                this.router.navigate(['/viewAdmin']);
+              if (response.usuario===null || response.usuario===undefined){
+                this.messageService.add({severity:'info', summary: 'Login', detail: 'No hay cliente asociado al usuario'});
+              }else{
+                const perfil = response.usuario.id_perfil;
+                if (perfil === 1){
+                  this.router.navigate(['/viewClient']);
+                }else if (perfil === 2){
+                  this.router.navigate(['/viewAdmin']);
+                }
               }
+             
             }
           )       
         }

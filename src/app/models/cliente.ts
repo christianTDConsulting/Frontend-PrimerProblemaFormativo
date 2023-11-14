@@ -7,7 +7,7 @@ export interface Usuario {
 }
 export interface Cliente {
     id?: number,
-    usuario: Usuario,
+    usuario?: Usuario,
     nombre: string,
     bio: string,
     nacimiento: Date,
