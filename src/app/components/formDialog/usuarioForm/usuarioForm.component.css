@@ -4,5 +4,14 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 1000; /* Ajusta el valor de z-index según sea necesario */
+    z-index: 1000; 
   }
+
+  
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(248, 248, 248);
+  }
+ 
