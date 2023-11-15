@@ -1,9 +1,9 @@
-import { Component, OnInit, Input  } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter  } from '@angular/core';
 import { Validators,FormControl,FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { TokenService } from 'src/app/services/token/token.service'; 
-import {Log} from '../../../../models/log';
-import { Router } from '@angular/router';
+
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
 
 
  @Input () state:any  
+ @Output() loginSuccess: EventEmitter<number> = new EventEmitter<number>();
 
   loginForm: FormGroup = new FormGroup({
     email : new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")]),
@@ -30,7 +31,7 @@ export class LoginComponent implements OnInit {
      private loginService: TokenService,
      private messageService: MessageService,
      private tokenService: TokenService,
-     private router: Router
+  
      ) { }
 
   get email() {
@@ -58,11 +59,8 @@ export class LoginComponent implements OnInit {
                 this.messageService.add({severity:'info', summary: 'Login', detail: 'No hay cliente asociado al usuario'});
               }else{
                 const perfil = response.usuario.id_perfil;
-                if (perfil === 1){
-                  this.router.navigate(['/viewClient']);
-                }else if (perfil === 2){
-                  this.router.navigate(['/viewAdmin']);
-                }
+                this.loginSuccess.emit(perfil);
+                
               }
              
             }

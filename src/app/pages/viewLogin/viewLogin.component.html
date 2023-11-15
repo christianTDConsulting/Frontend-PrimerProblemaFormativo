@@ -1,6 +1,6 @@
 <div>
   <ng-container *ngIf="state() === 'register'">
-    <app-usuarioForm [state] ="state"  ></app-usuarioForm>
+    <app-usuarioForm [state] ="state" (loginSuccess)="handleLoginSuccess($event)" ></app-usuarioForm>
     
     </ng-container>
 
