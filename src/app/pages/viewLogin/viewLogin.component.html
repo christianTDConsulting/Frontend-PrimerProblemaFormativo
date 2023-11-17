@@ -1,10 +1,14 @@
-<div>
-  <ng-container *ngIf="state() === 'register'">
-    <app-usuarioForm [state] ="state"  ></app-usuarioForm>
-    
-    </ng-container>
 
-    <ng-container *ngIf="state() === 'login'">
-      <app-login [state]="state"></app-login>
-    </ng-container>
-</div>
+  <div>
+    <ng-container *ngIf="state() === 'register'">
+      <app-usuarioForm [state] ="state"  ></app-usuarioForm>
+      
+      </ng-container>
+
+      <ng-container *ngIf="state() === 'login'">
+        <app-login [state]="state"></app-login>
+      </ng-container>
+      <div class="container">
+        <p-button label="Ver metereologia de municipios" (onClick)="goToMetereology()" severity="secondary" ></p-button>
+      </div>
+  </div>
