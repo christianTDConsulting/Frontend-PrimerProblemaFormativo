@@ -25,7 +25,8 @@ import { ViewMunicipiosModule } from './pages/viewMunicipios/viewMunicipios.modu
     ViewAdminModule,
     ViewLoginModule,
     TelefonosModule,
-    ViewMunicipiosModule
+    ViewMunicipiosModule,
+
 
    
     
