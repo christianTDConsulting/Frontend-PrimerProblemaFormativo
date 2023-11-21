@@ -1,3 +1,70 @@
-<p>
-  viento works!
-</p>
+
+
+<div class="grid">
+
+
+ 
+    <div id = "chart" class="col-6">
+      <h1> Gráfica de Viento</h1>
+      <p-dropdown [options]="direcciones" (onChange)="updateDireccion($event)" optionLabel="name"  ></p-dropdown>
+      <p-chart type="bar" [data]="chartData" [options]="chartOptionsViento"  className="UIchart"  ></p-chart>
+    </div>
+
+    <div id="chart2" class="col-6">
+      <h1>Gráfica de racha máxima</h1>
+      <small>En el caso de intervalos de más de una hora se representa solamente cuando el valor previsto de la velocidad es mayor o igual a 20 km/h y la desviación respecto al viento medio supera los 10 km/h.</small>
+      <p-chart type="bar" [data]="chartMaxMin" [options]="chartOptionsRachaMaxima"  className="UIchart"  ></p-chart>
+    </div>
+
+    <div class="col-6">
+      <h1> Tabla de velocidad de viento</h1> 
+      
+      <p-table [value]="detallesViento"  [scrollable]="true" scrollHeight="400px">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Periodo</th>
+                <th>Velocidad (km/h)</th>
+                <th>Dirección de viento</th>
+
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-detalle>
+            <tr>
+                <td>{{ detalle.periodo }}</td>
+                <td> {{ detalle.velocidad }}</td>
+                <td>  <img src="{{getImage(detalle.direccion)}}" alt={{detalle.descripcion}}> ({{detalle.direccion}}) </td>
+                          
+            </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="col-6">
+      <h1> Tabla de racha máxima</h1> 
+
+      
+      <p-table [value]="detallesRachaMax"   [scrollable]="true" scrollHeight="400px">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Periodo</th>
+                <th>Velocidad (km/h)</th>
+                
+              
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-detalle>
+            <tr>
+                <td>{{ detalle.periodo }}</td>
+                <td>  {{detalle.valor}}</td>
+              
+
+            </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+  </div>
+     
+
+  
+

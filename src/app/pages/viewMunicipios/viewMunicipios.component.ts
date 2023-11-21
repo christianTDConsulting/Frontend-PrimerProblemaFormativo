@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DetallePrediccion, Municipio } from 'src/app/models/municipio';
 import { MetereologiaService } from 'src/app/services/metereologia/metereologia.service';
-
 import { CustomMenuItem } from './models/customMenu'; 
 
 
@@ -107,8 +106,6 @@ export class ViewMunicipiosComponent implements OnInit {
   }
 
 
-
- 
   updateProvincias(event: any) {
     this.selectedProvincias = event.value.code;
     this.updateMunicipiosLabels();
@@ -148,7 +145,14 @@ export class ViewMunicipiosComponent implements OnInit {
     this.getDetallePrediccion();
   }
 
-  
+  getNombreMunicipio(){
+    if (!this.metereologias || !this.selectedMunicipios) {
+      return ''; 
+    }
+    const municipio = this.metereologias.find(m => m.id === this.selectedMunicipios);
+    return municipio ? municipio.nombre : '';
+  }
+
   updateDetalleCategory(event: any) {
     this.activeMenuItemDetalle = event;
     this.getDetallePrediccion();
@@ -160,27 +164,37 @@ export class ViewMunicipiosComponent implements OnInit {
 
   getDetallePrediccion(){
     if (this.selectedMunicipios !== '' ){
+      this.detalles = [];
   
         const fecha = this.dias[this.activeIndexDate].label;
         const fechaParseada:string = fecha.substring(0,2) + fecha.substring(3,5) + fecha.substring(6);
-
+        const codigoMunicipio = this.selectedMunicipios;
+        const categoryName = this.activeMenuItemDetalle.code;
         console.log(
           "fecha: " + fechaParseada,
-          "municipio: "+ this.selectedMunicipios,
-          "nombre de caregoría: "+ this.activeMenuItemDetalle.code
+          "municipio: "+ codigoMunicipio,
+          "nombre de caregoría: "+ categoryName
         );
 
-        this.metereologiaService.getDetallesByMunicipioCodeAndDateAndCategory(this.selectedMunicipios, fechaParseada, this.activeMenuItemDetalle.code).subscribe(
+        categoryName.forEach(name => {
+          this.metereologiaService.getDetallesByMunicipioCodeAndDateAndCategory(codigoMunicipio, fechaParseada, name).subscribe(
             response => {
-              this.detalles = response;
-              console.log(response);
-            }
-          )
-      }
-     
-    
+             // console.log(response);
+              this.detalles = this.detalles.concat(response);
 
+            }
+          );
+        });
+
+       // console.log(this.detalles);
+          
+       
+        
+      }
+    
+        
   }
+  
   
 
   getNextDate(date: Date, daysToAdd: number): Date {

@@ -22,7 +22,7 @@ export class MapMunicipiosComponent implements OnInit {
     this.map = L.map('map').setView([40.416775, -3.70379], 6);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
   }
  

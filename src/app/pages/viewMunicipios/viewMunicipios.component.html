@@ -5,10 +5,17 @@
         <p-button (onClick)="goToLogin()" icon="pi pi-arrow-left" label="Volver"></p-button>
         
       </div>
+      <div class="ml-5 inline">
+       <small>Provincia</small> 
+      </div>
+
       <div class="ml-2 inline">
         <p-dropdown [options]="provinciasDropDown" (onChange)="updateProvincias($event)"   optionLabel="name" placeholder="Selecciona Provincia" ></p-dropdown>
-
       </div>
+
+      <div class="ml-5 inline">
+        <small>Municipio</small> 
+       </div>
 
       <div class="ml-2 inline">
         <p-dropdown [options]="municipiosDropDown" optionLabel="name"  (onChange)="updateMunicipio($event)" placeholder="Selecciona Municipio" ></p-dropdown> 
@@ -21,8 +28,8 @@
     <br>
     <br>
     
-    <div class="card" >
-      <p-card>
+    <div class="card"  >
+      <p-card [header]="selectedMunicipios === '' ? 'Seleccione un municipio para empezar a consultar datos':  'Detalles meteorológicos de ' + getNombreMunicipio()">
         <div class="card-container">
 
             <div class="mb-5">
@@ -35,6 +42,7 @@
           </div>
 
           <div>
+            <div *ngIf="detalles.length !== 0; else elseBlock">
               <ng-container *ngIf="activeMenuItemDetalle.label === 'Precipitacion'">
                 <app-precipitacion [detalles] ="detalles"></app-precipitacion>
               </ng-container>
@@ -53,6 +61,10 @@
               <ng-container *ngIf="activeMenuItemDetalle.label === 'Humedad relativa'">
                 <app-humedad [detalles] ="detalles"></app-humedad>
               </ng-container>
+            </div>
+            <ng-template #elseBlock>
+                <p>No hay datos, seleccione un municipio para empezar a consultar datos meterologicos</p>
+            </ng-template>
           </div>
 
         </div>

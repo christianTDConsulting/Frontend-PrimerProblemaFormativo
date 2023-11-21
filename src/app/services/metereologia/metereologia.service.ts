@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable , forkJoin,mergeMap, switchMap } from 'rxjs';
+import { Observable , switchMap, forkJoin, concatAll } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Municipio, DetallePrediccion } from 'src/app/models/municipio';
 ;
@@ -35,21 +35,14 @@ export class MetereologiaService {
     return this.http.get<Municipio[]>(`${this.backendUrl}municipios`);
   }
 
-  getDetallesByMunicipioCodeAndDateAndCategory(codigoMunicipio: string, fecha: string, categoryName: string[]): Observable<DetallePrediccion[]> {
+  getDetallesByMunicipioCodeAndDateAndCategory(codigoMunicipio: string, fecha: string, categoryName: string): Observable<DetallePrediccion[]>{
+    
     const observablesArray: Observable<DetallePrediccion[]>[] = [];
-
     // Por cada categoría, crear una llamada HTTP y añadir la observable al array
-    categoryName.forEach(category => {
-      const url = `${this.backendUrl}detalles/${codigoMunicipio}/${fecha}/${category}`;
-      const observable = this.http.get<DetallePrediccion[]>(url);
-      observablesArray.push(observable);
-    });
 
-   // Usar forkJoin para combinar todas las observables en un array de arrays
-  return forkJoin(observablesArray).pipe(
-    // Utilizar mergeMap para aplanar el array de arrays a un solo array
-    mergeMap(results => results)
-  );
+      const url = `${this.backendUrl}detalles/${codigoMunicipio}/${fecha}/${categoryName}`;
+      return this.http.get<DetallePrediccion[]>(url);
+
   }
   
 
