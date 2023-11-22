@@ -11,7 +11,7 @@ export class ResumenComponent implements OnInit {
   constructor() { }
   @Input() detalles!: DetallePrediccion[];
   @Input() municipio!: string;
-
+  @Input() fecha!: string;
   cielo: DetallePrediccion = {
     nombre: '',
     fecha: new Date(),

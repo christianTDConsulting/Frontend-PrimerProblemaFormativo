@@ -12,13 +12,18 @@
     border-radius: 100px;
   }
 
+  .container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   
   @import url(https://fonts.googleapis.com/css?family=Roboto:400,300);
   html,
   card {
       background-color: #F3F3F3;
       font-family: 'Roboto', sans-serif;
-      
+   
   }
   
 

@@ -44,7 +44,7 @@
           <div>
             <div *ngIf="detalles.length !== 0; else elseBlock">
               <ng-container *ngIf="activeMenuItemDetalle.label === 'Resumen'">
-                  <app-resumen [detalles] ="detalles" [municipio]="getNombreMunicipio()"></app-resumen>
+                  <app-resumen [detalles] ="detalles" [municipio]="getNombreMunicipio()" [fecha]="dias[activeIndexDate].label"></app-resumen>
               </ng-container>
               <ng-container *ngIf="activeMenuItemDetalle.label === 'Precipitacion'">
                 <app-precipitacion [detalles] ="detalles"></app-precipitacion>
