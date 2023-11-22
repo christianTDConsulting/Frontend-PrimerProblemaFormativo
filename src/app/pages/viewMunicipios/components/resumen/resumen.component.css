@@ -1,0 +1,63 @@
+
+.cielo {
+    border: 3px solid black; /* Borde opcional */
+    height: 100px;
+    width: auto;
+  }
+
+  img{
+    border: 3px solid black; /* Borde opcional */
+    height:100px;
+    width: auto;
+    border-radius: 100px;
+  }
+
+  
+  @import url(https://fonts.googleapis.com/css?family=Roboto:400,300);
+  html,
+  card {
+      background-color: #F3F3F3;
+      font-family: 'Roboto', sans-serif;
+      
+  }
+  
+
+  
+  
+  
+  h1 {
+
+      color: #666;
+      font-weight: 300;
+      font-size: 6.59375em;
+    
+  }
+  
+  h2 {
+      font-weight: 300;
+      font-size: 2.25em;
+      
+  }
+  
+  h3 {
+      float: left;
+      margin-right: 33px;
+      color: #777;
+      font-weight: 400;
+      font-size: 1em;
+  }
+  
+  span {
+      margin-left: 24px;
+      color: #999;
+      font-weight: 300;
+  }
+  
+  span span {
+      margin-left: 0;
+  }
+  
+  .dot {
+      font-size: .9em;
+  }
+  

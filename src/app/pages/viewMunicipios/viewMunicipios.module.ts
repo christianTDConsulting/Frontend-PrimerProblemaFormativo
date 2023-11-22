@@ -15,6 +15,7 @@ import { HumedadComponent } from './components/humedad/humedad.component';
 import { VientoComponent } from './components/viento/viento.component';
 import { NieveComponent } from './components/nieve/nieve.component';
 import { TemperaturaComponent } from './components/temperatura/temperatura.component';
+import { ResumenComponent } from './components/resumen/resumen.component';
 //import { MapMunicipiosComponent } from 'src/app/components/mapMunicipios/mapMunicipios.component';
 
 @NgModule({
@@ -28,6 +29,6 @@ import { TemperaturaComponent } from './components/temperatura/temperatura.compo
     ChartModule,
     TableModule
   ],
-  declarations: [ViewMunicipiosComponent, CieloComponent, PrecipitacionComponent, HumedadComponent, VientoComponent, NieveComponent, TemperaturaComponent],
+  declarations: [ViewMunicipiosComponent, CieloComponent, PrecipitacionComponent, HumedadComponent, VientoComponent, NieveComponent, TemperaturaComponent, ResumenComponent],
 })
 export class ViewMunicipiosModule { }
