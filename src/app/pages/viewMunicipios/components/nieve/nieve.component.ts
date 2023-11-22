@@ -29,7 +29,7 @@ export class NieveComponent implements OnInit {
   constructor() { }
   @Input() detalles!: DetallePrediccion[];
   ngOnInit() {
-    this.initCharts();
+    //this.initCharts();
   }
 
   ngOnChanges(changes: SimpleChanges) {

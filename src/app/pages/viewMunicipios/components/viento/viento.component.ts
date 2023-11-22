@@ -67,7 +67,7 @@ export class VientoComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-   
+
     this.initCharts();
   }
   ngOnChanges(changes: SimpleChanges) {

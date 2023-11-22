@@ -1,3 +1,34 @@
-<p>
-  temperatura works!
-</p>
+<div class="grid">
+  <div id = "chart" class="col-6">
+    <h1> Gráfica de Temperaturas</h1>
+    
+    <p-chart type="line" [data]="chartData" [options]="chartOptions"  className="UIchart"  ></p-chart>
+  </div>
+
+  <div class="col-6">
+    <h1> Tabla de Temperaturas</h1> 
+      
+    <p-table [value]="detallesTemperatura"  [scrollable]="true" scrollHeight="400px">
+      <ng-template pTemplate="header">
+          <tr>
+              <th>Horas</th>
+              <th>grados (º)</th>
+   
+
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-detalle>
+          <tr>
+              <td>{{ detalle.hora }}</td>
+              <td> {{ detalle.valor }}</td>
+           
+                        
+          </tr>
+      </ng-template>
+    </p-table>
+    <div *ngIf="detallesMaxima || detallesMinima ">
+      <h4>Temperatura máxima: {{detallesMaxima}}</h4>
+      <h4>Temperatura mínima: {{detallesMinima}}</h4>
+    </div>  
+  </div>
+</div>

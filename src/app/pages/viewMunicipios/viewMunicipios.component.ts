@@ -25,11 +25,13 @@ export class ViewMunicipiosComponent implements OnInit {
   detalles: DetallePrediccion[] = [];
 
   menuItemsDetalle: CustomMenuItem[] = [
+    {label: 'Resumen', code: ['resumen']},
     { label: 'Precipitacion', code: ['probPrecipitacion']},
-    { label: 'Cota Nieve provincial', code: ['cotaNieveProv']},
+    { label: 'Temperatura', code: ['temperatura', 'temperatura_maxima', 'temperatura_minima']},
     { label: 'Estado de cielo', code: ['estadoCielo']}, 
     { label: 'Viento', code: ['viento', 'rachaMax']},
-    { label: 'Temperatura', code: ['temperatura', 'temperaturaMax', 'temperaturaMin']},
+    { label: 'Cota Nieve provincial', code: ['cotaNieveProv']},
+
     {label: 'Humedad relativa', code: ['humedad_relativa', 'humedad_relativa_minima', 'humedad_relativa_maxima']},
   ];
 
@@ -175,18 +177,30 @@ export class ViewMunicipiosComponent implements OnInit {
           "municipio: "+ codigoMunicipio,
           "nombre de caregoría: "+ categoryName
         );
-
-        categoryName.forEach(name => {
-          this.metereologiaService.getDetallesByMunicipioCodeAndDateAndCategory(codigoMunicipio, fechaParseada, name).subscribe(
+        
+        if (categoryName[0] === 'resumen'){
+          this.metereologiaService.getDetallesByMunicipioCodeAndDate(codigoMunicipio, fechaParseada).subscribe(
             response => {
-             // console.log(response);
-              this.detalles = this.detalles.concat(response);
-
+              console.log(response);
+              this.detalles = response;
             }
           );
-        });
+          
+        }else{
+          categoryName.forEach(name => {
+         
+            this.metereologiaService.getDetallesByMunicipioCodeAndDateAndCategory(codigoMunicipio, fechaParseada, name).subscribe(
+              response => {
+                
+                this.detalles = this.detalles.concat(response);
+  
+              }
+            );
+          });
+        }
+       
 
-       // console.log(this.detalles);
+
           
        
         

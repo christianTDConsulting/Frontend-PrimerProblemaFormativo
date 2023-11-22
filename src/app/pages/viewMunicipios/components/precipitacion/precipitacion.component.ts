@@ -31,7 +31,7 @@ export class PrecipitacionComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.initCharts();
+   // this.initCharts();
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['detalles']) {

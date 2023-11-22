@@ -43,6 +43,9 @@
 
           <div>
             <div *ngIf="detalles.length !== 0; else elseBlock">
+              <ng-container *ngIf="activeMenuItemDetalle.label === 'Resumen'">
+                  
+              </ng-container>
               <ng-container *ngIf="activeMenuItemDetalle.label === 'Precipitacion'">
                 <app-precipitacion [detalles] ="detalles"></app-precipitacion>
               </ng-container>

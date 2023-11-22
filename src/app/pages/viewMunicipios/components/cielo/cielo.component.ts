@@ -14,7 +14,7 @@ export class CieloComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.detalles);
+    //console.log(this.detalles);
  
   }
 
