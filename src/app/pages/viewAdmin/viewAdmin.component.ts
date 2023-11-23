@@ -8,8 +8,8 @@ import { TelefonoDialogComponent } from 'src/app/components/telefonoDialog/data-
 import { DataClienteComponent } from 'src/app/components/formDialog/data-cliente/data-cliente.component';
 import { TokenService } from 'src/app/services/token/token.service';
 import { Router } from '@angular/router';
-import { LogsComponent } from './logs/logs.component';
-import { LinkUserDialogComponent } from './LinkUserDialog/LinkUserDialog.component';
+import { LogsComponent } from './components/logs/logs.component';
+import { LinkUserDialogComponent } from './components/LinkUserDialog/LinkUserDialog.component';
 
 @Component({
   selector: 'app-viewAdmin',

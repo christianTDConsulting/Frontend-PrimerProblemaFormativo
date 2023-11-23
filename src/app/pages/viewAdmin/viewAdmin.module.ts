@@ -22,8 +22,8 @@ import { DataClienteModule } from 'src/app/components/formDialog/data-cliente/da
 import { ViewAdminComponent } from './viewAdmin.component';
 
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { LogsComponent } from './logs/logs.component';
-import {LinkUserDialogComponent} from './LinkUserDialog/LinkUserDialog.component';
+import { LogsComponent } from './components/logs/logs.component';
+import {LinkUserDialogComponent} from './components/LinkUserDialog/LinkUserDialog.component';
 @NgModule({
   imports: [
     CommonModule,
