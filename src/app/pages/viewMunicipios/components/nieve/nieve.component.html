@@ -1,0 +1,29 @@
+
+<div class="grid">
+  <div id = "chart" class="col-6">
+    <h1> Gráfica de Cota de nieve provincial</h1>
+    <p-chart type="bar" [data]="chartData" [options]="chartOptions"  className="UIchart"  ></p-chart>
+  </div>
+
+  <div class ="col-6">
+      <h1> Tabla de Cota de nieve provincial</h1> 
+
+    <p-table [value]="detalles"  [scrollable]="true">
+      <ng-template pTemplate="header">
+          <tr>
+              <th>Periodo</th>
+              <th>Probabilidad (%)</th>
+            
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-detalle>
+          <tr>
+              <td>{{ detalle.periodo }}</td>
+              <td>{{ detalle.valor === undefined ? detalle.valor : 0 }}</td>
+          
+          </tr>
+      </ng-template>
+    </p-table>
+ </div>
+</div>  
+  

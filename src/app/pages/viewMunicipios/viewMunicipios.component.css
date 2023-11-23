@@ -1,0 +1,7 @@
+.map-container {
+    width: 80%; /* Ajusta el ancho según tus preferencias */
+    height: 500px; /* Ajusta la altura según tus preferencias */
+    margin: 20px auto; /* Centra el contenedor en la página */
+    border: 1px solid #ccc; /* Agrega un borde al contenedor */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Agrega una sombra al contenedor */
+  }

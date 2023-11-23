@@ -1,0 +1,11 @@
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: top;
+    padding-top: 50px;
+    background-color: rgb(197, 230, 247);
+    height: 100vh;
+    width: 100%;
+  }
+ 

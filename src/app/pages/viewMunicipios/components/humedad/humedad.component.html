@@ -1,0 +1,33 @@
+<div class="grid">
+  <div id = "chart" class="col-6">
+    <h1> Gráfica de humedad relativa</h1>
+    
+    <p-chart type="line" [data]="chartData" [options]="chartOptions"  className="UIchart"  ></p-chart>
+  </div>
+
+  <div class="col-6">
+    <h1> Tabla de humedad relativa</h1> 
+      
+    <p-table [value]="detallesHumedad"  [scrollable]="true" scrollHeight="400px">
+      <ng-template pTemplate="header">
+          <tr>
+              <th>Horas</th>
+              <th>grados (º)</th>
+   
+
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-detalle>
+          <tr>
+              <td>{{ detalle.hora }}</td>
+              <td> {{ detalle.valor }}</td>
+           
+                        
+          </tr>
+      </ng-template>
+    </p-table>
+    <div *ngIf="detallesMaxima || detallesMinima ">
+      <h4>Humedad relativa máxima: {{detallesMaxima}}</h4>
+      <h4>Humedad relativa mínima: {{detallesMinima}}</h4>
+    </div>  
+  </div>

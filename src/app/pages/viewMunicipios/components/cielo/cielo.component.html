@@ -1,0 +1,29 @@
+
+
+<div class="grid">
+
+  <div class ="col-12">
+      <h1> Tabla de estado de cielo</h1> 
+
+    <p-table [value]="detalles"  [scrollable]="true" scrollHeight="600px">
+      <ng-template pTemplate="header">
+          <tr>
+              <th>Periodo</th>
+              <th>Descripcion</th>
+              
+            
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-detalle>
+          <tr>
+              <td>{{ detalle.periodo }}</td>
+              <td>  <img src="{{getImage(detalle.valor)}}" alt={{detalle.descripcion}}> <div class="inline ml-2">{{ detalle.descripcion }}</div></td>
+            
+          
+          </tr>
+      </ng-template>
+    </p-table>
+ </div>
+</div>  
+  
+

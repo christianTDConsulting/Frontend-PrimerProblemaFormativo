@@ -1,6 +1,6 @@
 
-import { Component, OnInit, Input, signal  } from '@angular/core';
-
+import { Component, signal  } from '@angular/core';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-viewLogin',
   templateUrl: './viewLogin.component.html',
@@ -12,9 +12,11 @@ export class ViewLoginComponent  {
  
   state = signal<'register' | 'login' >('login');
    
-   constructor( ) { }
+  constructor( private router: Router ) { }
  
     
-   
+  goToMetereology(){
+    this.router.navigate(['/viewMetereologia']);
+  } 
 
 }
