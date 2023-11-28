@@ -19,4 +19,8 @@ export class ViewLoginComponent  {
     this.router.navigate(['/viewMetereologia']);
   } 
 
+  goToEmpresas(){
+    this.router.navigate(['/viewEmpresas']);
+  } 
+
 }
