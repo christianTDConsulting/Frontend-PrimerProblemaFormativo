@@ -1,51 +1,77 @@
-<p-button (onClick)="goToLogin()" icon="pi pi-arrow-left" label="Volver"></p-button>
-<h1>Datos de empresas asociadas con ATP </h1>
 
 <div class="mb-3">
-  <a href="https://www.apd.es/conoce-apd/empresas-asociadas/"><h3>Pulsa aquí para ver mas información</h3></a> 
-
+  <p-button (onClick)="goToLogin()" icon="pi pi-arrow-left" label="Volver"></p-button>
 </div>
 
-<p-table
-    [value]="empresas"
-    [paginator]="true"
-    [rows]="5"
-    [showCurrentPageReport]="true"
-    [tableStyle]="{ 'min-width': '50rem' }"
-    currentPageReportTemplate="Enseñando {first} hasta {last} de {totalRecords} entradas"
-    [rowsPerPageOptions]="[10, 25, 50]"
-    [globalFilterFields]="['razon_social', 'zona_geografica', 'sector_actividad', 'numero_apariciones']"
+
+<p-card [header]="'Datos de empresas asociadas con ATP'" [style]="{'width': '90%'}">
+  <div class="mb-3">
+    <a href="https://www.apd.es/conoce-apd/empresas-asociadas/"><h3>Pulsa aquí para ver mas información</h3></a> 
+  
+  </div>
+  
+  <p-table
+  [value]="empresas"
+  [paginator]="true"
+  [rows]="5"
+  [showCurrentPageReport]="true"
+  [tableStyle]="{ 'min-width': '50rem', 'min-height': '50rem' }" 
+  currentPageReportTemplate="Enseñando {first} hasta {last} de {totalRecords} entradas"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  [globalFilterFields]="['razon_social', 'zona_geografica', 'sector_actividad', 'numero_apariciones']"
 >
-    <ng-template pTemplate="header">
-        <tr>
-            <th pSortableColumn="razon_social" style="width:25%">Razón social</th>
-            <th pSortableColumn="zona_geografica" style="width:25%">Zona geográfica</th>
-            <th pSortableColumn="sector_actividad" style="width:25%">Sector de Actividad</th>
-            <th pSortableColumn="numero_empleados" style="width:25%">Nº de empleados</th>
-        </tr>
-        <tr>
-            <th> 
-                <p-columnFilter type="text" field="razon_social"></p-columnFilter>
-            </th>
-            <th>
-                <p-columnFilter type="text" field="zona_geografica"></p-columnFilter>
-            </th>
-            <th>
-                <p-columnFilter type="text" field="sector_actividad"></p-columnFilter>
-            </th>
-            <th>
-                <p-columnFilter type="text" field="numero_empleados"></p-columnFilter>
-            </th>
+  <ng-template pTemplate="header">
+      <tr>
+          <th pSortableColumn="razon_social" style="width:25%">Razón social</th>
+          <th pSortableColumn="zona_geografica" style="width:25%">Zona geográfica</th>
+          <th pSortableColumn="sector_actividad" style="width:25%">Sector de Actividad</th>
+          <th pSortableColumn="numero_empleados" style="width:25%">Nº de empleados</th>
+      </tr>
+      <tr>
+          <th> 
+              <p-columnFilter type="text" field="razon_social"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter field="zona_geografica" matchMode="equals" [showMenu]="false">
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                 <p-dropdown [options]="zonasGeograficas" (onChange)="filter($event.value)" placeholder="Zona geográfica" [showClear]="true">
+                 </p-dropdown>
+              </ng-template>
+           </p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter field="sector_actividad" matchMode="equals" [showMenu]="false">
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                 <p-dropdown [options]="tipoActividad" (onChange)="filter($event.value)" placeholder="Sector de actividad" [showClear]="true">
+                 </p-dropdown>
+              </ng-template>
+           </p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter field="numero_empleados" matchMode="equals" [showMenu]="false">
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                 <p-dropdown [options]="numEmpleados" (onChange)="filter($event.value)" placeholder="Nº de empleados" [showClear]="true">
+                 </p-dropdown>
+              </ng-template>
+           </p-columnFilter>
+          </th>
 
 
-    </ng-template>
-    <ng-template pTemplate="body" let-empresa>
-        <tr>
-            <td>{{ empresa.razon_social }}</td>
-            <td>{{ empresa.zona_geografica }}</td>
-            <td>{{ empresa.sector_actividad }}</td>
-            <td>{{ empresa.numero_empleados }}</td>
-        </tr>
-    </ng-template>
-    
+  </ng-template>
+  <ng-template pTemplate="body" let-empresa>
+      <tr>
+          <td>{{ empresa.razon_social }}</td>
+          <td>{{ empresa.zona_geografica }}</td>
+          <td>{{ empresa.sector_actividad }}</td>
+          <td>{{ empresa.numero_empleados }}</td>
+      </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+        <td colspan="4"><h4>Empresas no encontradas.</h4></td>
+    </tr>
+  </ng-template>
+  
 </p-table>
+</p-card>
