@@ -7,12 +7,14 @@ import { ViewLoginComponent } from './pages/viewLogin/viewLogin.component'; // A
 import { ViewClienteGuard } from './guards/view-cliente.guard';
 import { TelefonosComponent } from './components/telefonoDialog/telefono/telefonos.component';
 import { ViewMunicipiosComponent } from './pages/viewMunicipios/viewMunicipios.component';
+import { ViewEmpresasAtpComponent } from './pages/viewEmpresasAtp/viewEmpresasAtp.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'viewLogin', pathMatch: 'full' },
   { path: 'viewAdmin', component: ViewAdminComponent, canActivate: [ViewAdminGuard] },
   { path: 'viewLogin', component: ViewLoginComponent },
   { path: 'viewMetereologia', component: ViewMunicipiosComponent },
+  { path: 'viewEmpresas', component: ViewEmpresasAtpComponent },
   {path: 'viewClient', component: TelefonosComponent, canActivate: [ViewClienteGuard]}
   // Add other routes if needed
 ];

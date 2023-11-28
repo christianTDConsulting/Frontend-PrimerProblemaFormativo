@@ -9,7 +9,7 @@ import { ViewAdminModule } from './pages/viewAdmin/viewAdmin.module';
 import { ViewLoginModule } from './pages/viewLogin/viewLogin.module';
 import { TelefonosModule } from './pages/viewClientes/viewCliente.module';
 import { ViewMunicipiosModule } from './pages/viewMunicipios/viewMunicipios.module';
-
+import { ViewEmpresasAtpModule } from './pages/viewEmpresasAtp/viewEmpresasAtp.module';
 
 
 @NgModule({
@@ -26,6 +26,7 @@ import { ViewMunicipiosModule } from './pages/viewMunicipios/viewMunicipios.modu
     ViewLoginModule,
     TelefonosModule,
     ViewMunicipiosModule,
+    ViewEmpresasAtpModule
 
 
    
