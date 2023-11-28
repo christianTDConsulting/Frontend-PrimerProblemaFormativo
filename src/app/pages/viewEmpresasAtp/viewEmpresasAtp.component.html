@@ -9,17 +9,26 @@
     <a href="https://www.apd.es/conoce-apd/empresas-asociadas/"><h3>Pulsa aquí para ver mas información</h3></a> 
   
   </div>
-  
+
   <p-table
+  #dt1
   [value]="empresas"
   [paginator]="true"
-  [rows]="5"
+  [rows]="10"
+  styleClass="p-datatable-striped"
   [showCurrentPageReport]="true"
   [tableStyle]="{ 'min-width': '50rem', 'min-height': '50rem' }" 
   currentPageReportTemplate="Enseñando {first} hasta {last} de {totalRecords} entradas"
   [rowsPerPageOptions]="[10, 25, 50]"
   [globalFilterFields]="['razon_social', 'zona_geografica', 'sector_actividad', 'numero_apariciones']"
 >
+<ng-template pTemplate="caption">
+  <div class="flex align-items-center justify-content-between">
+    Listado de socios APD
+      <p-button icon="pi pi-refresh" (onClick)="initEmpresas()"></p-button>
+  </div>
+</ng-template>
+
   <ng-template pTemplate="header">
       <tr>
           <th pSortableColumn="razon_social" style="width:25%">Razón social</th>

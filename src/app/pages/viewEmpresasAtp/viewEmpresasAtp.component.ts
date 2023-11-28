@@ -79,5 +79,8 @@ export class ViewEmpresasAtpComponent implements OnInit {
     this.router.navigate(['/viewLogin']);
   }
 
+  clear(table: Table) {
+    table.clear();
+}
 
 }
