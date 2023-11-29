@@ -12,6 +12,7 @@ import { ViewLoginModule } from './pages/viewLogin/viewLogin.module';
 import { TelefonosModule } from './pages/viewClientes/viewCliente.module';
 import { ViewMunicipiosModule } from './pages/viewMunicipios/viewMunicipios.module';
 import { ViewEmpresasAtpModule } from './pages/viewEmpresasAtp/viewEmpresasAtp.module';
+import { ViewChatModule } from './pages/viewChat/viewChat.module';
 
 import { MenubarModule } from 'primeng/menubar';
 
@@ -25,10 +26,11 @@ import { MenubarModule } from 'primeng/menubar';
   imports: [
     
     ButtonModule,
-
     BrowserModule,
     AppRoutingModule,
     MenubarModule,
+
+    ViewChatModule,
     ViewAdminModule,
     ViewLoginModule,
     TelefonosModule,

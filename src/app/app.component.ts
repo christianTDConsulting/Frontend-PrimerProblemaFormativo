@@ -60,9 +60,9 @@ export class AppComponent {
       routerLink:'/viewEmpresas',
     } ,
     {
-      label:'chatbot',
+      label:'Productos de comercio',
       icon:'pi pi-comments',
-      routerLink:'',
+      routerLink:'/viewChat',
     }
   ];
 

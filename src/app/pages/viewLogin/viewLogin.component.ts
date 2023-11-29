@@ -23,4 +23,7 @@ export class ViewLoginComponent  {
     this.router.navigate(['/viewEmpresas']);
   } 
 
+  goToChat(){
+    this.router.navigate(['/viewChat']);
+  }
 }
