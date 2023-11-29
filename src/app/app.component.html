@@ -1,3 +1,23 @@
 
+<header>
+    <p-menubar [model]="items">
+       
+        <div *ngIf="isLogged" class="flex">
+            <div class="ml-3">
+                <p>Bienvenido: {{user}}<p>
+            </div>
+            <div class="ml-3">
+                <p-button   label="Cerrar sesión" (onClick)="cerrarSesion()"></p-button> 
+            </div>
+        </div>
+        
+        
+       
+        
+        
+    </p-menubar>
+</header>
+<body>
+    <router-outlet></router-outlet>
 
-<router-outlet></router-outlet>
+</body>

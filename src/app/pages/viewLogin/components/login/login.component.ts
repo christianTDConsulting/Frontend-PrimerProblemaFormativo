@@ -3,6 +3,7 @@ import { Validators,FormControl,FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { TokenService } from 'src/app/services/token/token.service'; 
 import { Router } from '@angular/router';
+import { AuthEventService } from 'src/app/services/auth-event/auth-event.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -29,6 +30,7 @@ export class LoginComponent implements OnInit {
      private loginService: TokenService,
      private messageService: MessageService,
      private tokenService: TokenService,
+     private authEventService: AuthEventService,
      private router: Router
      ) { }
 
@@ -56,6 +58,7 @@ export class LoginComponent implements OnInit {
               if (response.usuario===null || response.usuario===undefined){
                 this.messageService.add({severity:'info', summary: 'Login', detail: 'No hay cliente asociado al usuario'});
               }else{
+                this.authEventService.emitLoginEvent();
                 const perfil = response.usuario.id_perfil;
                 if (perfil === 1){
                   this.router.navigate(['/viewClient']);
