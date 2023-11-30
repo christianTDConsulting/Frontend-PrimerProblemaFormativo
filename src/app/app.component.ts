@@ -35,16 +35,19 @@ export class AppComponent {
         if (window.location.pathname === '/viewLogin'  || window.location.pathname === '/viewClient' || window.location.pathname === '/viewAdmin'){ 
           location.reload(); // refresh the page
         } else {
-          this.tokenService.decodeToken().subscribe(
-            (response: any) => {
-              const perfil = response.usuario.id_perfil;
-              if (perfil === 1){
-                this.router.navigate(['/viewClient']);
-              }else if (perfil === 2){
-                this.router.navigate(['/viewAdmin']);
+          if (this.isLogged){
+            this.tokenService.decodeToken().subscribe(
+              (response: any) => {
+                const perfil = response.usuario.id_perfil;
+                if (perfil === 1){
+                  this.router.navigate(['/viewClient']);
+                }else if (perfil === 2){
+                  this.router.navigate(['/viewAdmin']);
+                }
               }
-            }
-          )
+            );
+          }
+         
           this.router.navigate(['/viewLogin']); 
         }
       }
@@ -66,13 +69,17 @@ export class AppComponent {
     }
   ];
 
-  isLogged: boolean = this.getInitialLogged();
+  isLogged: boolean = false;
   ngOnInit(): void {
-    this.tokenService.decodeToken().subscribe(
-      (response: any) => {
-        this.user=response.usuario.email;
-      }
-    )
+    this.isLogged = this.getInitialLogged();
+    if (this.isLogged) {
+      this.tokenService.decodeToken().subscribe(
+        (response: any) => {
+          this.user=response.usuario.email;
+        }
+      )
+    }
+    
     this.authEventService.loginEvent.subscribe(() => {
       this.isLogged = true;
       
@@ -88,6 +95,7 @@ export class AppComponent {
   cerrarSesion(){
     this.authEventService.emitLogoutEvent();
     this.tokenService.deleteToken();
+    localStorage.clear();
     this.router.navigate(['/viewLogin']);
   }
   onItemClick(event: any): void {

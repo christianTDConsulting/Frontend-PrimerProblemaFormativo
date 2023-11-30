@@ -1,0 +1,41 @@
+<!-- app-chat.component.html -->
+<div class="chat-container">
+  <p-scrollPanel styleClass="chat-messages" [style]="{ width: '100%', height: '900px' }" #scrollPanel>
+      
+      <p *ngFor="let mensaje of mensajes" [ngClass]="{'mensaje-usuario': mensaje.autor !== 'Gepeto', 'mensaje-asistente': mensaje.autor === 'Gepeto'}">
+       
+        <ng-container *ngIf="mensaje.autor === 'Gepeto'" class="gepeto-container">
+          <div class="grid">
+            <div class="col-2">
+              <img class="gepeto" src="assets/images/gepeto/normal.webp" alt="Gepeto">
+            </div>
+            <div class="col-10">
+              <p class="bold">{{ mensaje.autor }}</p>
+            </div>
+         
+          </div>
+          
+        </ng-container>
+        <ng-container *ngIf="mensaje.autor !== 'Gepeto'" class="other-author-container">
+          <div class="grid">
+            <div class="col-10">
+              <p-avatar icon="pi pi-user" styleClass="mr-2" size="xlarge"></p-avatar>
+            </div>
+            <div class="col-2">
+              <p class="bold">{{ mensaje.autor }}</p>
+            </div>
+         
+          </div>
+        
+        </ng-container>
+        {{ mensaje.texto }}
+        <p-divider></p-divider>
+      </p>
+
+  </p-scrollPanel>
+
+  <div class="chat-input">
+    <input type="text" pInputText [(ngModel)]="nuevoMensaje"  pAutoFocus [autofocus]="true" (keyup.enter)="enviarMensaje()" [disabled]="cargandoRespuesta" placeholder="Realice una pregunta sobre el catálogo ..." #inputElement/>
+    <p-button label="Enviar" (click)="enviarMensaje()" [disabled]="cargandoRespuesta"></p-button>
+  </div>
+</div>

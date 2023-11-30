@@ -1,0 +1,52 @@
+<p-toast></p-toast>
+<small class="small-message">Pulsa en la imagen de un artículo para ver más detalles</small>
+
+<div class="grid">
+  <div class="col-6" *ngFor="let articulo of articulos">
+      <div class="card border-round-sm">
+          <div class="text-center">
+            <p-card  [style]="{height: '500px'}">
+              <p-header (click)="showDetalles(articulo)">
+               <h2>{{articulo.nombre}}</h2> 
+              </p-header>
+              <img src="{{ articulo.foto }}" alt="Imagen de {{ articulo.nombre }}"   class="articulo-imagen"  (click)="showDetalles(articulo)"/>
+             
+                <!-- Accordion para la descripción -->
+                <p-accordion>
+                  <p-accordionTab header="Descripción">
+                    <div class="text-justify p-3">{{ articulo.descripcion }}</div>
+                  </p-accordionTab>
+                </p-accordion>
+              
+            </p-card>
+             
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Dialog para mostrar los detalles del articulo -->
+<p-dialog header="Detalles del Artículo" [(visible)]="display" [style]="{width: '50vw'}" [modal]="true">
+  <p-card *ngIf="articuloSeleccionado">
+      <p-header>
+        
+        <img src="{{ articuloSeleccionado.foto }}" alt="Imagen de {{ articuloSeleccionado.nombre }}" class="w-6" />
+          
+      </p-header>
+      <h3>{{ articuloSeleccionado.nombre }}</h3>
+      
+      <h5>Precio</h5>
+      <p>{{ articuloSeleccionado.precio }}€</p>
+      <h5>Dimensiones</h5>
+      <p>{{ articuloSeleccionado.dimensiones }}</p>
+      <h5>Descripción</h5>
+      <p>{{ articuloSeleccionado.descripcion }}</p>
+      <h5>Características</h5>
+      <ul>
+          <li *ngFor="let caracteristica of articuloSeleccionado.caracteristicas">
+              {{ caracteristica.nombre }}
+          </li>
+      </ul>
+      <p-button label="Añadir al carrito" icon="pi pi-shopping-cart" (click)="addToCart(articuloSeleccionado)"></p-button>
+  </p-card>
+</p-dialog>

@@ -59,6 +59,8 @@ export class LoginComponent implements OnInit {
                 this.messageService.add({severity:'info', summary: 'Login', detail: 'No hay cliente asociado al usuario'});
               }else{
                 this.authEventService.emitLoginEvent();
+                localStorage.setItem('username', response.usuario.email);
+                
                 const perfil = response.usuario.id_perfil;
                 if (perfil === 1){
                   this.router.navigate(['/viewClient']);

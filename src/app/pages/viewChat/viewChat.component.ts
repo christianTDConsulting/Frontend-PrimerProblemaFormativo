@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Articulo } from 'src/app/models/articulos';
+import { ArticuloService } from '../../services/articulo/articulo.service';
+
 
 @Component({
   selector: 'app-viewChat',
@@ -7,9 +10,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ViewChatComponent implements OnInit {
 
-  constructor() { }
+  constructor(private articuloService: ArticuloService) { }
+
+  articulos: Articulo[] = []
+  sidebarVisible: boolean = false;
+  username: string = '';
 
   ngOnInit() {
+    this.initArticulos();
+    this.username = localStorage.getItem('username') || 'usuario';
+  }
+
+  initArticulos(){
+    this.articuloService.getArticulos().subscribe(data => {
+      this.articulos = data;
+      
+    })
   }
 
 }
