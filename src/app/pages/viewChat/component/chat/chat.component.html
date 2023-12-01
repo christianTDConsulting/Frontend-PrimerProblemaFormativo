@@ -35,7 +35,7 @@
   </p-scrollPanel>
 
   <div class="chat-input">
-    <input type="text" pInputText [(ngModel)]="nuevoMensaje"  pAutoFocus [autofocus]="true" (keyup.enter)="enviarMensaje()" [disabled]="cargandoRespuesta" placeholder="Realice una pregunta sobre el catálogo ..." #inputElement/>
+    <input type="text" pInputText [(ngModel)]="nuevoMensaje"  pAutoFocus [autofocus]="true" (keyup.enter)="enviarMensaje()" [disabled]="cargandoRespuesta" placeholder="Pregunta sobre el catálogo ..." #inputElement/>
     <p-button label="Enviar" (click)="enviarMensaje()" [disabled]="cargandoRespuesta"></p-button>
   </div>
 </div>
