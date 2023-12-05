@@ -4,6 +4,7 @@ import { Conversacion, Mensaje } from 'src/app/models/mensaje';
 import { ChatService } from '../../../../services/chat/chat.service';
 import { Usuario } from 'src/app/models/cliente';
 
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -18,7 +19,10 @@ export class ChatComponent implements OnInit {
     id_perfil: 0
   };
 
-  //@ViewChild('scrollPanel') scrollPanel!: ElementRef;
+  @ViewChild('focusElement') focusElement!: ElementRef;
+
+ 
+
 
   nuevoMensaje: string = '';
   mensajeInsertar: string = '';
@@ -32,6 +36,7 @@ export class ChatComponent implements OnInit {
     this.iniciarConversacion();
   }
 
+ 
   private iniciarConversacion() {
     if (this.chatService.getIdConversacion() !== undefined) {
       console.log('El ID de la conversación es: ' + this.chatService.getIdConversacion());
@@ -42,13 +47,14 @@ export class ChatComponent implements OnInit {
   private cargarMensajesPrevios() {
     this.chatService.getMensajes()?.subscribe((mensajes: Mensaje[]) => {
       mensajes.forEach(m => this.agregarMensajeAConversacion(m));
-      //this.scrollDown();
+      this.scrollDown();
     });
   }
 
   private agregarMensajeAConversacion(mensaje: Mensaje) {
-    const nuevoMensaje: MensajeChat = { texto: mensaje.prompt, autor: this.usuario.email || 'Anónimo' };
-    const respuestaGptMensaje: MensajeChat = { texto: mensaje.respuesta, autor: 'Gepeto' };
+    const fecha = this.formatTimeAgo(mensaje.timestamp);
+    const nuevoMensaje: MensajeChat = { texto: mensaje.prompt, autor: this.usuario.email || 'Anónimo', timestamp:fecha };
+    const respuestaGptMensaje: MensajeChat = { texto: mensaje.respuesta, autor: 'Gepeto', timestamp:fecha };
     this.mensajes.push(nuevoMensaje, respuestaGptMensaje);
   }
 
@@ -65,8 +71,10 @@ export class ChatComponent implements OnInit {
   }
 
   private async agregarNuevoMensaje() {
-    const nuevoMensaje: MensajeChat = { texto: this.mensajeInsertar, autor: this.usuario.email || 'Anónimo' };
+    const fecha = this.formatTimeAgo(new Date());
+    const nuevoMensaje: MensajeChat = { texto: this.mensajeInsertar, autor: this.usuario.email || 'Anónimo', timestamp:fecha };
     this.mensajes.push(nuevoMensaje);
+    this.scrollDown();
   
   }
 
@@ -112,20 +120,30 @@ export class ChatComponent implements OnInit {
   }
 
   private  procesarRespuestaServidor(response: string) {
-    const respuestaGpt: MensajeChat = { texto: response, autor: 'Gepeto' };
+    const respuestaGpt: MensajeChat = { texto: response, autor: 'Gepeto', timestamp: this.formatTimeAgo(new Date()) };
     this.mensajes.push(respuestaGpt);
-    //this.scrollDown();
+    this.scrollDown();
     this.cargandoRespuesta = false;
     
   }
- /* private scrollDown() {
-   
-      if (this.scrollPanel) {
-        const scrollContainer = this.scrollPanel.nativeElement;
-        scrollContainer.scrollTop = scrollContainer.scrollHeight;
-      }
- 
+  private scrollDown() {
+    console.log("scrollDown");
+    this.focusElement.nativeElement.scrollIntoView(true, { block:'end',  behavior: 'smooth' });
   }
-  */
+
+  formatTimeAgo(timestamp:Date) {
+   
+    if (!(timestamp instanceof Date)) {
+
+      timestamp = new Date(timestamp);
+    }
+  
+ 
+    return timestamp.toLocaleDateString() + ' ' + timestamp.toLocaleTimeString(); 
+  }
+  
+
  
 }
+
+

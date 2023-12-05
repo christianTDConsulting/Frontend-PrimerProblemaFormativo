@@ -1,4 +1,5 @@
 export interface MensajeChat {
     texto: string,
-    autor: string
+    autor: string,
+    timestamp: string
 }

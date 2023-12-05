@@ -9,6 +9,7 @@
     flex-grow: 1;
     padding: 10px;
     overflow-y: auto; 
+    height:100%;
 }
 
 .chat-input {
@@ -24,8 +25,9 @@
 
 
 .mensaje-usuario {
-    text-align: right;
+    
     border-radius: 25%;
+    text-justify: auto;
 
 }
 

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { TokenService } from 'src/app/services/token/token.service'; 
 
+
 @Component({
   selector: 'app-navBar',
   templateUrl: './navBar.component.html',
@@ -77,15 +78,12 @@ export class NavBarComponent implements OnInit {
   ngOnInit(): void {
     this.isLogged = this.getInitialLogged();
     if (this.isLogged) {
-      this.tokenService.decodeToken().subscribe(
-        (response: any) => {
-          this.user=response.usuario.email;
-        }
-      )
+      this.assignUserToNavBar();
     }
     
     this.authEventService.loginEvent.subscribe(() => {
       this.isLogged = true;
+      this.assignUserToNavBar();
       
     });
 
@@ -96,7 +94,13 @@ export class NavBarComponent implements OnInit {
   }
   
  
-
+private assignUserToNavBar() {
+  this.tokenService.decodeToken().subscribe(
+    (response: any) => {
+      this.user=response.usuario.email;
+    }
+  );
+}
   getInitialLogged(): boolean {
     return this.tokenService.getToken() != null && this.tokenService.getToken() != '';
   }
