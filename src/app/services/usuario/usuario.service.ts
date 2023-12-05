@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Usuario } from 'src/app/models/cliente';
 
 @Injectable({
   providedIn: 'root'
@@ -41,9 +42,9 @@ verUsuarios(): Observable<any[]> {
 
 
 
-getUsuarioById(id: number): Observable<any> {
+getUsuarioById(id: number): Observable< Usuario> {
   const usuarioUrl = `${this.usuarioUrl}/${id}`;
-  return this.http.get<any>(usuarioUrl);
+  return this.http.get<Usuario>(usuarioUrl);
 }
 
 getUsuarioByEmail(email: string): Observable<any> {

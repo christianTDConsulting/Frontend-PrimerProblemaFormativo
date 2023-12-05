@@ -1,6 +1,6 @@
 <!-- app-chat.component.html -->
 <div class="chat-container">
-  <p-scrollPanel styleClass="chat-messages" [style]="{ width: '100%', height: '900px' }" #scrollPanel>
+  <p-scrollPanel styleClass="chat-messages" [style]="{ width: '100%', height: '880px' }" id="scrollPanel" #scrollPanel>
       
       <p *ngFor="let mensaje of mensajes" [ngClass]="{'mensaje-usuario': mensaje.autor !== 'Gepeto', 'mensaje-asistente': mensaje.autor === 'Gepeto'}">
        
@@ -35,7 +35,7 @@
   </p-scrollPanel>
 
   <div class="chat-input">
-    <input type="text" pInputText [(ngModel)]="nuevoMensaje"  pAutoFocus [autofocus]="true" (keyup.enter)="enviarMensaje()" [disabled]="cargandoRespuesta" placeholder="Pregunta sobre el catálogo ..." #inputElement/>
+    <input type="text" pInputText [(ngModel)]="nuevoMensaje"  pAutoFocus [autofocus]="true" (keyup.enter)="cargandoRespuesta ? null : enviarMensaje()"  placeholder="Pregunta sobre el catálogo ..." #inputElement/>
     <p-button label="Enviar" (click)="enviarMensaje()" [disabled]="cargandoRespuesta"></p-button>
   </div>
 </div>

@@ -1,4 +1,4 @@
-export interface Mensaje {
+export interface MensajeChat {
     texto: string,
     autor: string
 }

@@ -5,3 +5,12 @@
     border-radius: 45%;
     border-width: 5px;
 }
+.small-message {
+    display: block;
+    text-align: center;
+    margin-bottom: 1em;
+    color: #555; /* Cambia el color según tu diseño */
+    font-style: italic;
+  }
+
+ 

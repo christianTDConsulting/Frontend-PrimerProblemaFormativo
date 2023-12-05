@@ -21,10 +21,3 @@ h2{
 z-index: 1000; /* Un valor alto para superponer sobre otros elementos */
 position: relative; /* Puede ser necesario dependiendo de tu layout */
 }
-.small-message {
-    display: block;
-    text-align: center;
-    margin-bottom: 1em;
-    color: #555; /* Cambia el color según tu diseño */
-    font-style: italic;
-  }

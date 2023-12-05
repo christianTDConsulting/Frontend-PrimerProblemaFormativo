@@ -14,13 +14,16 @@ import { ViewMunicipiosModule } from './pages/viewMunicipios/viewMunicipios.modu
 import { ViewEmpresasAtpModule } from './pages/viewEmpresasAtp/viewEmpresasAtp.module';
 import { ViewChatModule } from './pages/viewChat/viewChat.module';
 
+
 import { MenubarModule } from 'primeng/menubar';
+import { NavBarComponent } from './components/navBar/navBar.component';
+
 
 
 @NgModule({
   declarations: [		
     AppComponent,
-
+    NavBarComponent
     
    ],
   imports: [

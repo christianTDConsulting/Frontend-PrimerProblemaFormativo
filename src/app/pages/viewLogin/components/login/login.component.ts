@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { TokenService } from 'src/app/services/token/token.service'; 
 import { Router } from '@angular/router';
 import { AuthEventService } from 'src/app/services/auth-event/auth-event.service';
+import { Usuario } from 'src/app/models/cliente';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -59,7 +60,7 @@ export class LoginComponent implements OnInit {
                 this.messageService.add({severity:'info', summary: 'Login', detail: 'No hay cliente asociado al usuario'});
               }else{
                 this.authEventService.emitLoginEvent();
-                localStorage.setItem('username', response.usuario.email);
+                this.setInfoInLocalStorage(response.usuario);
                 
                 const perfil = response.usuario.id_perfil;
                 if (perfil === 1){
@@ -85,6 +86,13 @@ export class LoginComponent implements OnInit {
       
       );
     
+  }
+
+  setInfoInLocalStorage(usuario:Usuario){
+  
+    if (usuario.id!= null){
+      localStorage.setItem('user_id', usuario.id!.toString());
+    }
   }
 
   goToRegister() {
