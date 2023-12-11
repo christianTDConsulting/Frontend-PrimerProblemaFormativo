@@ -19,7 +19,7 @@ export class ChatComponent implements OnInit {
     id_perfil: 0
   };
 
-  @ViewChild('focusElement') focusElement!: ElementRef;
+  @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
 
  
 
@@ -101,9 +101,9 @@ export class ChatComponent implements OnInit {
   }
 
   private  crearConversacion() {
-    console.log("id: " + this.usuario.id);
-    const conversacionId = this.usuario.id || undefined;
-    this.chatService.crearConversacion(conversacionId).subscribe(
+    console.log("user_id: " + this.usuario.id);
+    const usuarioId = this.usuario.id || undefined;
+    this.chatService.crearConversacion(usuarioId).subscribe(
       response => this.procesarCreacionConversacion(response),
       error => console.error('Error al crear la conversación:', error)
     );
@@ -126,10 +126,40 @@ export class ChatComponent implements OnInit {
     this.cargandoRespuesta = false;
     
   }
-  private scrollDown() {
-    console.log("scrollDown");
-    this.focusElement.nativeElement.scrollIntoView(true, { block:'end',  behavior: 'smooth' });
+
+  tieneImagen(texto: string): boolean {
+    const matches = texto.match(/!\[.*?\]\(.*?\)/g);
+    return matches ? matches.length > 0 : false;
   }
+  
+  extraerUrlsImagenes(texto: string): string[] {
+    const regex = /\]\((.*?)\)/g;
+    let matches;
+    const urls = [];
+  
+    while (matches = regex.exec(texto)) {
+      urls.push(matches[1]);
+    }
+  
+    return urls;
+  }
+  
+  extraerDescripcionesImagenes(texto: string): string[] {
+    const regex = /!\[(.*?)\]/g;
+    let matches;
+    const descripciones = [];
+  
+    while (matches = regex.exec(texto)) {
+      descripciones.push(matches[1]);
+    }
+  
+    return descripciones;
+  }
+  
+  textoSinImagen(texto: string): string {
+    return texto.replace(/!\[.*?\]\(.*?\)/g, '');
+  }
+
 
   formatTimeAgo(timestamp:Date) {
    
@@ -141,7 +171,12 @@ export class ChatComponent implements OnInit {
  
     return timestamp.toLocaleDateString() + ' ' + timestamp.toLocaleTimeString(); 
   }
-  
+
+  scrollDown(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch(err) { }    
+  }
 
  
 }

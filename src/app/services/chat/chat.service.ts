@@ -8,7 +8,7 @@ import { Conversacion, Mensaje } from 'src/app/models/mensaje';
 })
 export class ChatService {
 
-  private idConversacion: number | undefined;
+  private idConversacion: string | undefined;
 
   urlOpenAI: string = 'http://localhost:3000/openai/';
   urlMensajes: string = 'http://localhost:3000/mensajes/';
@@ -16,12 +16,12 @@ export class ChatService {
 
   constructor(private http: HttpClient) {}
 
-  setIdConversacion(id_conversacion: number) {
+  setIdConversacion(id_conversacion: string) {
     this.idConversacion = id_conversacion;
     console.log ("ID conversacion: " + this.idConversacion);
   }
 
-  getIdConversacion(): number | undefined {
+  getIdConversacion(): string | undefined {
     return this.idConversacion;
   }
 

@@ -13,7 +13,7 @@
   </ng-template>
 
   <!-- Panel de desplazamiento para mensajes -->
-  <p-scrollPanel styleClass="chat-messages" [style]="{ 'height': '150px' }" id="scrollPanel" #scrollPanel>
+  <div class="chat-messages" #scrollMe>
     <!-- Iterar sobre los mensajes -->
     <p *ngFor="let mensaje of mensajes" [ngClass]="{'mensaje-usuario': mensaje.autor !== 'Gepeto', 'mensaje-asistente': mensaje.autor === 'Gepeto'}">
       <!-- Contenedor para mensajes de Gepeto -->
@@ -22,11 +22,17 @@
           <div class="col-2">
             <img class="gepeto" src="assets/images/gepeto/normal.webp" alt="Gepeto">
           </div>
-          <div class="col-10">
+          <div class="col-10" >
             <p>
               <span class="bold">{{ mensaje.autor }}</span> - {{ mensaje.timestamp }}
             </p>
-            {{ mensaje.texto }}
+            <p>{{ textoSinImagen(mensaje.texto) }}</p>
+          <!-- Muestra la imagen si se encuentra en el texto del mensaje -->
+          <div *ngFor="let url of extraerUrlsImagenes(mensaje.texto); let i = index">
+            <img [style]="{'max-width': '300px', 'max-height': '300px'}"
+                 [src]="url"
+                 alt="{{extraerDescripcionesImagenes(mensaje.texto)[i]}}">
+          </div>
           </div>
         </div>
       </ng-container>
@@ -43,22 +49,23 @@
             <p-avatar icon="pi pi-user" styleClass="mr-2" size="xlarge"></p-avatar>
           </div>
         </div>
-        <div style="display: flex; justify-content: flex-start;">
-          {{ mensaje.texto }}
+        <div style="display: flex; justify-content: flex-start;" >
+          <p>{{ mensaje.texto }}</p>
         </div>
       </ng-container>
 
       <!-- Divisor entre mensajes -->
       <p-divider></p-divider>
     </p>
+      <!-- Elemento de enfoque para desplazamiento automático -->
+ 
+</div>
 
-  <!-- Elemento de enfoque para desplazamiento automático -->
-  <div #focusElement   style="height: 1px; width: 100%;"></div>
-  </p-scrollPanel>
+
 
   <!-- Entrada de texto para nuevos mensajes -->
   <div class="chat-input">
     <input type="text" pInputText [(ngModel)]="nuevoMensaje" pAutoFocus [autofocus]="true" (keyup.enter)="cargandoRespuesta ? null : enviarMensaje()" placeholder="Pregunta sobre el catálogo..." #inputElement/>
     <p-button label="Enviar" (click)="enviarMensaje()" [disabled]="cargandoRespuesta"></p-button>
   </div>
-</div>
+

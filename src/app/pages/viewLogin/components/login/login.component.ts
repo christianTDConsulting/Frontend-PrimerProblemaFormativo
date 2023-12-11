@@ -5,6 +5,7 @@ import { TokenService } from 'src/app/services/token/token.service';
 import { Router } from '@angular/router';
 import { AuthEventService } from 'src/app/services/auth-event/auth-event.service';
 import { Usuario } from 'src/app/models/cliente';
+import { ChatService } from 'src/app/services/chat/chat.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -32,6 +33,7 @@ export class LoginComponent implements OnInit {
      private messageService: MessageService,
      private tokenService: TokenService,
      private authEventService: AuthEventService,
+     private chatService: ChatService,
      private router: Router
      ) { }
 
@@ -93,6 +95,7 @@ export class LoginComponent implements OnInit {
     if (usuario.id!= null){
       localStorage.setItem('user_id', usuario.id!.toString());
     }
+    this.chatService.disconnect();
   }
 
   goToRegister() {

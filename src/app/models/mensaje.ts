@@ -1,13 +1,13 @@
 export interface Mensaje{
-   id_conversacion: number,
+   id_conversacion: string,
    prompt: string,
    respuesta: string,
    timestamp: Date
 }
 
 export interface Conversacion{
-   id: number,
-   id_usuario: number,
+   id: string,
+   id_usuario: string,
    fecha_inicio: Date,
    asistente: string
 
