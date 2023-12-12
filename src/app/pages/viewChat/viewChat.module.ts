@@ -19,6 +19,7 @@ import { AutoFocusModule } from 'primeng/autofocus';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import {FormsModule} from '@angular/forms';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import {FormsModule} from '@angular/forms';
     FormsModule,
     AvatarModule,
     DividerModule,
-    AutoFocusModule
+    AutoFocusModule,
+    ProgressSpinnerModule
   ],
   declarations: [ViewChatComponent,GridViewComponent, ChatComponent],
   providers: [MessageService],

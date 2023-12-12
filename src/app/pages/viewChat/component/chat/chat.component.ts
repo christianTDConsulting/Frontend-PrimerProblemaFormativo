@@ -1,9 +1,9 @@
-import { Component, Input,  OnInit, ViewChild, ElementRef  } from '@angular/core';
+import { Component, Input,  OnInit } from '@angular/core';
 import { MensajeChat } from '../../models/mensaje';
 import { Conversacion, Mensaje } from 'src/app/models/mensaje';
 import { ChatService } from '../../../../services/chat/chat.service';
 import { Usuario } from 'src/app/models/cliente';
-
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-chat',
@@ -19,7 +19,7 @@ export class ChatComponent implements OnInit {
     id_perfil: 0
   };
 
-  @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
+ 
 
  
 
@@ -30,7 +30,7 @@ export class ChatComponent implements OnInit {
   mensajes: MensajeChat[] = [];
   cargandoRespuesta: boolean = false;
 
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService,private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.iniciarConversacion();
@@ -74,7 +74,7 @@ export class ChatComponent implements OnInit {
     const fecha = this.formatTimeAgo(new Date());
     const nuevoMensaje: MensajeChat = { texto: this.mensajeInsertar, autor: this.usuario.email || 'Anónimo', timestamp:fecha };
     this.mensajes.push(nuevoMensaje);
-    this.scrollDown();
+    
   
   }
 
@@ -86,6 +86,7 @@ export class ChatComponent implements OnInit {
         // Evitar enviar mensajes vacíos
         console.log("El mensaje está vacío. No se enviará.");
         this.cargandoRespuesta = false;
+        this.setFocusToMessageInput();
         return;
       }
 
@@ -122,8 +123,9 @@ export class ChatComponent implements OnInit {
   private  procesarRespuestaServidor(response: string) {
     const respuestaGpt: MensajeChat = { texto: response, autor: 'Gepeto', timestamp: this.formatTimeAgo(new Date()) };
     this.mensajes.push(respuestaGpt);
-    this.scrollDown();
+
     this.cargandoRespuesta = false;
+    this.setFocusToMessageInput();
     
   }
 
@@ -156,9 +158,17 @@ export class ChatComponent implements OnInit {
     return descripciones;
   }
   
-  textoSinImagen(texto: string): string {
-    return texto.replace(/!\[.*?\]\(.*?\)/g, '');
+  formatMessage(texto: string) {
+    const imgRegex = /!\[.*?\]\(.*?\)/g;
+    const boldRegex = /\*\*(.*?)\*\*/g;
+  
+
+  
+    let formattedText = texto.replace(imgRegex, '').replace(boldRegex, '<b>$1</b>');
+  
+    return this.sanitizer.bypassSecurityTrustHtml(formattedText);
   }
+  
 
 
   formatTimeAgo(timestamp:Date) {
@@ -172,12 +182,21 @@ export class ChatComponent implements OnInit {
     return timestamp.toLocaleDateString() + ' ' + timestamp.toLocaleTimeString(); 
   }
 
-  scrollDown(): void {
-    try {
-      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-    } catch(err) { }    
-  }
 
+  scrollDown(): void {
+    const messageContainer = document.getElementById('messageContainer');
+    if (messageContainer) {
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+  }
+  
+  setFocusToMessageInput(): void {
+    const messageInput = document.getElementById('messageInput');
+    if (messageInput) {
+      messageInput.focus();
+    }
+  }
+ 
  
 }
 

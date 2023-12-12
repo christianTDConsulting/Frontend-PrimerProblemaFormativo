@@ -2,6 +2,7 @@
 <div class="chat-container">
   <!-- Indicador de carga de respuesta -->
   <div *ngIf="cargandoRespuesta; else noCargando" class="text-center mt-2">
+
     <span style="color: green;">Gepeto está escribiendo...</span>
   </div>
 
@@ -13,11 +14,11 @@
   </ng-template>
 
   <!-- Panel de desplazamiento para mensajes -->
-  <div class="chat-messages" #scrollMe>
+  <div class="chat-messages" #scrollMe  id = "messageContainer">
     <!-- Iterar sobre los mensajes -->
-    <p *ngFor="let mensaje of mensajes" [ngClass]="{'mensaje-usuario': mensaje.autor !== 'Gepeto', 'mensaje-asistente': mensaje.autor === 'Gepeto'}">
+    <p *ngFor="let mensaje of mensajes; let i = index"  [ngClass]="{'mensaje-usuario': mensaje.autor !== 'Gepeto', 'mensaje-asistente': mensaje.autor === 'Gepeto'}">
       <!-- Contenedor para mensajes de Gepeto -->
-      <ng-container *ngIf="mensaje.autor === 'Gepeto'">
+      <ng-container *ngIf="mensaje.autor === 'Gepeto'" id="gepeto">
         <div class="grid gepeto-container">
           <div class="col-2">
             <img class="gepeto" src="assets/images/gepeto/normal.webp" alt="Gepeto">
@@ -26,19 +27,21 @@
             <p>
               <span class="bold">{{ mensaje.autor }}</span> - {{ mensaje.timestamp }}
             </p>
-            <p>{{ textoSinImagen(mensaje.texto) }}</p>
-          <!-- Muestra la imagen si se encuentra en el texto del mensaje -->
-          <div *ngFor="let url of extraerUrlsImagenes(mensaje.texto); let i = index">
-            <img [style]="{'max-width': '300px', 'max-height': '300px'}"
-                 [src]="url"
-                 alt="{{extraerDescripcionesImagenes(mensaje.texto)[i]}}">
-          </div>
+            <p [innerHTML]="formatMessage(mensaje.texto)"></p>
+
+            <!-- Muestra la imagen si se encuentra en el texto del mensaje -->
+            <div *ngFor="let url of extraerUrlsImagenes(mensaje.texto); let i = index">
+              <h4>{{extraerDescripcionesImagenes(mensaje.texto)[i]}} </h4>
+              <img [style]="{'max-width': '300px', 'max-height': '300px'}"
+                  [src]="url"
+                  alt="{{extraerDescripcionesImagenes(mensaje.texto)[i]}}">
+            </div>
           </div>
         </div>
       </ng-container>
 
       <!-- Contenedor para mensajes del usuario -->
-      <ng-container *ngIf="mensaje.autor !== 'Gepeto'">
+      <ng-container *ngIf="mensaje.autor !== 'Gepeto'" id="user">
         <div class="grid" style="display: flex; justify-content: flex-end;">
           <div>
             <p>
@@ -54,18 +57,23 @@
         </div>
       </ng-container>
 
-      <!-- Divisor entre mensajes -->
-      <p-divider></p-divider>
-    </p>
-      <!-- Elemento de enfoque para desplazamiento automático -->
+      
+   
+      <p-divider [id] = "'divider-' + i" ></p-divider>
  
-</div>
+    </p>
+    
+  </div>
 
 
 
   <!-- Entrada de texto para nuevos mensajes -->
   <div class="chat-input">
-    <input type="text" pInputText [(ngModel)]="nuevoMensaje" pAutoFocus [autofocus]="true" (keyup.enter)="cargandoRespuesta ? null : enviarMensaje()" placeholder="Pregunta sobre el catálogo..." #inputElement/>
-    <p-button label="Enviar" (click)="enviarMensaje()" [disabled]="cargandoRespuesta"></p-button>
+
+      <p-progressSpinner *ngIf="cargandoRespuesta" [style]="{width: '50px', height: '50px'}"></p-progressSpinner>
+
+      <input type="text" pInputText [disabled]="cargandoRespuesta" [(ngModel)]="nuevoMensaje" pAutoFocus [autofocus]="true" (keyup.enter)="cargandoRespuesta ? null : enviarMensaje()" placeholder="Pregunta sobre el catálogo..." id="messageInput" #messageInput/>
+      <p-button label="Enviar" (click)="enviarMensaje()" [disabled]="cargandoRespuesta"></p-button>
+
   </div>
 
