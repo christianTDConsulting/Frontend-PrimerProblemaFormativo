@@ -1,9 +1,12 @@
-import { Component, Input,  OnInit } from '@angular/core';
+import { Component, ElementRef, Input,  OnInit, ViewChild } from '@angular/core';
 import { MensajeChat } from '../../models/mensaje';
 import { Conversacion, Mensaje } from 'src/app/models/mensaje';
 import { ChatService } from '../../../../services/chat/chat.service';
 import { Usuario } from 'src/app/models/cliente';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Subject  } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-chat',
@@ -12,6 +15,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class ChatComponent implements OnInit {
 
+
   @Input() usuario: Usuario = {
     id: 0,
     email: '',
@@ -19,10 +23,11 @@ export class ChatComponent implements OnInit {
     id_perfil: 0
   };
 
- 
 
- 
-
+  @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
+  @ViewChild('messageInput') private messageInputField!: ElementRef;
+  emojiInput$ = new Subject<string>();
+  
 
   nuevoMensaje: string = '';
   mensajeInsertar: string = '';
@@ -30,14 +35,22 @@ export class ChatComponent implements OnInit {
   mensajes: MensajeChat[] = [];
   cargandoRespuesta: boolean = false;
 
-  constructor(private chatService: ChatService,private sanitizer: DomSanitizer) { }
+  constructor(
+    private chatService: ChatService,
+    private sanitizer: DomSanitizer,
+     private cdr: ChangeDetectorRef,
+      private messageService: MessageService) { }
 
   ngOnInit(): void {
-    this.iniciarConversacion();
+    
+   this.iniciarConversacion();
+   
   }
 
+  
  
   private iniciarConversacion() {
+    
     if (this.chatService.getIdConversacion() !== undefined) {
       console.log('El ID de la conversación es: ' + this.chatService.getIdConversacion());
       this.cargarMensajesPrevios();
@@ -47,7 +60,8 @@ export class ChatComponent implements OnInit {
   private cargarMensajesPrevios() {
     this.chatService.getMensajes()?.subscribe((mensajes: Mensaje[]) => {
       mensajes.forEach(m => this.agregarMensajeAConversacion(m));
-      this.scrollDown();
+      setTimeout(() => this.scrollDown(), 0)
+     
     });
   }
 
@@ -66,6 +80,8 @@ export class ChatComponent implements OnInit {
     
       this.agregarNuevoMensaje();
       await this.enviarMensajeAlServidor();
+      this.cdr.detectChanges();
+      this.scrollDown();
       
     }
   }
@@ -123,7 +139,8 @@ export class ChatComponent implements OnInit {
   private  procesarRespuestaServidor(response: string) {
     const respuestaGpt: MensajeChat = { texto: response, autor: 'Gepeto', timestamp: this.formatTimeAgo(new Date()) };
     this.mensajes.push(respuestaGpt);
-
+    this.cdr.detectChanges();
+    this.scrollDown();
     this.cargandoRespuesta = false;
     this.setFocusToMessageInput();
     
@@ -161,12 +178,17 @@ export class ChatComponent implements OnInit {
   formatMessage(texto: string) {
     const imgRegex = /!\[.*?\]\(.*?\)/g;
     const boldRegex = /\*\*(.*?)\*\*/g;
-  
+    const unicodeEmojiRegex = /\\u\{([0-9a-fA-F]+)\}/g;
 
   
-    let formattedText = texto.replace(imgRegex, '').replace(boldRegex, '<b>$1</b>');
-  
-    return this.sanitizer.bypassSecurityTrustHtml(formattedText);
+    let formattedText = texto
+    .replace(imgRegex, '')
+    .replace(boldRegex, '<b>$1</b>')
+    .replace(unicodeEmojiRegex, (match, codePoint) => 
+      String.fromCodePoint(parseInt(codePoint, 16))
+    );
+
+  return this.sanitizer.bypassSecurityTrustHtml(formattedText);
   }
   
 
@@ -183,19 +205,33 @@ export class ChatComponent implements OnInit {
   }
 
 
-  scrollDown(): void {
-    const messageContainer = document.getElementById('messageContainer');
-    if (messageContainer) {
-      messageContainer.scrollTop = messageContainer.scrollHeight;
-    }
-  }
+private scrollDown(): void {
+  try {
+    this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    ;
+  } catch(err) { } 
+}
   
-  setFocusToMessageInput(): void {
-    const messageInput = document.getElementById('messageInput');
-    if (messageInput) {
-      messageInput.focus();
-    }
+
+  private setFocusToMessageInput(): void {
+    this.messageInputField.nativeElement.focus()
+    
   }
+
+ 
+  handleEmojiSelected(emoji: string) {
+    
+    this.nuevoMensaje += emoji;
+  }
+
+  showCargandoInfo() {
+    if (this.nuevoMensaje.trim() !== '') {
+      this.messageService.add({ key: 'chat', severity:'info', summary:'Gepeto está escribieno', detail:'Espere a su respuesta antes de envíar el siguiente mensaje.'});
+    }
+   
+    }
+    
+
  
  
 }

@@ -15,11 +15,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { AvatarModule } from 'primeng/avatar';
 import { DividerModule } from 'primeng/divider';
 import { AutoFocusModule } from 'primeng/autofocus';
-
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import {FormsModule} from '@angular/forms';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { EmojiPickerComponent } from './component/emoji-picker/emoji-picker.component'; 
+
 
 @NgModule({
   imports: [
@@ -36,9 +38,11 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     AvatarModule,
     DividerModule,
     AutoFocusModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    OverlayPanelModule,
+    
   ],
-  declarations: [ViewChatComponent,GridViewComponent, ChatComponent],
+  declarations: [ViewChatComponent,GridViewComponent, ChatComponent, EmojiPickerComponent],
   providers: [MessageService],
 })
 export class ViewChatModule { }

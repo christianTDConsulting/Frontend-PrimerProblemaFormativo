@@ -1,5 +1,7 @@
+<p-toast key="chat" position="bottom-left"></p-toast>
 <!-- app-chat.component.html -->
 <div class="chat-container">
+
   <!-- Indicador de carga de respuesta -->
   <div *ngIf="cargandoRespuesta; else noCargando" class="text-center mt-2">
 
@@ -53,7 +55,7 @@
           </div>
         </div>
         <div style="display: flex; justify-content: flex-start;" >
-          <p>{{ mensaje.texto }}</p>
+          <p [innerHTML]="formatMessage(mensaje.texto)"></p>
         </div>
       </ng-container>
 
@@ -72,7 +74,19 @@
 
       <p-progressSpinner *ngIf="cargandoRespuesta" [style]="{width: '50px', height: '50px'}"></p-progressSpinner>
 
-      <input type="text" pInputText [disabled]="cargandoRespuesta" [(ngModel)]="nuevoMensaje" pAutoFocus [autofocus]="true" (keyup.enter)="cargandoRespuesta ? null : enviarMensaje()" placeholder="Pregunta sobre el catálogo..." id="messageInput" #messageInput/>
+      <app-emoji-picker (emojiSelected)="handleEmojiSelected($event)"></app-emoji-picker>
+ 
+      <input 
+        type="text"
+        pInputText 
+      
+        [(ngModel)]="nuevoMensaje" 
+        pAutoFocus [autofocus]="true" 
+        (keyup.enter)="cargandoRespuesta ?  showCargandoInfo(): enviarMensaje()" 
+        placeholder="Pregunta sobre el catálogo..." 
+        id="messageInput" 
+        #messageInput>
+      
       <p-button label="Enviar" (click)="enviarMensaje()" [disabled]="cargandoRespuesta"></p-button>
 
   </div>
