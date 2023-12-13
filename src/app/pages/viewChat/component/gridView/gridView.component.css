@@ -1,0 +1,23 @@
+.articulo-imagen {
+    height: 300px; /* Alto fijo */
+    width: auto;
+    object-fit: cover; /* Esto asegura que la imagen se recorte para llenar el espacio asignado sin distorsionarse */
+    border-radius: 15%;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .articulo-imagen:hover {
+    transform: scale(1.05); /* Ligeramente más grande al pasar el ratón */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  }
+  
+.card {
+margin-bottom: 1em; /* Ajusta según sea necesario */
+}
+h2{
+    cursor: pointer; 
+}
+.p-accordion .p-accordion-content {
+z-index: 1000; /* Un valor alto para superponer sobre otros elementos */
+position: relative; /* Puede ser necesario dependiendo de tu layout */
+}

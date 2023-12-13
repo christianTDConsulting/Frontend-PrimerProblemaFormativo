@@ -1,0 +1,29 @@
+
+<p-sidebar [(visible)]="sidebarVisible" [style]="{width: '600px'}" [blockScroll]="false">
+    <ng-template pTemplate="header">
+        Tienes alguna pregunta? Pregunta al asistente virtual
+    </ng-template>
+    
+    <ng-template pTemplate="content">
+       <app-chat  [usuario]="usuario"  ></app-chat> 
+    </ng-template>
+    
+</p-sidebar>
+<div >
+    <div className ="inline-block">
+        <p-button (click)="sidebarVisible = true" icon="pi pi-comments"></p-button>
+    </div>
+        
+    <div className ="inline-block">
+        <small class="small-message">Pulsa en la imagen de un artículo para ver más detalles</small>
+    </div>  
+
+</div>
+
+
+
+<p-scrollPanel [style]="{ width: '100%', height: '900px' }" styleClass="custombar1">
+    <app-gridView *ngIf="articulos.length > 0" [articulos]="articulos"></app-gridView>
+</p-scrollPanel>
+
+

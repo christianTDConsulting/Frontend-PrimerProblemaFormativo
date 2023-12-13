@@ -1,0 +1,51 @@
+/* app-chat.component.css */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto; 
+    height:100%;
+    white-space: pre-line;
+}
+
+.chat-input {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    padding: 10px; 
+  }
+.chat-input input {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+
+.mensaje-usuario {
+    
+    border-radius: 25%;
+    text-justify: auto;
+
+}
+
+.mensaje-asistente {
+    text-align: left;
+    border-radius: 25%;
+
+}
+.bold {
+    font-weight: bold;
+}
+
+.gepeto{
+    margin-top: 1px;
+    width: auto;
+    height: 80px;
+    border-radius: 45%;
+    border-width: 5px;
+}
+

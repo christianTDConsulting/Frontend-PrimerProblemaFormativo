@@ -1,0 +1,24 @@
+
+<div #container class="emoji-picker-container">
+  <p-overlayPanel #op [style]="{'width': '600px', 'height': '600px'}" [showCloseIcon]="true">
+    
+    <p-scrollPanel [style]="{ width: '100%', height: '550px' }">
+      <div class="emoji-categories">
+        <div *ngFor="let category of emojiCategories">
+          <h5>{{ category.name }}</h5>
+          <span *ngFor="let emoji of category.emojis" (click)="onEmojiClick(emoji)">{{ emoji }}</span>
+        </div>
+      </div>
+    </p-scrollPanel>
+      
+
+    
+  </p-overlayPanel>
+ 
+   
+ <p-button type="button" [text]="true" [outlined]="true" [rounded] = true color="danger" (click)="toggled(op, $event)"> 😀</p-button>
+                    
+
+
+ 
+</div>

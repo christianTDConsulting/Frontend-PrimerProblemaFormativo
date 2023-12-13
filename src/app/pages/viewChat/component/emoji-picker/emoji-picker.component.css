@@ -1,0 +1,13 @@
+.emoji-categories {
+  display: flex;
+  flex-direction: column;
+}
+
+.emoji-categories h5 {
+  font-weight: bold;
+}
+
+.emoji-categories span {
+  cursor: pointer;
+  padding: 5px;
+}

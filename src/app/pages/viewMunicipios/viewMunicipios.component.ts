@@ -163,13 +163,31 @@ export class ViewMunicipiosComponent implements OnInit {
     this.activeIndexDate = event;
     this.getDetallePrediccion();
   }
+  parseFecha(fecha: string): string{
+ 
+    let partes = fecha.split('/');
+  
+   
+    let dia = partes[0].length === 1 ? '0' + partes[0] : partes[0];
+    let mes = partes[1].length === 1 ? '0' + partes[1] : partes[1];
+    let año = partes[2];
+  
+    // Ajusta el año si es necesario
+    if (año.length === 3) {
+      año = '2' + año;
+    }
+  
+    return dia +   mes +   año;
+    
+    
+  }
 
   getDetallePrediccion(){
     if (this.selectedMunicipios !== '' ){
       this.detalles = [];
   
         const fecha = this.dias[this.activeIndexDate].label;
-        const fechaParseada:string = fecha.substring(0,2) + fecha.substring(3,5) + fecha.substring(6);
+        const fechaParseada:string = this.parseFecha(fecha);
         const codigoMunicipio = this.selectedMunicipios;
         const categoryName = this.activeMenuItemDetalle.code;
         console.log(

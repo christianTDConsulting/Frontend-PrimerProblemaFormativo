@@ -3,6 +3,9 @@ import { Validators,FormControl,FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { TokenService } from 'src/app/services/token/token.service'; 
 import { Router } from '@angular/router';
+import { AuthEventService } from 'src/app/services/auth-event/auth-event.service';
+import { Usuario } from 'src/app/models/cliente';
+import { ChatService } from 'src/app/services/chat/chat.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -29,6 +32,8 @@ export class LoginComponent implements OnInit {
      private loginService: TokenService,
      private messageService: MessageService,
      private tokenService: TokenService,
+     private authEventService: AuthEventService,
+     private chatService: ChatService,
      private router: Router
      ) { }
 
@@ -56,6 +61,9 @@ export class LoginComponent implements OnInit {
               if (response.usuario===null || response.usuario===undefined){
                 this.messageService.add({severity:'info', summary: 'Login', detail: 'No hay cliente asociado al usuario'});
               }else{
+                this.authEventService.emitLoginEvent();
+                this.setInfoInLocalStorage(response.usuario);
+                
                 const perfil = response.usuario.id_perfil;
                 if (perfil === 1){
                   this.router.navigate(['/viewClient']);
@@ -80,6 +88,14 @@ export class LoginComponent implements OnInit {
       
       );
     
+  }
+
+  setInfoInLocalStorage(usuario:Usuario){
+  
+    if (usuario.id!= null){
+      localStorage.setItem('user_id', usuario.id!.toString());
+    }
+    this.chatService.disconnect();
   }
 
   goToRegister() {
