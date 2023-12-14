@@ -3,14 +3,16 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+   
 }
 
 .chat-messages {
     flex-grow: 1;
-    padding: 10px;
     overflow-y: auto; 
     height:100%;
     white-space: pre-line;
+    padding-left: 15%;
+    padding-right: 15%;
 }
 
 .chat-input {
@@ -26,15 +28,16 @@
 
 
 .mensaje-usuario {
-    
+   
     border-radius: 25%;
     text-justify: auto;
 
 }
 
 .mensaje-asistente {
-    text-align: left;
+   
     border-radius: 25%;
+
 
 }
 .bold {

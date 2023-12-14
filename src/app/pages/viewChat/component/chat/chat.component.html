@@ -18,53 +18,84 @@
   <!-- Panel de desplazamiento para mensajes -->
   <div class="chat-messages" #scrollMe  id = "messageContainer">
     <!-- Iterar sobre los mensajes -->
-    <p *ngFor="let mensaje of mensajes; let i = index"  [ngClass]="{'mensaje-usuario': mensaje.autor !== 'Gepeto', 'mensaje-asistente': mensaje.autor === 'Gepeto'}">
+    <p *ngFor="let mensaje of mensajes;"  [ngClass]="{'mensaje-usuario': mensaje.autor !== 'Gepeto', 'mensaje-asistente': mensaje.autor === 'Gepeto'}">
+      
       <!-- Contenedor para mensajes de Gepeto -->
       <ng-container *ngIf="mensaje.autor === 'Gepeto'" id="gepeto">
-        <div class="grid gepeto-container">
-          <div class="col-2">
+        <div class="grid">
+          <div >
             <img class="gepeto" src="assets/images/gepeto/normal.webp" alt="Gepeto">
           </div>
-          <div class="col-10" >
+
+         
+          <div class="inline ml-2" >
             <p>
               <span class="bold">{{ mensaje.autor }}</span> - {{ mensaje.timestamp }}
             </p>
+          </div>
+          <div class="col-12">
             <p [innerHTML]="formatMessage(mensaje.texto)"></p>
+            
+              <!-- Muestra las imagenes  -->
+              <ng-template [ngIf]="hasMultipleImages(mensaje.texto)">
+                <p-button 
+                [text]="true" 
+                [raised]="true" 
+                icon="pi pi-image"  
+                label="Ver imágenes" 
+                (click)="actualizarGaleria(mensaje.texto)">
+              </p-button>
 
-            <!-- Muestra la imagen si se encuentra en el texto del mensaje -->
-            <div *ngFor="let url of extraerUrlsImagenes(mensaje.texto); let i = index">
-              <h4>{{extraerDescripcionesImagenes(mensaje.texto)[i]}} </h4>
-              <img [style]="{'max-width': '300px', 'max-height': '300px'}"
-                  [src]="url"
-                  alt="{{extraerDescripcionesImagenes(mensaje.texto)[i]}}">
-            </div>
+                <p-galleria
+                [value]="images"
+                [(visible)]="displayBasic"
+                [responsiveOptions]="responsiveOptions"
+                [containerStyle]="{ 'max-width': '850px' }"
+                [numVisible]="7"
+                [circular]="true"
+                [fullScreen]="true"
+                [showItemNavigators]="true"
+                [showThumbnails]="false"
+            >
+                <ng-template pTemplate="item" let-item>
+                    <img [src]="item.itemImageSrc" style="width: 100%; display: block;" />
+                </ng-template>
+              </p-galleria>
+            </ng-template>
+            
+
+           
           </div>
         </div>
       </ng-container>
 
       <!-- Contenedor para mensajes del usuario -->
       <ng-container *ngIf="mensaje.autor !== 'Gepeto'" id="user">
-        <div class="grid" style="display: flex; justify-content: flex-end;">
+        <div class="grid" >
+          
           <div>
+            <p-avatar icon="pi pi-user" styleClass="mr-2" size="xlarge"></p-avatar>
+          </div>
+
+          <div class="inline ml-2" >
             <p>
               <span class="bold">{{ mensaje.autor }}</span> - {{ mensaje.timestamp }}
             </p>
           </div>
-          <div class="ml-3 mb-2">
-            <p-avatar icon="pi pi-user" styleClass="mr-2" size="xlarge"></p-avatar>
+          
+          <div class="col-12 " >
+            <p [innerHTML]="formatMessage(mensaje.texto)"></p>
           </div>
         </div>
-        <div style="display: flex; justify-content: flex-start;" >
-          <p [innerHTML]="formatMessage(mensaje.texto)"></p>
-        </div>
+       
       </ng-container>
 
       
    
-      <p-divider [id] = "'divider-' + i" ></p-divider>
+    <p-divider ></p-divider> 
  
     </p>
-    
+  
   </div>
 
 
@@ -79,7 +110,6 @@
       <input 
         type="text"
         pInputText 
-      
         [(ngModel)]="nuevoMensaje" 
         pAutoFocus [autofocus]="true" 
         (keyup.enter)="cargandoRespuesta ?  showCargandoInfo(): enviarMensaje()" 

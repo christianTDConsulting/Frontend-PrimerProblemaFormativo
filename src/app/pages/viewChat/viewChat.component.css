@@ -12,5 +12,13 @@
     color: #555; /* Cambia el color según tu diseño */
     font-style: italic;
   }
-
  
+  .boton-derecha {
+    margin-left: auto;
+}
+
+.contenedor-derecha {
+    display: flex;
+    align-items: flex-end;
+}
+

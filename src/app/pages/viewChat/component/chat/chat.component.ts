@@ -35,6 +35,26 @@ export class ChatComponent implements OnInit {
   mensajes: MensajeChat[] = [];
   cargandoRespuesta: boolean = false;
 
+  images: any[] = [];
+  responsiveOptions: any[] =  [
+    {
+      breakpoint: '1024px', // Para pantallas grandes como laptops y desktops
+      numVisible: 5, // Muestra 5 imágenes a la vez
+      numScroll: 3  // Desplaza 3 imágenes con cada acción
+    },
+    {
+      breakpoint: '768px', // Para tablets y pantallas más pequeñas
+      numVisible: 3, // Muestra 3 imágenes a la vez
+      numScroll: 2  // Desplaza 2 imágenes con cada acción
+    },
+    {
+      breakpoint: '560px', // Para teléfonos móviles y pantallas muy pequeñas
+      numVisible: 1, // Muestra solo 1 imagen a la vez
+      numScroll: 1  // Desplaza 1 imagen con cada acción
+    }
+  ];
+  displayBasic: boolean = false;
+
   constructor(
     private chatService: ChatService,
     private sanitizer: DomSanitizer,
@@ -146,12 +166,32 @@ export class ChatComponent implements OnInit {
     
   }
 
-  tieneImagen(texto: string): boolean {
-    const matches = texto.match(/!\[.*?\]\(.*?\)/g);
-    return matches ? matches.length > 0 : false;
-  }
+ 
+  formatMessage(texto: string) {
+    const imgRegex = /!\[(.*?)\]\((.*?)\)/g;
+    const img2Regex = /\[(.*?)\]\((.*?)\)/g;
+    const boldRegex = /\*\*(.*?)\*\*/g;
+    const unicodeEmojiRegex = /\\u\{([0-9a-fA-F]+)\}/g;
   
-  extraerUrlsImagenes(texto: string): string[] {
+    let formattedText = texto
+      .replace(imgRegex, (match, altText, url) => 
+        `<div>
+          <img style="max-width: 300px; max-height: 300px" src="${url}" alt="${altText}">
+        </div>`)
+      .replace(img2Regex, (match, altText, url) =>
+        `<div>
+          <img style="max-width: 300px; max-height: 300px" src="${url}" alt="${altText}">
+        </div>`)
+      .replace(boldRegex, '<b>$1</b>')
+      .replace(unicodeEmojiRegex, (match, codePoint) => 
+        String.fromCodePoint(parseInt(codePoint, 16))
+      );
+  
+    return this.sanitizer.bypassSecurityTrustHtml(formattedText);
+  }
+
+  
+  private extraerUrlsImagenes(texto: string): string[] {
     const regex = /\]\((.*?)\)/g;
     let matches;
     const urls = [];
@@ -161,9 +201,10 @@ export class ChatComponent implements OnInit {
     }
   
     return urls;
+   
   }
   
-  extraerDescripcionesImagenes(texto: string): string[] {
+  private extraerDescripcionesImagenes(texto: string): string[] {
     const regex = /!\[(.*?)\]/g;
     let matches;
     const descripciones = [];
@@ -174,24 +215,35 @@ export class ChatComponent implements OnInit {
   
     return descripciones;
   }
-  
-  formatMessage(texto: string) {
-    const imgRegex = /!\[.*?\]\(.*?\)/g;
-    const boldRegex = /\*\*(.*?)\*\*/g;
-    const unicodeEmojiRegex = /\\u\{([0-9a-fA-F]+)\}/g;
 
-  
-    let formattedText = texto
-    .replace(imgRegex, '')
-    .replace(boldRegex, '<b>$1</b>')
-    .replace(unicodeEmojiRegex, (match, codePoint) => 
-      String.fromCodePoint(parseInt(codePoint, 16))
-    );
+  private getImages (texto: string){
+    let urls = this.extraerUrlsImagenes(texto);
+    let descripciones = this.extraerDescripcionesImagenes(texto);
 
-  return this.sanitizer.bypassSecurityTrustHtml(formattedText);
+    return   urls.map((url, index) => ({
+      itemImageSrc: url,
+      title: descripciones[index] || 'Imagen sin descripción',
+      alt: descripciones[index] || 'Imagen sin descripción'
+    }));
+    
+  }
+
+  hasMultipleImages(texto: string): boolean {
+    const urls = this.extraerUrlsImagenes(texto);
+    return urls.length > 1;
+  }
+
+  actualizarGaleria(texto: string) {
+    if (this.hasMultipleImages(texto)) {
+      this.images = this.getImages(texto);
+      this.cdr.detectChanges();
+      console.log(this.images); //
+      this.displayBasic = true;
+    } else {
+      this.displayBasic = false;
+    }
   }
   
-
 
   formatTimeAgo(timestamp:Date) {
    
@@ -231,7 +283,8 @@ private scrollDown(): void {
    
     }
     
-
+    
+    
  
  
 }

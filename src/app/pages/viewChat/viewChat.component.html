@@ -1,14 +1,25 @@
 
-<p-sidebar [(visible)]="sidebarVisible" [style]="{width: '600px'}" [blockScroll]="false">
-    <ng-template pTemplate="header">
+<p-sidebar [(visible)]="sidebarVisible" [style]="{width: fullScreen ? '100%' : '600px'}" [fullScreen]="fullScreen" [blockScroll]="false" (onHide)="fullScreen = false">
+   
+    <ng-template pTemplate="header" >
         Tienes alguna pregunta? Pregunta al asistente virtual
+        <div class="contenedor-derecha">
+            <p-button type="button" [text]="true" [outlined]="true" [rounded]="true" severity="secondary"
+                        (click)="fullScreen = !fullScreen"
+                        [icon]="fullScreen ? 'pi pi-window-minimize' : 'pi pi-th-large'" 
+                        class="boton-derecha">
+            </p-button>
+        </div>
+        
+    
     </ng-template>
     
     <ng-template pTemplate="content">
-       <app-chat  [usuario]="usuario"  ></app-chat> 
+       
+       <app-chat [usuario]="usuario"></app-chat> 
     </ng-template>
-    
 </p-sidebar>
+
 <div >
     <div className ="inline-block">
         <p-button (click)="sidebarVisible = true" icon="pi pi-comments"></p-button>

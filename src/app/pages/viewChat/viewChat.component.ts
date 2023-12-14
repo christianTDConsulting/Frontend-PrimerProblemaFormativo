@@ -16,6 +16,8 @@ export class ViewChatComponent implements OnInit {
 
   articulos: Articulo[] = []
   sidebarVisible: boolean = false;
+  fullScreen: boolean= false;
+
 
 
   usuario: Usuario = {

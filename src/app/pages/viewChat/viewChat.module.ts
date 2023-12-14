@@ -21,6 +21,8 @@ import { ToastModule } from 'primeng/toast';
 import {FormsModule} from '@angular/forms';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { EmojiPickerComponent } from './component/emoji-picker/emoji-picker.component'; 
+import { GalleriaModule } from 'primeng/galleria';
+
 
 
 @NgModule({
@@ -40,7 +42,7 @@ import { EmojiPickerComponent } from './component/emoji-picker/emoji-picker.comp
     AutoFocusModule,
     ProgressSpinnerModule,
     OverlayPanelModule,
-    
+    GalleriaModule    
   ],
   declarations: [ViewChatComponent,GridViewComponent, ChatComponent, EmojiPickerComponent],
   providers: [MessageService],
