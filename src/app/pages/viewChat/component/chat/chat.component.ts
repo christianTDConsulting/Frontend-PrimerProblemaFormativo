@@ -7,6 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Subject  } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { UploadEvent } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-chat',
@@ -206,6 +207,7 @@ export class ChatComponent implements OnInit {
   
   private extraerDescripcionesImagenes(texto: string): string[] {
     const regex = /!\[(.*?)\]/g;
+    
     let matches;
     const descripciones = [];
   
@@ -281,7 +283,10 @@ private scrollDown(): void {
       this.messageService.add({ key: 'chat', severity:'info', summary:'Gepeto está escribieno', detail:'Espere a su respuesta antes de envíar el siguiente mensaje.'});
     }
    
-    }
+  }
+  onUpload(event: UploadEvent) {
+    this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode' });
+}
     
     
     

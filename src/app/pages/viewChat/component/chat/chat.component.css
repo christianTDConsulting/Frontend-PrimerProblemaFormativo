@@ -52,3 +52,7 @@
     border-width: 5px;
 }
 
+.custom-fileupload .p-button {
+    background-color: transparent !important;
+    border: none !important;
+}

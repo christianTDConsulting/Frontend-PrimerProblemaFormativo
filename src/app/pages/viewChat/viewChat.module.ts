@@ -22,7 +22,7 @@ import {FormsModule} from '@angular/forms';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { EmojiPickerComponent } from './component/emoji-picker/emoji-picker.component'; 
 import { GalleriaModule } from 'primeng/galleria';
-
+import { FileUploadModule } from 'primeng/fileupload';
 
 
 @NgModule({
@@ -42,7 +42,8 @@ import { GalleriaModule } from 'primeng/galleria';
     AutoFocusModule,
     ProgressSpinnerModule,
     OverlayPanelModule,
-    GalleriaModule    
+    GalleriaModule,
+    FileUploadModule    
   ],
   declarations: [ViewChatComponent,GridViewComponent, ChatComponent, EmojiPickerComponent],
   providers: [MessageService],

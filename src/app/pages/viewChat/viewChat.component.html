@@ -3,11 +3,11 @@
    
     <ng-template pTemplate="header" >
         Tienes alguna pregunta? Pregunta al asistente virtual
-        <div class="contenedor-derecha">
+        <div>
             <p-button type="button" [text]="true" [outlined]="true" [rounded]="true" severity="secondary"
                         (click)="fullScreen = !fullScreen"
                         [icon]="fullScreen ? 'pi pi-window-minimize' : 'pi pi-th-large'" 
-                        class="boton-derecha">
+                        [class]=" fullScreen ? 'boton-derecha-full' : 'boton-derecha'">
             </p-button>
         </div>
         

@@ -14,11 +14,14 @@
   }
  
   .boton-derecha {
-    margin-left: auto;
+    margin-left: 160%;
 }
 
-.contenedor-derecha {
-    display: flex;
-    align-items: flex-end;
+.boton-derecha-full {
+    margin-left: 3350%;
+   
 }
+
+
+
 
