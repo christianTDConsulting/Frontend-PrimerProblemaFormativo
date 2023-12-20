@@ -7,7 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Subject  } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { UploadEvent } from 'primeng/fileupload';
+
 
 @Component({
   selector: 'app-chat',
@@ -284,11 +284,7 @@ private scrollDown(): void {
     }
    
   }
-  onUpload(event: UploadEvent) {
-    this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode' });
-}
-    
-    
+
     
  
  

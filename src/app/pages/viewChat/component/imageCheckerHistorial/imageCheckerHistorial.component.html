@@ -1,0 +1,47 @@
+<p-toolbar class ="mb-2">
+  <div class="p-toolbar-group-start">
+    <p-button (onClick)="mostrarNuevaImagen = !mostrarNuevaImagen" icon="pi pi-plus" [label]= "mostrarNuevaImagen ? 'Ver historial' :'Analizar nueva imagen'  " class="mr-2"></p-button>
+    
+    <p-button (onClick)="ordenarPorFecha()" icon="pi pi-sort" [hidden]="mostrarNuevaImagen" label="Ordenar por fecha"></p-button>
+  </div>
+  <div class="p-toolbar-group-center" *ngIf="!mostrarNuevaImagen">
+    <span class="p-input-icon-left">
+      
+    </span>
+  </div>
+  <div class="p-toolbar-group-end" *ngIf="!mostrarNuevaImagen">
+    <p-button icon="pi pi-refresh"></p-button>
+  </div>
+</p-toolbar>
+
+<div *ngIf="!mostrarNuevaImagen; else nuevaImagen">
+  <div class="card">
+    <p-dataView #dv [value]="imagenes" [rows]="5" [paginator]="true">
+      <ng-template pTemplate="list" let-products>
+        <div class="grid grid-nogutter">
+          <div class="col-12" *ngFor="let item of products; let first = first">
+            <div class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4" [ngClass]="{ 'border-top-1 surface-border': !first }">
+              <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + item.image" [alt]="item.name" />
+              <div class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
+                <div class="flex flex-column align-items-center sm:align-items-start gap-3">
+                  <div class="text-2xl font-bold text-900">{{ item.name }}</div>
+                  <div class="flex align-items-center gap-3">
+                    <span class="flex align-items-center gap-2">
+                      <i class="pi pi-tag"></i>
+                      <span class="font-semibold">{{ item.category }}</span>
+                    </span>
+                    <p-tag [value]="item.inventoryStatus" [severity]="getResult(item)"></p-tag>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-dataView>
+  </div>
+</div>
+
+<ng-template #nuevaImagen>
+  <app-imageChecker></app-imageChecker>
+</ng-template>

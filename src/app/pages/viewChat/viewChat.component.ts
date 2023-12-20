@@ -12,10 +12,13 @@ import { Usuario } from 'src/app/models/cliente';
 })
 export class ViewChatComponent implements OnInit {
 
+
   constructor(private articuloService: ArticuloService, private usuarioService: UsuarioService) { }
 
   articulos: Articulo[] = []
-  sidebarVisible: boolean = false;
+  sidebarGepetoVisible: boolean = false;
+  sidebarVisibleImages: boolean = false;
+  initialSidebarVisible: boolean = false;
   fullScreen: boolean= false;
 
 
@@ -50,6 +53,14 @@ export class ViewChatComponent implements OnInit {
       
     })
   }
+  showGepeto() {
+    this.initialSidebarVisible = false;
+    this.sidebarGepetoVisible = true;
+    }
 
+  showImages(){
+    this.initialSidebarVisible = false;
+    this.sidebarVisibleImages = true;
+  }
 
 }

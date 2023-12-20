@@ -1,16 +1,18 @@
 
-<p-sidebar [(visible)]="sidebarVisible" [style]="{width: fullScreen ? '100%' : '600px'}" [fullScreen]="fullScreen" [blockScroll]="false" (onHide)="fullScreen = false">
+<!-- GEPETO -->
+<p-sidebar [(visible)]="sidebarGepetoVisible" [style]="{width: fullScreen ? '100%' : '600px'}" [fullScreen]="fullScreen" [blockScroll]="false" (onHide)="fullScreen = false; initialSidebarVisible = true">
    
     <ng-template pTemplate="header" >
         Tienes alguna pregunta? Pregunta al asistente virtual
-        <div>
+       <div>
             <p-button type="button" [text]="true" [outlined]="true" [rounded]="true" severity="secondary"
-                        (click)="fullScreen = !fullScreen"
-                        [icon]="fullScreen ? 'pi pi-window-minimize' : 'pi pi-th-large'" 
-                        [class]=" fullScreen ? 'boton-derecha-full' : 'boton-derecha'">
+            (click)="fullScreen = !fullScreen"
+            [icon]="fullScreen ? 'pi pi-window-minimize' : 'pi pi-th-large'" 
+            [class]=" fullScreen ? 'boton-derecha-full' : 'boton-derecha'">
             </p-button>
         </div>
-        
+           
+                
     
     </ng-template>
     
@@ -18,11 +20,93 @@
        
        <app-chat [usuario]="usuario"></app-chat> 
     </ng-template>
-</p-sidebar>
+</p-sidebar> 
+
+<!-- CHECK IMAGES -->
+<p-sidebar [(visible)]="sidebarVisibleImages" [style]="{width: '100%'}" [blockScroll]="false" (onHide)="fullScreen = false; initialSidebarVisible = true">
+   
+    <ng-template pTemplate="header" >
+      
+        
+        <p>
+            Utiliza esta herramienta para comprobar si una imagen cumple las políticas de imagen.    
+            Las imagenes deben tener en ellas dispositivos o aparatos electrónicos, digitales,..
+        </p>      
+    </ng-template>
+    
+    <ng-template pTemplate="content">
+       <div>
+        <app-imageCheckerHistorial></app-imageCheckerHistorial>
+       </div>
+    </ng-template>
+</p-sidebar> 
+
+
+<!-- GENERATE IMAGES -->
+
+
+<!-- INITIAL -->
+<div class="card flex justify-content-center">
+    <p-sidebar #sidebarRef [(visible)]="initialSidebarVisible">
+        <ng-template pTemplate="headless">
+            
+            <div class="flex flex-column h-full">
+                
+                <div class="flex align-items-center justify-content-between px-4 pt-3 flex-shrink-0">
+                   
+                    <span class="font-semibold text-2xl text-primary"> Chatea para ganar </span>
+                    
+                </div>
+                <div class="overflow-y-auto">
+                    <ul class="list-none p-3 m-0">
+                        <li>
+                            <div
+                                pRipple
+                                pStyleClass="@next"
+                                enterClass="hidden"
+                                enterActiveClass="slidedown"
+                                leaveToClass="hidden"
+                                leaveActiveClass="slideup"
+                                class="p-3 flex align-items-center justify-content-between text-600 cursor-pointer p-ripple"
+                            >
+                                <span class="font-medium">ASISTENTES</span>
+                                <i class="pi pi-chevron-down"></i>
+                            </div>
+                            <ul class="list-none p-0 m-0 overflow-hidden">
+                                <li>
+                                    <a  (click) = "showGepeto()" pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
+                                        <i class="pi pi-shopping-cart mr-2"></i>
+                                        <span class="font-medium" >Gepeto</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a (click) = "showImages()" pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
+                                        <i class="pi pi-images mr-2"></i>
+                                        <span class="font-medium">Comprobación de imágenes</span>
+                                    </a>
+
+                                    <a  pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
+                                        <i class="pi pi-image mr-2"></i>
+                                        <span class="font-medium">Generación de imagenes</span>
+                                    </a>
+
+                                </li>
+                              
+                            </ul>
+                        </li>
+                    </ul>
+                   
+                </div>
+             
+            </div>
+        </ng-template>
+    </p-sidebar>
+
+</div>
 
 <div >
     <div className ="inline-block">
-        <p-button (click)="sidebarVisible = true" icon="pi pi-comments"></p-button>
+        <p-button (click)="initialSidebarVisible = true" icon="pi pi-comments"></p-button>
     </div>
         
     <div className ="inline-block">

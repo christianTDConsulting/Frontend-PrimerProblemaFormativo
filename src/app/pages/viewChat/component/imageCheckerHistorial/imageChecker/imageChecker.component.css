@@ -1,0 +1,16 @@
+.preview-image {
+    border-color: black;
+    border: 1px;
+    max-height: 100px;
+    max-width: auto;
+  }
+  .image-container {
+    margin: 10px; /* Ajusta el margen entre las imágenes */
+  }
+  
+  @media screen and (max-width: 768px) {
+    .image-container {
+      width: 100%; /* Hace que las imágenes ocupen el 100% del ancho en pantallas pequeñas */
+    }
+  }
+  

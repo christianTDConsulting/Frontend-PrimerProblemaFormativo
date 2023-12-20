@@ -1,0 +1,57 @@
+
+<p-card [style]="{'width': '100%', 'overflow-y': 'auto', 'height': '100%', 'margin-top': '1%'}" >
+  <p-toast></p-toast>
+
+  <input type="file" accept="image/*" #fileInput style="display: none;" (change)="onFileSelect($event)" multiple>
+
+  <div class="mt-2">
+    <div style="display: flex; justify-content: center;">
+      <p-button [label] = "selectedImage ? 'Cambiar imagen' : 'Elegir imagen'" icon="pi pi-upload" [text]="true" [raised]="true" severity="success"
+       (click)="fileInput.click()" class="fadeinleft animation-duration-1000" >
+      </p-button>
+
+      <p-button label="Comprobar " icon="pi pi-send" [hidden] = "!selectedImage && !imageResult"  [text]="true" [raised]="true"  severity="success" class="ml-2 fadeinright animation-duration-1000"
+                      (click)="onCheck()" ></p-button>
+
+    </div>
+
+      <div *ngIf="selectedImage" class="mt-2">
+       
+        <div class="grid">
+          <div class="col-6">
+            <div class="grid">
+              <div class="col-12 mt-2 flex justify-content-end mr-2">
+                <div class="grid">
+                  <div class="col-12 flex justify-content-center">
+                    <h2>Imágen seleccionada</h2>
+                  </div>
+                 
+
+                  <div class="col-12 flex justify-content-center">
+                    <p>{{ selectedImage.name }} ({{ selectedImage.size }} KB)</p>
+                  </div>
+
+                  <div class="col-12 flex justify-content-center">
+                    <img [src]="getImageSrc(selectedImage)" class="p-mb-2" style="border: 2px solid black; height: 500px; width:auto;" alt="Imagen seleccionada">
+                  </div>
+
+                  <div class="col-12 flex justify-content-center">
+                    <p-button label="Quitar" icon="pi pi-times" (click)="removeImage()"></p-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="col-6">
+            <h2> Comprobar que imágenes cumplen las poíticas</h2>
+          </div> 
+
+      </div>
+
+      </div>
+    </div>
+
+</p-card>
