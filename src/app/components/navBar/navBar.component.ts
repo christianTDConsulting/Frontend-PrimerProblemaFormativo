@@ -71,6 +71,11 @@ export class NavBarComponent implements OnInit {
       label:'Productos de comercio',
       icon:'pi pi-comments',
       routerLink:'/viewChat',
+    }, 
+    {
+      label:'Vodafone',
+      icon:'pi pi-fw pi-phone',
+      routerLink:'/viewVodafone',
     }
   ];
 

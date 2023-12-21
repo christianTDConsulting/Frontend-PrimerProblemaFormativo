@@ -17,7 +17,7 @@ import { ViewChatModule } from './pages/viewChat/viewChat.module';
 
 import { MenubarModule } from 'primeng/menubar';
 import { NavBarComponent } from './components/navBar/navBar.component';
-
+import { ViewVodafoneModule } from './pages/viewVodafone/viewVodafone.module';
 
 
 @NgModule({
@@ -38,8 +38,9 @@ import { NavBarComponent } from './components/navBar/navBar.component';
     ViewLoginModule,
     TelefonosModule,
     ViewMunicipiosModule,
-    ViewEmpresasAtpModule 
-    
+    ViewEmpresasAtpModule,
+    ViewVodafoneModule,
+
   ],
   providers: [CookieService,],
   bootstrap: [AppComponent]

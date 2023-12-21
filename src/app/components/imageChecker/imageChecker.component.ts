@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -26,19 +26,16 @@ export class ImageCheckerComponent implements OnInit {
 
 
   cargando: boolean = false;
-  //selectedImages: File[] = [];
-  selectedImage: File | null = null;
+  selectedImages: File[] = [];
   imageResult: File | null = null;
-  constructor(private messageService: MessageService, private imageChecker: ImageCheckerService) {}
+
+  constructor(private messageService: MessageService, private imageChecker: ImageCheckerService, private cdref: ChangeDetectorRef ) {}
 
 
   ngOnInit() {
   }
 
-
-
-
-/*
+ 
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
 
@@ -58,20 +55,6 @@ export class ImageCheckerComponent implements OnInit {
   }
   
  
-*/
-
-  onFileSelect(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input && input.files) {
-      for (let i = 0; i < input.files.length; i++) {
-        const file = input.files[i];
-        this.selectedImage = file;
-      }
-    }
-  }
-  removeImage(): void {
-    this.selectedImage = null;
-  }
     getImageSrc(file: File)  {
       if (file) {
         return URL.createObjectURL(file);
@@ -82,12 +65,16 @@ export class ImageCheckerComponent implements OnInit {
 
   async onCheck() {
     this.cargando = true;
-    if (this.selectedImage) {
-      this.imageChecker.uploadImage(this.selectedImage).subscribe(
+    if (this.selectedImages) {
+      this.imageChecker.uploadImages(this.selectedImages).subscribe(
         (res: any) => {
-          
+          console.log('Imágenes cargadas con éxito:', res);
           this.cargando = false;
           this.messageService.add({ severity: 'success', summary: 'Operación completada', detail: 'Imagenes procesadas' });
+        },
+        (error) => {
+          // Manejar errores de carga de imágenes
+          console.error('Error al cargar imágenes:', error);
         }
       );
     }

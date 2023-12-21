@@ -1,0 +1,11 @@
+<div class="card flex justify-content-center">
+    <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value"></p-selectButton>
+</div>
+
+<div *ngIf="value=='c';else huecos" class="mt-2">
+    <app-imageCheckerHistorial></app-imageCheckerHistorial>
+</div>
+
+<ng-template #huecos>
+    <p>No implementado</p>
+</ng-template>

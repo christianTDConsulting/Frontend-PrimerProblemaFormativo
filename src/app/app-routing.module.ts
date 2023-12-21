@@ -9,6 +9,7 @@ import { TelefonosComponent } from './components/telefonoDialog/telefono/telefon
 import { ViewMunicipiosComponent } from './pages/viewMunicipios/viewMunicipios.component';
 import { ViewEmpresasAtpComponent } from './pages/viewEmpresasAtp/viewEmpresasAtp.component';
 import { ViewChatComponent } from './pages/viewChat/viewChat.component';
+import { ViewVodafoneComponent } from './pages/viewVodafone/viewVodafone.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'viewLogin', pathMatch: 'full' },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'viewMetereologia', component: ViewMunicipiosComponent },
   { path: 'viewEmpresas', component: ViewEmpresasAtpComponent },
   {path: 'viewChat', component: ViewChatComponent},
+  {path: 'viewVodafone', component: ViewVodafoneComponent},
   {path: 'viewClient', component: TelefonosComponent, canActivate: [ViewClienteGuard]}
   // Add other routes if needed
 ];

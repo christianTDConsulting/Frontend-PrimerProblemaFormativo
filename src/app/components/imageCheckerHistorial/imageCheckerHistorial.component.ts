@@ -1,9 +1,27 @@
 import { Component, OnInit } from '@angular/core';
+import { ImageCheckerComponent } from '../imageChecker/imageChecker.component';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { CommonModule } from '@angular/common';
+import { DataViewModule } from 'primeng/dataview';
+import { TagModule } from 'primeng/tag';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ImageCheckerService } from 'src/app/services/images/imageChecker.service';
 
 
 @Component({
   selector: 'app-imageCheckerHistorial',
   templateUrl: './imageCheckerHistorial.component.html',
+  standalone: true,
+  imports: [
+    ImageCheckerComponent, 
+    CardModule,
+    ButtonModule,
+    CommonModule,
+    DataViewModule,
+    TagModule,
+    ToolbarModule
+   ],
   styleUrls: ['./imageCheckerHistorial.component.css'],
 
 })
@@ -13,9 +31,17 @@ export class ImageCheckerHistorialComponent implements OnInit {
   imagenes: any = [];
   ordenAscendente = true; 
 
-  constructor() { }
+  constructor(private imageService: ImageCheckerService) { }
   
   ngOnInit() {
+    this.imageService.getImages().subscribe(
+      (data) => {
+        this.imagenes = data;
+      },
+      (error) => {
+        console.error('Error fetching images', error);
+      }
+    );
   }
 
   /*

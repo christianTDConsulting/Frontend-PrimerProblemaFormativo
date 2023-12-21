@@ -26,4 +26,9 @@ export class ViewLoginComponent  {
   goToChat(){
     this.router.navigate(['/viewChat']);
   }
+
+  goToVodafone() {
+    this.router.navigate(['/viewVodafone']);
+  }
+  
 }

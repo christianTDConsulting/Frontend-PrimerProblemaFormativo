@@ -22,8 +22,7 @@ import {FormsModule} from '@angular/forms';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { EmojiPickerComponent } from './component/emoji-picker/emoji-picker.component'; 
 import { GalleriaModule } from 'primeng/galleria';
-import { ImageCheckerHistorialComponent } from './component/imageCheckerHistorial/imageCheckerHistorial.component';
-import { ImageCheckerComponent } from './component/imageCheckerHistorial/imageChecker/imageChecker.component';
+import { ImageCheckerHistorialComponent } from '../../components/imageCheckerHistorial/imageCheckerHistorial.component';
 import { DataViewModule } from 'primeng/dataview';
 import { TagModule } from 'primeng/tag';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -49,10 +48,11 @@ import { ToolbarModule } from 'primeng/toolbar';
     DataViewModule,
     TagModule,
     ToolbarModule,
-    ImageCheckerComponent,
+    ImageCheckerHistorialComponent,
+  
     
   ],
-  declarations: [ViewChatComponent,GridViewComponent, ChatComponent, EmojiPickerComponent, ImageCheckerHistorialComponent],
+  declarations: [ViewChatComponent,GridViewComponent, ChatComponent, EmojiPickerComponent],
   providers: [MessageService],
 })
 export class ViewChatModule { }

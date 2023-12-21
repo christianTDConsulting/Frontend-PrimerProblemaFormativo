@@ -1,0 +1,27 @@
+<p-toolbar class ="mb-2">
+  <div class="p-toolbar-group-start">
+    <p-button (onClick)="mostrarNuevaImagen = !mostrarNuevaImagen" icon="pi pi-plus" [label]= "mostrarNuevaImagen ? 'Ver historial' :'Analizar nueva imagen'  " class="mr-2"></p-button>
+    
+    <p-button (onClick)="ordenarPorFecha()" icon="pi pi-sort" [hidden]="mostrarNuevaImagen" label="Ordenar por fecha"></p-button>
+  </div>
+  <div class="p-toolbar-group-center" *ngIf="!mostrarNuevaImagen">
+    <span class="p-input-icon-left">
+      
+    </span>
+  </div>
+  <div class="p-toolbar-group-end" *ngIf="!mostrarNuevaImagen">
+    <p-button icon="pi pi-refresh"></p-button>
+  </div>
+</p-toolbar>
+
+<div *ngIf="!mostrarNuevaImagen; else nuevaImagen">
+  <div class="card">
+    <p-dataView #dv [value]="imagenes" [rows]="5" [paginator]="true">
+     
+    </p-dataView>
+  </div>
+</div>
+
+<ng-template #nuevaImagen>
+  <app-imageChecker></app-imageChecker>
+</ng-template>
