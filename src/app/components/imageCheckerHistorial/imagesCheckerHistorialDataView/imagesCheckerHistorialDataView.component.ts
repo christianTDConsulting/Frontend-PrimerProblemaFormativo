@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 
 import { TagModule } from 'primeng/tag';
@@ -6,8 +6,12 @@ import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { DataViewModule } from 'primeng/dataview';
 import { CommonModule } from '@angular/common';
-import { ImagenCartel } from 'src/app/models/images';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { ToolbarModule } from 'primeng/toolbar';
+
+import { ImagenCartel } from 'src/app/models/images';
+import { DropdownModule } from 'primeng/dropdown';
+
 
 @Component({
   selector: 'app-imagesCheckerHistorialDataView',
@@ -19,7 +23,9 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
     FormsModule,
     CommonModule,
     DataViewModule,
-    ScrollPanelModule
+    DropdownModule,
+    ScrollPanelModule,
+    ToolbarModule
    
   ],
   styleUrls: ['./imagesCheckerHistorialDataView.component.css']
@@ -28,32 +34,23 @@ export class ImagesCheckerHistorialDataViewComponent implements OnChanges {
 
   @Input() imagenesInput!: ImagenCartel[];
   imagenes: ImagenCartel[] = [];
+  statusOptions = [
+    {name: 'muy alta', code: 'muy alta'},
+    {name: 'alta', code: 'alta'},
+    {name: 'media', code: 'media'},
+    {name: 'baja', code: 'baja'},
+    {name: 'muy baja', code: 'muy baja'},
+    {name: 'ninguna', code: 'ninguna'},
 
+  
+  ];
+
+  imagenesFiltradas: ImagenCartel[] = [];
   cargando = true;
-  
 
-  ordenAscendenteSimilitud = true;
-  mostrarNuevaImagen = false;
   
   
   
-  responsiveOptions = [
-    {
-        breakpoint: '1199px',
-        numVisible: 1,
-        numScroll: 1
-    },
-    {
-        breakpoint: '991px',
-        numVisible: 2,
-        numScroll: 1
-    },
-    {
-        breakpoint: '767px',
-        numVisible: 1,
-        numScroll: 1
-    }
-];
 
 
   constructor() { }
@@ -62,6 +59,7 @@ export class ImagesCheckerHistorialDataViewComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['imagenesInput'] && changes['imagenesInput'].currentValue) {
       this.imagenes = changes['imagenesInput'].currentValue;
+      this.imagenesFiltradas = this.imagenes;
       console.log(this.imagenes);
     }
   }
@@ -88,7 +86,17 @@ export class ImagesCheckerHistorialDataViewComponent implements OnChanges {
     }
 };
 
+onStatusChange(selectedStatus: any) {
+  
+    // Filtrar imágenes basándose en el estado seleccionado
+    console.log(selectedStatus);
+    this.imagenesFiltradas = this.imagenes.filter(imagen => imagen.resultado === selectedStatus.code);
+  
+}
 
+clear() {
+  this.imagenesFiltradas = [...this.imagenes];
+}
 
 
 
@@ -96,35 +104,7 @@ export class ImagesCheckerHistorialDataViewComponent implements OnChanges {
 
 
   
-  ordenarPorSimilitud() {
-  
-  this.ordenAscendenteSimilitud = !this.ordenAscendenteSimilitud;
-  /*
-  this.imagenes.sort((a, b) => {
-  
-    const similitudValores = {
-      'muy alta': 6,
-      'alta': 5,
-      'media': 4,
-      'baja': 3,
-      'muy baja': 2,
-      'ninguna': 1,
-    };
-  
-    
-    const similitudA = similitudValores[a.imagen.resultado as keyof typeof similitudValores] || 0; 
-    const similitudB = similitudValores[b.imagen.resultado as keyof typeof similitudValores] || 0; 
-  
-    // Ordenar de forma ascendente o descendente según 'ordenAscendente'
-    if (this.ordenAscendente) {
-      return similitudA - similitudB;
-    } else {
-      return similitudB - similitudA;
-    }
-  });
-  */
-  }
-
+ 
 
 
 

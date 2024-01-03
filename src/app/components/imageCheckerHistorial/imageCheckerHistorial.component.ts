@@ -56,14 +56,15 @@ export class ImageCheckerHistorialComponent implements OnInit {
   imagenes: ImagenCartel[] = [];
 
   modelos: modelo [] = [];
-  itemsPerPage: number = 5; 
+  itemsPerPage: number = 8; 
   first: number = 0;
 
   cargando = true;
-  dialogVisibility: boolean[] = [];
 
-  activeTabIndex: number | null = null; // null indica que ningún tab está activo
-  imagenesDialog: ImagenCartel[][] = [];
+  dialogVisibility: boolean = false;
+  selectedModel : modelo  = {url: '', timestamp: new Date()}
+  imagenesDialog: ImagenCartel[] = [];
+
   ordenAscendente = false; 
 
   constructor(private imageService: ImageCheckerService, private messageService: MessageService
@@ -118,20 +119,18 @@ export class ImageCheckerHistorialComponent implements OnInit {
       this.first = event.first;
     }
     
-   onTabOpen(event: any) {
-      this.imagenesDialog[event.index] = this.getImagenes(this.modelos[event.index].url);
-     
-      this.openDialogForTab(event.index);
-  }
 
-  onDialogClose() {
+   
+  openDialog(modelo: modelo): void {
 
-    this.activeTabIndex = null;
+    this.selectedModel = modelo;
+    this.imagenesDialog = this.getImagenes(modelo.url);
+    this.dialogVisibility = true;
     
   }
 
-  openDialogForTab(tabIndex: number) {
-    this.dialogVisibility[tabIndex] = true;
+  onDialogClose(): void {
+    this.dialogVisibility= false;
   }
 
   ordenarPorFecha() {

@@ -1,26 +1,54 @@
-<p-scrollPanel [style]="{width: '100%', height: '500px'}">
-  <p-dataView #dv *ngIf="imagenes && imagenes.length > 0" [value]="imagenes" class="mt-3" [rows]="5" paginatorPosition="top" [paginator]="imagenes.length > 5" >
-    <div class="sticky-header">
-      <ng-template pTemplate="header" *ngIf="imagenes.length > 1">
-        <div class="flex justify-content-center">
-          <p-button (onClick)="ordenarPorSimilitud()" icon="pi pi-sort" [hidden]="mostrarNuevaImagen" label="Ordenar por similitud" class="ml-2"></p-button>
-        </div>
-      </ng-template>
+  <!-- Cabecera para ordenar imágenes -->
+  <p-toolbar *ngIf="imagenes.length > 1">  
+    <div class="p-toolbar-group-start" >
+
+    </div>
+  
+    <div class="p-toolbar-group-end">
+      <p-dropdown [options]="statusOptions" 
+                  (onChange)="onStatusChange($event.value)" 
+                  placeholder="Selecciona una probablididad" 
+                  optionLabel="name"></p-dropdown>
+      <p-button icon="pi pi-filter-slash" (onClick)="clear()" class="ml-2" [text]="true" >
+
+      </p-button>
     </div>
 
+  
 
+  </p-toolbar>
+
+
+<p-scrollPanel [style]="{width: '100%', height: '500px'}">
+  <!-- DataView para mostrar imágenes -->
+  <p-dataView #dv *ngIf="imagenes && imagenes.length > 0" 
+              [value]="imagenesFiltradas" 
+              class="mt-3" 
+              [rows]="5" 
+              paginatorPosition="bottom" 
+              [paginator]="imagenes.length > 5">
+    
+    <!-- Plantilla para listar imágenes -->
     <ng-template let-item pTemplate="listItem">
       <div class="col-12">
         <div class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
-          <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" [src]="'http://'+item.imagen" [alt]="item.file2" />
+          <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" 
+               [src]="'http://'+item.imagen" 
+               [alt]="item.file2" />
           <div class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
             <div class="flex flex-column align-items-center sm:align-items-start gap-3">
-              <div class="text-2xl font-bold text-900"> Probabilidad</div>
-              <p-tag [value]="item.resultado" [style]="{'width': '300px', 'height': '40px', 'padding': 50 }" [severity]="getSeverity(item)"></p-tag>
+              <div class="text-2xl font-bold text-900">Probabilidad</div>
+              <p-tag [value]="item.resultado" 
+                     [style]="{'width': '300px', 'height': '40px', 'padding': 50 }" 
+                     [severity]="getSeverity(item)"></p-tag>
             </div>
           </div>
         </div>
       </div>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <div class="text-2xl font-bold text-900">No hay imagenes que coincidan con la búsqueda</div>
     </ng-template>
   </p-dataView>
 </p-scrollPanel>

@@ -18,45 +18,56 @@
 <div class="card">
 
   <div *ngIf="!mostrarNuevaImagen; else nuevaImagen">
-    <p-accordion [style]="{'margin-left': '10%', 'margin-right': '10%'}" [activeIndex]="activeTabIndex != null ? activeTabIndex : null" (onOpen)="onTabOpen($event)">
-      <p-accordionTab *ngFor="let modelo of modelosPaginados; let i = index">
-        <ng-template pTemplate="header">
 
-          <div class="flex flex-column align-items-center sm:align-items-start gap-3">
-            <div class="text-2xl font-bold text-900"> {{ formatDate(modelo.timestamp) }}</div>
+  <div class="models-container">
+    <div *ngFor="let modelo of modelosPaginados" 
+        class="model-item" 
+        (click)="openDialog(modelo)">
 
-            <div class="flex align-items-center gap-3">
-              <img class="border-round" [style]="{width: 'auto', height: '400px'}" [src]="'http://'+modelo.url" [alt]="modelo.url" />    
-            </div>
-          </div>
         
-        </ng-template>
-        <ng-template pTemplate="content">
-          <p-dialog  header=" Probabilidad de que el modelo este contenido en la imagen:" [modal]="true" [style]="{ width: '70vw', height: '100%'}" [draggable]="false" [resizable]="true" [(visible)]="dialogVisibility[i]" (onHide)="onDialogClose()" >
-            <p-card [style]="{ border: 'solid 1px' }">
-              <div class="inline-flex">
-                <div class="flex-1 p-4">
-                  <h1>Modelo</h1>
-                  <img class="border-round" [style]="{width: 'auto', height: '400px'}" [src]="'http://'+modelo.url" [alt]="modelo.url" />
-                </div>
-                <div class="flex-1 p-4" >
-                  
-                  <h1>{{ imagenesDialog && imagenesDialog[i] && imagenesDialog[i].length == 1 ? 'Imagen ' : 'Imágenes' }}</h1>
-               
-                  <app-imagesCheckerHistorialDataView [imagenesInput]="imagenesDialog[i]"></app-imagesCheckerHistorialDataView>
-            
+      <div class="model-header">
+        <div class="date-display">{{ formatDate(modelo.timestamp) }}</div>
+        <img class="model-image" 
+            [src]="'http://'+modelo.url" 
+            [alt]="modelo.url" />
+      </div>
 
-                </div>
-              </div>
-            </p-card>
+     
+    </div>
+    <p-dialog [(visible)]="dialogVisibility" 
+            header="Detalles del Modelo" 
+            [modal]="true" 
+            [maximizable]="true"
+            [style]="{width: '90%', minHeight: '90%'}" 
+            (onHide)="onDialogClose()">
+        <p-card [style]="{ border: 'solid 1px' }" >
+          <ng-template pTemplate="header">
+            <h4 class="ml-2">
+              Probabilidades de que la imagen contenga al modelo
+            </h4>
             
-          </p-dialog>
-        </ng-template>
-      </p-accordionTab>
-    </p-accordion> 
+           
+          </ng-template>
+          
+          <div class="grid-container">
+            <div class="grid-item">
+                <h1>Modelo</h1>
+                <img class="border-round" style="width: auto; height: 200px;" [src]="'http://'+selectedModel.url" alt="selectedModel.url" />
+            </div>
+            <div class="grid-item">
+                <h1>{{ imagenesDialog && imagenesDialog.length == 1 ? 'Imagen ' : 'Imágenes' }}</h1>
+                <app-imagesCheckerHistorialDataView [imagenesInput]="imagenesDialog"></app-imagesCheckerHistorialDataView>
+            </div>
+        </div>
+        
+        </p-card>
+        
+      </p-dialog>
 
+  <div class="col-12">
     <p-paginator [rows]="itemsPerPage" [totalRecords]="modelos.length" [first]="first" [style]="{'margin-left': '10%', 'margin-right': '10%'}" (onPageChange)="onPageChange($event)"></p-paginator>
-    
+  </div>
+
   </div>
 </div>
 
