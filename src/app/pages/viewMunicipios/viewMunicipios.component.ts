@@ -216,15 +216,9 @@ export class ViewMunicipiosComponent implements OnInit {
             );
           });
         }
-       
-
-
-          
-       
         
       }
-    
-        
+       
   }
   
   

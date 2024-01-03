@@ -1,0 +1,38 @@
+<p-dataView #dv *ngIf="imagenes && imagenes.length > 0" [value]="imagenes"  [rows]="5" [paginator]="true" >
+  <ng-template pTemplate="header">
+    <div class="p-d-flex p-ai-center">
+      <p-button (onClick)="ordenarPorFecha()" icon="pi pi-sort" class="ml-2" [hidden]="mostrarNuevaImagen" label="Ordenar por fecha"></p-button>
+      <p-button  (onClick)="ordenarPorSimilitud()" icon="pi pi-sort" [hidden]="mostrarNuevaImagen" label="Ordenar por similitud" class ="ml-2"></p-button>
+      <p-button icon="pi pi-refresh" [hidden]="mostrarNuevaImagen" (onClick)="clear()" class="ml-2"></p-button>
+    </div>
+  </ng-template>
+
+  <ng-template let-item pTemplate="listItem" >
+   
+    <div class="col-12">
+      <div class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
+       
+        <img class=" border-round" [style]="{width: 'auto', height: '300px'}" [src]="'http://'+item.imagen" [alt]="item.file2" />
+
+          
+          <div class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
+              <div class="flex flex-column align-items-center sm:align-items-start gap-3">
+                  <div class="text-2xl font-bold text-900"> {{ formatDate(item.timestamp) }}</div>
+                  
+                  <div class="flex align-items-center gap-3">
+                      <p-tag [value]="item.resultado" [style]="{'width': '300px', 'height': '40px', 'padding':50}" [severity]="getSeverity(item)"></p-tag>
+                  </div>
+              </div>
+              <div class="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
+                
+                 
+              </div>
+          </div>
+      </div>
+  </div>
+  </ng-template>
+ <!-- <ng-template pTemplate="footer">
+    
+  </ng-template>
+-->
+</p-dataView>

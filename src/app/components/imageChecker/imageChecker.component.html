@@ -1,20 +1,67 @@
-<p-card [style]="{'width': '100%', 'overflow-y': 'auto', 'height': '100%', 'margin-top': '1%'}">
+<p-card [style]="{'margin-right': '10%', 'overflow-y': 'auto', 'height': '100%', 'margin-top': '1%', 'margin-left':'10%'}">
   <p-toast></p-toast>
+
   <input type="file" accept="image/*" #fileInput style="display: none;" (change)="onFileSelect($event)" multiple>
+  <input type="file" accept="image/*" #modelInput style="display: none;" (change)="onModelSelect($event)" multiple>
+
+  <p-button label="Comparar Nueva Imagen" icon="pi pi-plus" [text]="true" [raised]="true" severity="success" (click)="clear()" [hidden]="imagesResult.length === 0" class="fadeinleft animation-duration-1000"></p-button>
 
   <div class="mt-2">
-    <div style="display: flex; justify-content: center;">
-      <p-button label="Elegir imagenes ({{selectedImages.length}} / 2)" [disabled]="selectedImages.length >= 2"  icon="pi pi-upload" [text]="true" [raised]="true" severity="success"
-        (click)="fileInput.click()" class="fadeinleft animation-duration-1000">
+    <div style="display: flex; justify-content: center;" *ngIf="imagesResult.length === 0">
+      <p-button [label]="!selectedModel ? 'Elegir modelo' : 'Cambiar modelo' "   icon="pi pi-upload" [text]="true" [raised]="true" severity="success"
+        (click)="modelInput.click()" class="fadeinleft animation-duration-1000 fadeout animation-duration-1000 ">
       </p-button>
 
-      <p-button label="Comprobar"  icon="pi pi-send" [hidden]="selectedImages.length !== 2" [text]="true" [raised]="true" severity="success" class="ml-2 fadeinright animation-duration-1000"
+      <p-button [label] = " selectedImages.length == 0 ? 'Elegir imagenes' : 'Elegir imagenes ('+selectedImages.length+')'" [disabled]="selectedImages.length >= 5 " [hidden]="!selectedModel" icon="pi pi-upload" [text]="true" [raised]="true" severity="success"
+        (click)="fileInput.click()" class="fadeinleft animation-duration-1000 fadeout animation-duration-1000 ">
+      </p-button>
+
+      <p-button label="Comprobar"  icon="pi pi-send" [hidden]="selectedImages.length === 0" [text]="true" [raised]="true" severity="success" class="ml-2 fadeinright animation-duration-1000 fadeout animation-duration-1000 "
         (click)="onCheck()">
       </p-button>
     </div>
 
+    <div *ngIf ="selectedModel" class="mt-2">
+      <div class="grid">
+        <div class="col-12 flex justify-content-center">
+          <h2>Modelo seleccionado</h2>
+        </div>
+        <div class="col-12 flex justify-content-center">
+          <img [src]="getImageSrc(selectedModel)" class="p-mb-2" style="border: 2px solid black; height: 250px; width:auto;" alt="Imagen modelo">
+        </div>
+        <p-confirmDialog #cd>
+          <ng-template pTemplate="header">
+              <div class="border-circle bg-primary inline-flex justify-content-center align-items-center h-6rem w-6rem">
+                  <i class="pi pi-question text-5xl"></i>
+              </div>
+          </ng-template>
+          <ng-template pTemplate="icon">
+              <!-- Empty icon template -->
+          </ng-template>
+          <ng-template pTemplate="message">
+              <div class="flex flex-column align-items-center p-5 surface-overlay border-round">
+                  <span class="font-bold text-2xl block mb-2 mt-4">Estás seguro?</span>
+                  <p class="mb-0">Se borráran las imágenes seleccionadas</p>
+              </div>
+          </ng-template>
+          <ng-template pTemplate="footer">
+              <div class="flex align-items-center gap-2" >
+                  <button pButton label="Aceptar" (click)="cd.accept()" class="w-8rem"></button>
+                  <button pButton label="Atrás" (click)="cd.reject()" class="p-button-outlined w-8rem"></button>
+              </div>
+          </ng-template>
+      </p-confirmDialog>
+      
+
+        <div class="col-12 flex justify-content-center"  *ngIf="imagesResult.length === 0">
+          <p-button (click)= "selectedImages.length > 0 ? confirm() : selectedModel = null"  icon="pi pi-times" label="Quitar"></p-button>
+
+        </div>
+      </div>
+    </div>
     <div *ngIf="selectedImages.length > 0" class="mt-2">
       <div class="grid">
+       
         <div class="col-12">
           <h2>Imágenes Seleccionadas</h2>
           <div class="grid">
@@ -28,10 +75,12 @@
                 <div class="col-12 flex justify-content-center">
                   <p>{{ image.name }} ({{ image.size }} KB)</p>
                 </div>
-
-                <div class="col-12 flex justify-content-center">
-                  <p-button label="Quitar" icon="pi pi-times" (click)="removeImage(i)"></p-button>
+                <div  class="col-12 flex justify-content-center"  *ngIf="imagesResult.length >0 else botonQuitar">
+                  <p-tag [value]="imagesResult[i].resultado" [style]="{'width': '300px', 'height': '40px', 'padding':50}" [severity]="getSeverity(imagesResult[i].resultado)"></p-tag>
                 </div>
+                <ng-template #botonQuitar class="col-12 flex justify-content-center" >
+                  <p-button label="Quitar" icon="pi pi-times" (click)="removeImage(i)"></p-button>
+                </ng-template>
               </div>
             </div>
           </div>
@@ -39,4 +88,9 @@
       </div>
     </div>
   </div>
+  <div class="mt-2" *ngIf="cargando">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+ 
+  
 </p-card>

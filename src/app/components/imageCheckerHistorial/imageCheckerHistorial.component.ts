@@ -1,12 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+
 import { ImageCheckerComponent } from '../imageChecker/imageChecker.component';
+import { ImagesCheckerHistorialDataViewComponent } from './imagesCheckerHistorialDataView/imagesCheckerHistorialDataView.component';
+
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
-import { DataViewModule } from 'primeng/dataview';
-import { TagModule } from 'primeng/tag';
+
 import { ToolbarModule } from 'primeng/toolbar';
+import { AccordionModule } from 'primeng/accordion';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { PaginatorModule } from 'primeng/paginator';
+
 import { ImageCheckerService } from 'src/app/services/images/imageChecker.service';
+import { ImagenCartel } from 'src/app/models/images';
+import { DialogModule } from 'primeng/dialog';
+
+
 
 
 @Component({
@@ -14,29 +24,56 @@ import { ImageCheckerService } from 'src/app/services/images/imageChecker.servic
   templateUrl: './imageCheckerHistorial.component.html',
   standalone: true,
   imports: [
-    ImageCheckerComponent, 
+    ImageCheckerComponent,
+    ImagesCheckerHistorialDataViewComponent, 
     CardModule,
     ButtonModule,
     CommonModule,
-    DataViewModule,
-    TagModule,
-    ToolbarModule
+    PaginatorModule,
+   
+    ToolbarModule,
+    AccordionModule,
+    ProgressSpinnerModule,
+    DialogModule
    ],
   styleUrls: ['./imageCheckerHistorial.component.css'],
 
 })
 export class ImageCheckerHistorialComponent implements OnInit {
 
-  mostrarNuevaImagen = false;
-  imagenes: any = [];
-  ordenAscendente = true; 
 
-  constructor(private imageService: ImageCheckerService) { }
+  mostrarNuevaImagen = false;
+  imagenes: ImagenCartel[] = [];
+
+  modelos: string [] = [];
+  itemsPerPage: number = 5; 
+  first: number = 0;
+
+  cargando = true;
+  dialogVisibility: boolean[] = [];
+
+  activeTabIndex: number | null = null; // null indica que ningún tab está activo
+  imagenesDialog: ImagenCartel[][] = [];
+
+  constructor(private imageService: ImageCheckerService,
+   ) { }
   
   ngOnInit() {
+    this.initImages();
+  }
+
+   get modelosPaginados() {
+    return this.modelos.slice(this.first, this.itemsPerPage);
+  }
+  private initImages() {
     this.imageService.getImages().subscribe(
-      (data) => {
+      (data: ImagenCartel[]) => {
+       
+        this.modelos = data.map((imagen: ImagenCartel) => imagen.modelo).filter((value, index, self) => self.indexOf(value) === index);
         this.imagenes = data;
+        console.log(this.modelos);
+        
+        this.cargando = false;
       },
       (error) => {
         console.error('Error fetching images', error);
@@ -44,33 +81,36 @@ export class ImageCheckerHistorialComponent implements OnInit {
     );
   }
 
-  /*
-  getSeverity(product: Product) {
-        switch (product.inventoryStatus) {
-            case 'INSTOCK':
-                return 'success';
+  
+ 
+    
+  
+    getImagenes(modelo: string): ImagenCartel[] {
 
-            case 'LOWSTOCK':
-                return 'warning';
+      return this.imagenes.filter((imagen: ImagenCartel) => imagen.modelo === modelo);
+      
+    }
 
-            case 'OUTOFSTOCK':
-                return 'danger';
-
-            default:
-                return null;
-        }
-    };
-    */
-  ordenarPorFecha() {
-    /*this.ordenAscendente = !this.ordenAscendente;
-    this.imagenes.sort((a, b) => {
-      const fechaA = new Date(a.timestamp); 
-      const fechaB = new Date(b.timestamp);
-      return this.ordenAscendente ? fechaA - fechaB : fechaB - fechaA;
-    });
-    */
+    onPageChange(event: any) {
+      this.first += this.itemsPerPage;
+    }
+    
+   onTabOpen(event: any) {
+      this.imagenesDialog[event.index] = this.getImagenes(this.modelos[event.index]);
+     
+      this.openDialogForTab(event.index);
   }
-  getResult(_t10: any): string|undefined {
-    throw new Error('Method not implemented.');
+
+  onDialogClose() {
+   
+    
+    this.activeTabIndex = null;
+    
   }
+
+  openDialogForTab(tabIndex: number) {
+    this.dialogVisibility[tabIndex] = true;
+  }
+  
 }
+

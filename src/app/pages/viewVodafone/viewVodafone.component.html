@@ -2,9 +2,16 @@
     <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value"></p-selectButton>
 </div>
 
+  
 <div *ngIf="value=='c';else huecos" class="mt-2">
+    <div [style] = "{ 'margin-left':'10%' }">
+        <small [style]="{'color': 'gray'}">
+            <p>Selecciona un modelo e imágenes para comprobar si las imágenes contienen el modelo en su contenido</p>
+        </small>
+    </div>
     <app-imageCheckerHistorial></app-imageCheckerHistorial>
 </div>
+
 
 <ng-template #huecos>
     <p>No implementado</p>

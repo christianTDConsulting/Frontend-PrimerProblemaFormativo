@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Imagen } from 'src/app/models/images';
+import {  ImagenCartel } from 'src/app/models/images';
 
 @Injectable({
   providedIn: 'root'
@@ -13,18 +13,21 @@ export class ImageCheckerService {
 
   constructor(private http: HttpClient) {}
 
-  // Método para subir la imagen
-  uploadImages(imageFiles: File[]): Observable<any> {
+
+  uploadImages(imageFiles: File[], model: File): Observable<any> {
     const formData = new FormData();
+
+
     for (let i = 0; i < imageFiles.length; i++) {
       formData.append('image', imageFiles[i]); 
     }
-    console.log(formData);
-
+    formData.append('model', model);
     return this.http.post(this.uploadUrl, formData);
   }
-  getImages(): Observable<Imagen[]> {
-    return this.http.get<Imagen[]>(this.imagesUrl);
+  getImages(): Observable<ImagenCartel[]> {
+    return this.http.get<ImagenCartel[]>(this.imagesUrl);
   }
+ 
+
 
 }

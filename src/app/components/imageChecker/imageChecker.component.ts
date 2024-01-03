@@ -1,11 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
+
+import { ConfirmationService, MessageService } from 'primeng/api';
+
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
-import { ImageCheckerService } from 'src/app/services/images/imageChecker.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TagModule } from 'primeng/tag';
 
+import { ImageCheckerService } from 'src/app/services/images/imageChecker.service';
+import { ImagenCartel } from 'src/app/models/images';
 
 @Component({
   selector: 'app-imageChecker',
@@ -15,7 +21,10 @@ import { ImageCheckerService } from 'src/app/services/images/imageChecker.servic
     CardModule,
     ToastModule,
     ButtonModule,
-    CommonModule
+    CommonModule,
+    ProgressSpinnerModule,
+    ConfirmDialogModule,
+    TagModule
   ],
   providers: [MessageService],
   styleUrls: ['./imageChecker.component.css']
@@ -25,12 +34,14 @@ import { ImageCheckerService } from 'src/app/services/images/imageChecker.servic
 export class ImageCheckerComponent implements OnInit {
 
 
+
   cargando: boolean = false;
+  selectedModel: File | null = null
   selectedImages: File[] = [];
-  imageResult: File | null = null;
+  imagesResult: ImagenCartel[] = [];
 
-  constructor(private messageService: MessageService, private imageChecker: ImageCheckerService, private cdref: ChangeDetectorRef ) {}
-
+  constructor(private messageService: MessageService, private imageChecker: ImageCheckerService, private confirmationService: ConfirmationService ) {}
+ 
 
   ngOnInit() {
   }
@@ -46,6 +57,13 @@ export class ImageCheckerComponent implements OnInit {
       }
     }
   }
+
+  onModelSelect(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+   this.selectedModel = input.files ? input.files[0] : null;
+  }
+ 
  
 
   
@@ -65,11 +83,12 @@ export class ImageCheckerComponent implements OnInit {
 
   async onCheck() {
     this.cargando = true;
-    if (this.selectedImages) {
-      this.imageChecker.uploadImages(this.selectedImages).subscribe(
-        (res: any) => {
+    if (this.selectedImages && this.selectedModel) {
+      this.imageChecker.uploadImages(this.selectedImages, this.selectedModel).subscribe(
+        (res: ImagenCartel[]) => {
           console.log('Imágenes cargadas con éxito:', res);
           this.cargando = false;
+          this.imagesResult = res;
           this.messageService.add({ severity: 'success', summary: 'Operación completada', detail: 'Imagenes procesadas' });
         },
         (error) => {
@@ -81,4 +100,49 @@ export class ImageCheckerComponent implements OnInit {
     
    
   }
+
+  confirm() {
+    this.confirmationService.confirm({
+        header: 'Estás seguro?',
+        message: 'Se eliminarán las imágenes seleccionadas.',
+        accept: () => {
+            this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Has aceptado', life: 3000 });
+            this.selectedModel = null;
+            this.selectedImages = []; 
+        },
+        reject: () => {
+            this.messageService.add({ severity: 'error', summary: 'Rechazado', detail: 'Has rechazado', life: 3000 });
+        }
+    });
+    
+  }
+
+  getSeverity(result: string) {
+    switch (result) {
+        case 'muy alta':
+            return 'success' as string;
+
+        case 'alta':
+            return 'success' as string;
+
+        case 'media':
+            return 'warning' as string;
+        case 'baja':
+            return 'danger' as string;
+        case 'muy baja':
+            return 'danger' as string;
+        case 'ninguna':
+            return 'danger' as string;
+
+        default:
+            return undefined;
+    }
+};
+
+clear() {
+    this.selectedModel = null;
+    this.selectedImages = [];
+    this.imagesResult = [];
+  }
+
 }

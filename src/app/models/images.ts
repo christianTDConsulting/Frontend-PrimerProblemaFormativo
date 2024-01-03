@@ -1,10 +1,10 @@
-export interface Imagen {
-    imagen: {
-      id: number;
-      nombre: string;
-      timestamp: Date;
-      
-    };
-    file: string;
-  }
+export interface ImagenCartel {
+    
+    id: number;
+    modelo: string;
+    imagen: string;
+    timestamp: Date;
+    resultado: string;
   
+}
+
