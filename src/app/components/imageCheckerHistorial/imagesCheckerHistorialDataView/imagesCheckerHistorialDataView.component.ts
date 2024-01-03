@@ -1,22 +1,26 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
-import { DataViewModule } from 'primeng/dataview';
+
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
-
+import { DataViewModule } from 'primeng/dataview';
 import { CommonModule } from '@angular/common';
 import { ImagenCartel } from 'src/app/models/images';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+
 @Component({
   selector: 'app-imagesCheckerHistorialDataView',
   templateUrl: './imagesCheckerHistorialDataView.component.html',
   standalone: true,
   imports: [ 
-    DataViewModule,
     TagModule,
     ButtonModule,
     FormsModule,
-    CommonModule
+    CommonModule,
+    DataViewModule,
+    ScrollPanelModule
+   
   ],
   styleUrls: ['./imagesCheckerHistorialDataView.component.css']
 })
@@ -24,6 +28,34 @@ export class ImagesCheckerHistorialDataViewComponent implements OnChanges {
 
   @Input() imagenesInput!: ImagenCartel[];
   imagenes: ImagenCartel[] = [];
+
+  cargando = true;
+  
+
+  ordenAscendenteSimilitud = true;
+  mostrarNuevaImagen = false;
+  
+  
+  
+  responsiveOptions = [
+    {
+        breakpoint: '1199px',
+        numVisible: 1,
+        numScroll: 1
+    },
+    {
+        breakpoint: '991px',
+        numVisible: 2,
+        numScroll: 1
+    },
+    {
+        breakpoint: '767px',
+        numVisible: 1,
+        numScroll: 1
+    }
+];
+
+
   constructor() { }
 
  
@@ -61,57 +93,8 @@ export class ImagesCheckerHistorialDataViewComponent implements OnChanges {
 
 
 
-formatDate(date: Date | string) {
-
-if (date instanceof Date) {
-  const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-  };
-  return date.toLocaleDateString(undefined, options);
-} else if (typeof date === 'string') {
-  const newDate = new Date(date);
-  if (!isNaN(newDate.getTime())) {
-    const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    };
-    return newDate.toLocaleDateString(undefined, options);
-  }
-}
-return 'Fecha no válida';
-}
-cargando = true;
-  
-ordenAscendente = true; 
-ordenAscendenteSimilitud = true;
-mostrarNuevaImagen = false;
-clear() {
-  this.cargando = true;
-  //this.initImages();
-}
 
 
-ordenarPorFecha() {
-
-  this.ordenAscendente = !this.ordenAscendente;
-  /*
-  this.imagenes.sort((a, b) => {
-    const fechaA = new Date(a.imagen.timestamp).getTime(); 
-    const fechaB = new Date(b.imagen.timestamp).getTime();
-    return this.ordenAscendente ? fechaA - fechaB : fechaB - fechaA;
-  });
-  */
-  
-  }
   
   ordenarPorSimilitud() {
   

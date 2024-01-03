@@ -15,9 +15,14 @@ import { PaginatorModule } from 'primeng/paginator';
 import { ImageCheckerService } from 'src/app/services/images/imageChecker.service';
 import { ImagenCartel } from 'src/app/models/images';
 import { DialogModule } from 'primeng/dialog';
+import { ToastModule } from 'primeng/toast';
 
+import { MessageService } from 'primeng/api';
 
-
+export interface modelo {
+  url:string,
+  timestamp:Date
+}
 
 @Component({
   selector: 'app-imageCheckerHistorial',
@@ -30,22 +35,27 @@ import { DialogModule } from 'primeng/dialog';
     ButtonModule,
     CommonModule,
     PaginatorModule,
+    ToastModule,
    
     ToolbarModule,
     AccordionModule,
     ProgressSpinnerModule,
-    DialogModule
+    DialogModule,
+    
    ],
   styleUrls: ['./imageCheckerHistorial.component.css'],
+  providers: [MessageService]
 
 })
+
+
 export class ImageCheckerHistorialComponent implements OnInit {
 
 
   mostrarNuevaImagen = false;
   imagenes: ImagenCartel[] = [];
 
-  modelos: string [] = [];
+  modelos: modelo [] = [];
   itemsPerPage: number = 5; 
   first: number = 0;
 
@@ -54,26 +64,42 @@ export class ImageCheckerHistorialComponent implements OnInit {
 
   activeTabIndex: number | null = null; // null indica que ningún tab está activo
   imagenesDialog: ImagenCartel[][] = [];
+  ordenAscendente = false; 
 
-  constructor(private imageService: ImageCheckerService,
+  constructor(private imageService: ImageCheckerService, private messageService: MessageService
    ) { }
   
   ngOnInit() {
     this.initImages();
   }
 
-   get modelosPaginados() {
-    return this.modelos.slice(this.first, this.itemsPerPage);
+  clear() {
+    this.cargando = true;
+    this.initImages(true);
+
   }
-  private initImages() {
+  
+
+  get modelosPaginados() {
+  //console.log(this.first +" "+  this.first + this.itemsPerPage);
+  return this.modelos.slice(this.first, this.first + this.itemsPerPage);
+  }
+  
+  private initImages(clear: boolean = false)  {
     this.imageService.getImages().subscribe(
       (data: ImagenCartel[]) => {
        
-        this.modelos = data.map((imagen: ImagenCartel) => imagen.modelo).filter((value, index, self) => self.indexOf(value) === index);
+        this.modelos = data.map((imagen: ImagenCartel) => ({
+          url: imagen.modelo,             
+          timestamp: new Date(imagen.timestamp)  
+        }));
         this.imagenes = data;
         console.log(this.modelos);
-        
+        if (clear) {
+          this.messageService.add({ severity: 'success', summary: 'Refrescado' });
+        }
         this.cargando = false;
+        
       },
       (error) => {
         console.error('Error fetching images', error);
@@ -81,10 +107,7 @@ export class ImageCheckerHistorialComponent implements OnInit {
     );
   }
 
-  
- 
-    
-  
+
     getImagenes(modelo: string): ImagenCartel[] {
 
       return this.imagenes.filter((imagen: ImagenCartel) => imagen.modelo === modelo);
@@ -92,18 +115,17 @@ export class ImageCheckerHistorialComponent implements OnInit {
     }
 
     onPageChange(event: any) {
-      this.first += this.itemsPerPage;
+      this.first = event.first;
     }
     
    onTabOpen(event: any) {
-      this.imagenesDialog[event.index] = this.getImagenes(this.modelos[event.index]);
+      this.imagenesDialog[event.index] = this.getImagenes(this.modelos[event.index].url);
      
       this.openDialogForTab(event.index);
   }
 
   onDialogClose() {
-   
-    
+
     this.activeTabIndex = null;
     
   }
@@ -111,6 +133,50 @@ export class ImageCheckerHistorialComponent implements OnInit {
   openDialogForTab(tabIndex: number) {
     this.dialogVisibility[tabIndex] = true;
   }
+
+  ordenarPorFecha() {
+
+    this.ordenAscendente = !this.ordenAscendente;
+    
+    this.modelos.sort((a, b) => {
+      const fechaA = new Date(a.timestamp).getTime(); 
+      const fechaB = new Date(b.timestamp).getTime();
+      return this.ordenAscendente ? fechaA - fechaB : fechaB - fechaA;
+    });
+    
+    this.first = 0;
+  }
+
+    formatDate(date: Date | string) {
+
+      if (date instanceof Date) {
+        const options: Intl.DateTimeFormatOptions = {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        };
+        return date.toLocaleDateString(undefined, options);
+      } else if (typeof date === 'string') {
+        const newDate = new Date(date);
+        if (!isNaN(newDate.getTime())) {
+          const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+          };
+          return newDate.toLocaleDateString(undefined, options);
+        }
+      }
+      return 'Fecha no válida';
+      }
   
 }
+
+
 

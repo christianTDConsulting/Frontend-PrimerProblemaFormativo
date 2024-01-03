@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 
@@ -31,7 +31,7 @@ import { ImagenCartel } from 'src/app/models/images';
 })
 
 
-export class ImageCheckerComponent implements OnInit {
+export class ImageCheckerComponent implements  OnChanges {
 
 
 
@@ -41,10 +41,15 @@ export class ImageCheckerComponent implements OnInit {
   imagesResult: ImagenCartel[] = [];
 
   constructor(private messageService: MessageService, private imageChecker: ImageCheckerService, private confirmationService: ConfirmationService ) {}
- 
-
-  ngOnInit() {
+  
+  ngOnChanges(changes: SimpleChanges) : void{
+  if (changes['selectedModel'] && changes['selectedModel'].currentValue) {
+    setTimeout(() => {
+      this.cargando = false;
+    },0);
   }
+ }
+
 
  
   onFileSelect(event: Event): void {
