@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ViewVodafoneComponent } from './viewVodafone.component';
-import { ImageCheckerHistorialComponent } from 'src/app/components/imageCheckerHistorial/imageCheckerHistorial.component';
+import { ImageCheckerHistorialComponent } from 'src/app/pages/viewVodafone/components/imageCheckerHistorial/imageCheckerHistorial.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
 

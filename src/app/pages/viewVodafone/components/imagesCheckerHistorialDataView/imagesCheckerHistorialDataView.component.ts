@@ -41,6 +41,7 @@ export class ImagesCheckerHistorialDataViewComponent implements OnChanges {
     {name: 'baja', code: 'baja'},
     {name: 'muy baja', code: 'muy baja'},
     {name: 'ninguna', code: 'ninguna'},
+    {name: 'error', code: 'error'}
 
   
   ];
@@ -81,6 +82,8 @@ export class ImagesCheckerHistorialDataViewComponent implements OnChanges {
             return 'danger' as string;
         case 'ninguna':
             return 'danger' as string;
+        case 'error':
+            return 'info' as string;
 
         default:
             return undefined;

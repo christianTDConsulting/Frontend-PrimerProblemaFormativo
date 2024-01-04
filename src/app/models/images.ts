@@ -5,6 +5,7 @@ export interface ImagenCartel {
     imagen: string;
     timestamp: Date;
     resultado: string;
+    comentario?: string;
   
 }
 

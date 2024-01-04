@@ -138,7 +138,8 @@ export class ImageCheckerComponent implements  OnChanges {
             return 'danger' as string;
         case 'ninguna':
             return 'danger' as string;
-
+        case 'error':
+            return 'info' as string;
         default:
             return undefined;
     }
@@ -148,6 +149,7 @@ clear() {
     this.selectedModel = null;
     this.selectedImages = [];
     this.imagesResult = [];
+    this.cargando = false;
   }
 
 }

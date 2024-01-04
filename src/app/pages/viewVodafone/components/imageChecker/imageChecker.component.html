@@ -8,17 +8,21 @@
 
   <div class="mt-2">
     <div style="display: flex; justify-content: center;" *ngIf="imagesResult.length === 0">
-      <p-button [label]="!selectedModel ? 'Elegir modelo' : 'Cambiar modelo' "   icon="pi pi-upload" [text]="true" [raised]="true" severity="success"
-        (click)="modelInput.click()" class="fadeinleft animation-duration-1000 fadeout animation-duration-1000 ">
+      <p-button 
+      [label]="!selectedModel ? 'Elegir modelo' : 'Cambiar modelo' " 
+      icon="pi pi-upload" [text]="true" [raised]="true" severity="success"
+      (click)="modelInput.click()" [loading]="cargando"
+      class="fadeinleft animation-duration-1000 fadeout animation-duration-1000 ">
       </p-button>
 
-      <p-button [label] = " selectedImages.length == 0 ? 'Elegir imagenes' : 'Elegir imagenes ('+selectedImages.length+')'" [disabled]="selectedImages.length >= 5 " [hidden]="!selectedModel" icon="pi pi-upload" [text]="true" [raised]="true" severity="success"
+      <p-button [label] = " selectedImages.length == 0 ? 'Elegir imagenes' : 'Elegir imagenes ('+selectedImages.length+')'" [disabled]="selectedImages.length >= 5" [loading]="cargando" [hidden]="!selectedModel" icon="pi pi-upload" [text]="true" [raised]="true" severity="success"
         (click)="fileInput.click()" class="fadeinleft animation-duration-1000 fadeout animation-duration-1000 ">
       </p-button>
 
-      <p-button label="Comprobar"  icon="pi pi-send" [hidden]="selectedImages.length === 0" [text]="true" [raised]="true" severity="success" class="ml-2 fadeinright animation-duration-1000 fadeout animation-duration-1000 "
+      <p-button label="Comprobar"  [loading]="cargando" icon="pi pi-send" [hidden]="selectedImages.length === 0" [text]="true" [raised]="true" severity="success" class="ml-2 fadeinright animation-duration-1000 fadeout animation-duration-1000 "
         (click)="onCheck()">
       </p-button>
+      <p-button label="Cancelar" [hidden]="!cargando" icon="pi pi-stop-circle" [text]="true" [raised]="true" (onClick)="clear" severity="danger" class="ml-2 fadeinright animation-duration-1000 fadeout animation-duration-1000 " ></p-button>
     </div>
 
     <div *ngIf ="selectedModel" class="mt-2">
@@ -26,7 +30,7 @@
         <div class="col-12 flex justify-content-center">
           <h2>Modelo seleccionado</h2>
         </div>
-        <div class="col-12 flex justify-content-center" *ngIf="!cargando">
+        <div class="col-12 flex justify-content-center" >
           <img [src]="getImageSrc(selectedModel)" class="p-mb-2" style="border: 2px solid black; height: 250px; width:auto;" alt="Imagen modelo">
         </div>
         <p-confirmDialog #cd>
@@ -54,7 +58,7 @@
       
 
         <div class="col-12 flex justify-content-center"  *ngIf="imagesResult.length === 0">
-          <p-button (click)= "selectedImages.length > 0 ? confirm() : selectedModel = null"  icon="pi pi-times" label="Quitar"></p-button>
+          <p-button (click)= "selectedImages.length > 0 ? confirm() : selectedModel = null"  icon="pi pi-times" [loading]="cargando" label="Quitar"></p-button>
 
         </div>
       </div>
@@ -79,7 +83,7 @@
                   <p-tag [value]="imagesResult[i].resultado" [style]="{'width': '300px', 'height': '40px', 'padding':50}" [severity]="getSeverity(imagesResult[i].resultado)"></p-tag>
                 </div>
                 <ng-template #botonQuitar class="col-12 flex justify-content-center" >
-                  <p-button label="Quitar" icon="pi pi-times" (click)="removeImage(i)"></p-button>
+                  <p-button label="Quitar" icon="pi pi-times" (click)="removeImage(i)" [loading]="cargando"></p-button>
                 </ng-template>
               </div>
             </div>

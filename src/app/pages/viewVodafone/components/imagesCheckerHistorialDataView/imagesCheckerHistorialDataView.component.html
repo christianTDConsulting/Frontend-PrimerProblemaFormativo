@@ -41,7 +41,15 @@
               <p-tag [value]="item.resultado" 
                      [style]="{'width': '300px', 'height': '40px', 'padding': 50 }" 
                      [severity]="getSeverity(item)"></p-tag>
+
+              <div class="flex align-items-center gap-3">
+                <span class="flex align-items-center gap-2">
+                    {{item.comentario}}                  
+                </span>
+              
+              </div>
             </div>
+            
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@ import {  ImagenCartel } from 'src/app/models/images';
 })
 export class ImageCheckerService {
 
-  private uploadUrl = 'http://localhost:3000/uploadImage';
+  private uploadUrl = 'http://localhost:3000/uploadCartelImage';
   private imagesUrl = 'http://localhost:3000/images';
 
   constructor(private http: HttpClient) {}

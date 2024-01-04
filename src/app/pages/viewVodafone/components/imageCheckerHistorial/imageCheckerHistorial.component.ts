@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ImageCheckerComponent } from '../imageChecker/imageChecker.component';
-import { ImagesCheckerHistorialDataViewComponent } from './imagesCheckerHistorialDataView/imagesCheckerHistorialDataView.component';
+import { ImagesCheckerHistorialDataViewComponent } from '../imagesCheckerHistorialDataView/imagesCheckerHistorialDataView.component';
 
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -91,9 +91,14 @@ export class ImageCheckerHistorialComponent implements OnInit {
       (data: ImagenCartel[]) => {
        
         this.modelos = data.map((imagen: ImagenCartel) => ({
-          url: imagen.modelo,             
-          timestamp: new Date(imagen.timestamp)  
-        }));
+          url: imagen.modelo,
+          timestamp: new Date(imagen.timestamp)
+        }))
+        .filter((modelo, index, modelos) => {
+          // Verificar si ya existe una URL con el mismo nombre en modelos
+          return modelos.findIndex(m => m.url === modelo.url) === index;
+        });
+        
         this.imagenes = data;
         console.log(this.modelos);
         if (clear) {

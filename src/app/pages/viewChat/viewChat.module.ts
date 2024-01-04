@@ -22,7 +22,7 @@ import {FormsModule} from '@angular/forms';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { EmojiPickerComponent } from './component/emoji-picker/emoji-picker.component'; 
 import { GalleriaModule } from 'primeng/galleria';
-import { ImageCheckerHistorialComponent } from '../../components/imageCheckerHistorial/imageCheckerHistorial.component';
+import { ImageCheckerHistorialComponent } from '../viewVodafone/components/imageCheckerHistorial/imageCheckerHistorial.component';
 import { DataViewModule } from 'primeng/dataview';
 import { TagModule } from 'primeng/tag';
 import { ToolbarModule } from 'primeng/toolbar';
