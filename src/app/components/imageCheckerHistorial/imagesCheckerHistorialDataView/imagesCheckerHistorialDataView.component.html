@@ -9,7 +9,7 @@
                   (onChange)="onStatusChange($event.value)" 
                   placeholder="Selecciona una probablididad" 
                   optionLabel="name"></p-dropdown>
-      <p-button icon="pi pi-filter-slash" (onClick)="clear()" class="ml-2" [text]="true" >
+      <p-button icon="pi pi-filter-slash" (onClick)="clear()" [hidden]="!filtered"  class="ml-2" [text]="true" >
 
       </p-button>
     </div>

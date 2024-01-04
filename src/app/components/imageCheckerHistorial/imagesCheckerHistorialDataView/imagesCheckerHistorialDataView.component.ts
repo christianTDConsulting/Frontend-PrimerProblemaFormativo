@@ -46,7 +46,8 @@ export class ImagesCheckerHistorialDataViewComponent implements OnChanges {
   ];
 
   imagenesFiltradas: ImagenCartel[] = [];
-  cargando = true;
+  cargando:boolean = true;
+  filtered:boolean = false;
 
   
   
@@ -88,13 +89,14 @@ export class ImagesCheckerHistorialDataViewComponent implements OnChanges {
 
 onStatusChange(selectedStatus: any) {
   
-    // Filtrar imágenes basándose en el estado seleccionado
-    console.log(selectedStatus);
+    // Filtrar imágenes basándose en elconsole.log(selectedStatus);
+    this.filtered = true;
     this.imagenesFiltradas = this.imagenes.filter(imagen => imagen.resultado === selectedStatus.code);
   
 }
 
 clear() {
+  this.filtered = false;
   this.imagenesFiltradas = [...this.imagenes];
 }
 
